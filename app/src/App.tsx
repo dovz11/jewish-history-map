@@ -148,13 +148,17 @@ function App() {
   );
 }
 
+/** Colors of the 2D poster (kept here, not imported, so the legend doesn't pull the 3D bundle in). */
+const POSTER_LEGEND = { world: '#f3a43b', israel: '#2f6fd6', rule: '#9dbcf2' };
+
 function Legend() {
   const mode = useStore((s) => s.mode);
+  const flat = useStore((s) => s.dim) === '2d';
   return (
     <div className="legend" aria-hidden>
-      <span><i style={{ background: '#3d78b8' }} /> {t('legendWorld')}</span>
-      <span><i style={{ background: '#e0b13a' }} /> {t('legendIsrael')}</span>
-      <span><i style={{ background: '#2f62b5', boxShadow: 'inset 0 3px #f2d27a' }} /> {t('legendJewishRule')}</span>
+      <span><i style={{ background: flat ? POSTER_LEGEND.world : '#3d78b8' }} /> {t('legendWorld')}</span>
+      <span><i style={{ background: flat ? POSTER_LEGEND.israel : '#e0b13a' }} /> {t('legendIsrael')}</span>
+      <span><i style={{ background: flat ? POSTER_LEGEND.rule : '#2f62b5', boxShadow: flat ? 'inset 0 -3px #e3b12f' : 'inset 0 3px #f2d27a' }} /> {t('legendJewishRule')}</span>
       {mode === 'both' && <span><i className="dashed" /> {t('legendTrad')}</span>}
     </div>
   );

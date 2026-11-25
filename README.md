@@ -59,9 +59,17 @@ Era years and Hebrew years (in Hebrew numerals).
 | Jump anywhere in time | Click or drag on the minimap at the bottom | Same |
 | Find an item | Search box | Same |
 
-**2D and 3D.** In 2D the timeline is seen straight from above, like the printed poster: heights
-are flattened and the stacked cards step back along their lanes. The globe becomes a flat world
-map. The choice is remembered, and the camera keeps its place when you switch.
+**2D and 3D.** The 2D view is drawn as a printed infographic poster seen from above,
+inspired by the layout of the odyeda.com poster (the content is our own):
+- a white sheet with a thin black year axis and flat colors;
+- above the axis, rows of bordered cells for the eras, the rabbinic eras and who ruled the Land
+  of Israel (in pastel colors, with a gold edge for Jewish rule);
+- a stacked area chart of the world Jewish population, with the Land of Israel share in blue;
+- events as bullets and labels placed just above the chart, with dotted leader lines down to it;
+- people below the axis as colored lifespan capsules.
+
+The globe becomes a flat world map. The choice is remembered, and the camera keeps its place
+when you switch. The 2D layout is in `src/scene/Poster2D.tsx` and `src/lib/poster.ts`.
 
 **On phones** the toolbar shrinks to a search pill with a menu (view, dating, language, list,
 full screen, help) and a layers button. Both open only when tapped. The details open as a

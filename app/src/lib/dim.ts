@@ -13,8 +13,11 @@ export type Dim = '2d' | '3d';
 export let FLAT = false;
 
 const LANES_3D = { ...LANES };
-/** In 2D the stacked cards spread in depth instead of height, so lanes need more room. */
-const LANES_2D = { ...LANES, rabbinic: -29, people: -29, eraLabels: -45 };
+/**
+ * 2D is drawn as a poster (scene/Poster2D.tsx), with its own rows; these values aim the camera
+ * at them when an item is focused (see focus.ts) and bound the panning.
+ */
+const LANES_2D = { ...LANES, axis: 12, tradStrip: 5, sovereignty: 0.2, sovereigntyRow1: 2.9, river: -10, history: -22, rabbinic: 3.2, people: 19, eraLabels: -70 };
 
 export function setFlat(flat: boolean) {
   FLAT = flat;

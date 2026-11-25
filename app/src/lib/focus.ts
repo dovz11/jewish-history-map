@@ -3,7 +3,8 @@ import { useStore } from '../store';
 import { eraById, eventById, mainSpan, navOrder, people, personById, personYear, rabbinicById, rulerById } from './data';
 import { LANES, xToYear, yearToX } from './timeScale';
 import { personPlaceAt } from './places';
-import { isTouch } from './dim';
+import { FLAT, isTouch } from './dim';
+import { chartTopAt, POSTER_Z } from './poster';
 import { lastMultiTapAt } from './touch';
 
 /** Select an item and fly the camera to it. */
@@ -19,7 +20,9 @@ export function focusItem(ref: ItemRef) {
     const e = eventById.get(ref.id);
     if (!e) return;
     if (!st.lanes.history) st.toggleLane('history');
-    st.flyTo(yearToX(mainSpan(e.dating, mode).start), { z: LANES.history + 4, dist: 34 });
+    const y = mainSpan(e.dating, mode).start;
+    // 2D: the event's label sits just above the population chart
+    st.flyTo(yearToX(y), { z: FLAT ? chartTopAt(y) - 5 : LANES.history + 4, dist: 34 });
   } else if (ref.type === 'ruler') {
     const r = rulerById.get(ref.id);
     if (!r) return;
@@ -47,7 +50,7 @@ export function focusItem(ref: ItemRef) {
     st.flyTo((x0 + x1) / 2, { z: LANES.rabbinic + 4, dist: Math.min(170, Math.max(40, Math.abs(x1 - x0) * 1.3)) });
   } else {
     if (!st.lanes.demography) st.toggleLane('demography');
-    st.flyTo(yearToX(ref.year), { z: LANES.river, dist: 30 });
+    st.flyTo(yearToX(ref.year), { z: FLAT ? (chartTopAt(ref.year) + POSTER_Z.popBase) / 2 : LANES.river, dist: 30 });
   }
 }
 

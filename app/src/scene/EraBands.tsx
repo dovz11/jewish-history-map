@@ -5,7 +5,6 @@ import { eras, mainSpan } from '../lib/data';
 import { LANES, yearToX } from '../lib/timeScale';
 import { sameRef, useStore } from '../store';
 import { FONT_BLACK } from './constants';
-import { FLAT } from '../lib/dim';
 
 /** Large tinted floor sections marking the historical periods, with names standing at the back. */
 export function EraBands() {
@@ -42,8 +41,6 @@ export function EraBands() {
               anchorY="bottom"
               textAlign="center"
               position={[cx, 0.2, LANES.eraLabels]}
-              // standing names in 3D; lying on the ground (readable from above) in 2D
-              rotation={FLAT ? [-Math.PI / 2, 0, 0] : [0, 0, 0]}
               color={era.color}
               outlineWidth={0.06}
               outlineColor="#7a6a4a"

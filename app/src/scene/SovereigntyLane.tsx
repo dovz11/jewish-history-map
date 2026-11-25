@@ -5,7 +5,6 @@ import { memo, useState } from 'react';
 import { datingsDiffer, mainSpan, POWER_COLORS, rulers } from '../lib/data';
 import { formatSpan } from '../lib/dates';
 import { LANES, yearToX } from '../lib/timeScale';
-import { FLAT } from '../lib/dim';
 import type { DateMode, Ruler, Span } from '../data/types';
 import { sameRef, useStore } from '../store';
 import { COLORS, FONT_BOLD, FONT_REGULAR } from './constants';
@@ -85,9 +84,8 @@ const RulerBlock = memo(function RulerBlock({ ruler, span, ghost = false }: { ru
             textAlign="center"
             anchorX="center"
             anchorY="middle"
-            // 3D: on the front face; 2D (seen from above): on the top
-            position={ghost ? [cx, height + 0.02, z] : FLAT ? [cx, height + 0.04, z - 0.35] : [cx, height / 2, z + depth / 2 + 0.01]}
-            rotation={ghost || FLAT ? [-Math.PI / 2, 0, 0] : [0, 0, 0]}
+            position={ghost ? [cx, height + 0.02, z] : [cx, height / 2, z + depth / 2 + 0.01]}
+            rotation={ghost ? [-Math.PI / 2, 0, 0] : [0, 0, 0]}
             color={ghost ? COLORS.trad : '#fff'}
             direction="auto"
             raycast={() => null}

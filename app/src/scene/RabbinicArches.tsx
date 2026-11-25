@@ -10,7 +10,6 @@ import { focusItem } from '../lib/focus';
 import { LANES, yearToX } from '../lib/timeScale';
 import { sameRef, useStore } from '../store';
 import { FONT_BLACK, FONT_REGULAR } from './constants';
-import { FLAT } from '../lib/dim';
 
 /** The rabbinic periods as an arcade of arches behind the events; personalities stand beneath them. */
 export function RabbinicArches() {
@@ -71,8 +70,7 @@ const Arch = memo(function Arch({ era, span }: { era: RabbinicEra; span: Span })
         <planeGeometry args={[Math.max(0.2, len - 0.7), 3.2]} />
         <meshBasicMaterial color={era.color} transparent opacity={selected ? 0.55 : 0.3} depthWrite={false} />
       </mesh>
-      {/* 2D: the arch is seen edge-on from above, so its name sits just in front of it */}
-      <Billboard position={FLAT ? [cx, 1, z + 2.6] : [cx, h + 0.6, z]}>
+      <Billboard position={[cx, h + 0.6, z]}>
         <group onClick={onClick} onPointerOver={over} onPointerOut={out}>
           <Text font={FONT_BLACK} fontSize={fs} color={era.color} outlineWidth={0.05} outlineColor="#5a4a2e" outlineOpacity={0.55} anchorX="center" anchorY="bottom" direction="auto">
             {L(era.title)}

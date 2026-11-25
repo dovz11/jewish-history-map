@@ -53,7 +53,8 @@ export function CameraRig() {
     const halfH = Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)) * dist;
     if (!wide) {
       // narrow screens: the panel is a bottom sheet, so lift the item into the upper part
-      c.setFocalOffset(0, -halfH * 0.45, 0, true);
+      // (seen from straight above the offset's vertical axis runs the other way)
+      c.setFocalOffset(0, (FLAT ? 1 : -1) * halfH * 0.45, 0, true);
       return;
     }
     const halfW = halfH * cam.aspect;
@@ -67,7 +68,7 @@ export function CameraRig() {
     const c = ref.current;
     if (!c) return;
     const minX = Math.min(0, DIR * U_MAX) - 20, maxX = Math.max(0, DIR * U_MAX) + 20;
-    c.setBoundary(new THREE.Box3(new THREE.Vector3(minX, -2, LANES.eraLabels - 12), new THREE.Vector3(maxX, 40, 30)));
+    c.setBoundary(new THREE.Box3(new THREE.Vector3(minX, -2, LANES.eraLabels - 12), new THREE.Vector3(maxX, 40, FLAT ? 48 : 30)));
     c.boundaryEnclosesCamera = false;
     const resume = lastView;
     if (resume) {
@@ -77,13 +78,15 @@ export function CameraRig() {
     }
     const hasDeepLink = location.hash.length > 1 && /event|ruler|era|pop|person|rabbinic/.test(location.hash);
     if (!hasDeepLink) {
+      // 2D: aim at the middle of the poster's rows
+      const z0 = FLAT ? -6 : -4, z1 = FLAT ? -6 : -2;
       const sx = yearToX(-2600);
-      const p0 = new THREE.Vector3(sx, 2, -4).addScaledVector(viewDir(), 190);
-      c.setLookAt(p0.x, p0.y, p0.z, sx, 2, -4, false);
+      const p0 = new THREE.Vector3(sx, 2, z0).addScaledVector(viewDir(), 190);
+      c.setLookAt(p0.x, p0.y, p0.z, sx, 2, z0, false);
       const tx = yearToX(-1450);
       const t = setTimeout(() => {
-        const p = new THREE.Vector3(tx, 2, -2).addScaledVector(viewDir(), (FLAT ? 110 : 80) * nearer());
-        c.setLookAt(p.x, p.y, p.z, tx, 2, -2, true);
+        const p = new THREE.Vector3(tx, 2, z1).addScaledVector(viewDir(), (FLAT ? 95 : 80) * nearer());
+        c.setLookAt(p.x, p.y, p.z, tx, 2, z1, true);
       }, 1400);
       return () => clearTimeout(t);
     }
@@ -100,9 +103,8 @@ export function CameraRig() {
   useEffect(() => {
     const c = ref.current;
     if (!c || !fly) return;
-    // in 2D the cards spread back along the lanes, so look a little further back
-    const z = (fly.z ?? -2) - (FLAT ? 3 : 0);
-    const dist = (fly.dist ?? 45) * (FLAT ? 1.25 : 1) * nearer();
+    const z = fly.z ?? -2;
+    const dist = (fly.dist ?? 45) * (FLAT ? 1.15 : 1) * nearer();
     const p = new THREE.Vector3(fly.x, 2, z).addScaledVector(viewDir(), dist);
     c.setLookAt(p.x, p.y, p.z, fly.x, 2, z, true);
   }, [fly]);
@@ -117,7 +119,7 @@ export function CameraRig() {
       c.setLookAt(p.x, p.y, p.z, t.x, t.y, t.z, true);
     } else {
       const cam = camera as THREE.PerspectiveCamera;
-      const cx = (DIR * U_MAX) / 2, cz = FLAT ? -14 : -6;
+      const cx = (DIR * U_MAX) / 2, cz = FLAT ? -4 : -6;
       const fit = (U_MAX / 2 + 10) / (Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)) * cam.aspect);
       const dist = Math.min(MAX_DIST, fit * (FLAT ? 1 : 0.8));
       const p = new THREE.Vector3(cx, 2, cz).addScaledVector(viewDir(), dist);
