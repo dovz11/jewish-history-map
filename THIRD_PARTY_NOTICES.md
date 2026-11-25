@@ -1,7 +1,9 @@
 # Third-party material and notices
 
-The project's own code, texts and data are under MIT No Attribution (see [LICENSE](LICENSE)):
-anyone may copy, change and reuse them for any purpose, without credit and without warranty.
+The project's own material — the source code, the summaries and other texts written for it, and
+the data files compiled for it (events, rulers, eras, places, people, population figures) — is
+under MIT No Attribution (see [LICENSE](LICENSE)): anyone may copy, change and reuse it for any
+purpose, without credit and without warranty.
 
 The items below were made by others. They are **not** covered by that license. Each keeps its
 own license, which you must follow if you reuse it.
