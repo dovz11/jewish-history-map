@@ -4,6 +4,7 @@ import { L, lang, t, type StringKey } from '../i18n';
 import { eras, events, mainSpan, people, rabbinicEras, rulers } from '../lib/data';
 import { formatSpan } from '../lib/dates';
 import { focusItem, switchView } from '../lib/focus';
+import { canFullscreen, isStandalone, toggleFullscreen, useIsFullscreen } from '../lib/fullscreen';
 import { type LaneKey, useStore } from '../store';
 
 const MODES: { key: DateMode; label: StringKey; title: StringKey }[] = [
@@ -43,7 +44,7 @@ export function Toolbar() {
   }, [open]);
 
   const then = (fn: () => void) => () => { fn(); setOpen(null); };
-  const canFullscreen = typeof document !== 'undefined' && document.fullscreenEnabled;
+  const full = useIsFullscreen();
   return (
     <header className="toolbar" ref={ref}>
       <button className="icon-btn mobile-only" aria-label={t('menu')} aria-expanded={open === 'menu'} onClick={() => toggle('menu')}>
@@ -76,9 +77,9 @@ export function Toolbar() {
         <div className="tools">
           <button onClick={then(() => st.setLang(lang === 'he' ? 'en' : 'he'))} title={t('langSwitchTip')} lang={lang === 'he' ? 'en' : 'he'}>{t('langSwitch')}</button>
           <button onClick={then(() => st.setListOpen(true))} title={t('listTip')}>{t('list')}</button>
-          {canFullscreen && (
-            <button className="mobile-only" onClick={then(() => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(() => {}))}>
-              ⛶ {t('fullscreen')}
+          {canFullscreen() && !isStandalone() && (
+            <button className="mobile-only" onClick={then(toggleFullscreen)}>
+              {full ? t('exitFullscreen') : `⛶ ${t('fullscreen')}`}
             </button>
           )}
           <button onClick={then(() => st.setHelpOpen(true))} title={t('help')} aria-label={t('help')}>?</button>

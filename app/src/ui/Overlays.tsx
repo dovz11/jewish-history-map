@@ -127,7 +127,7 @@ function HelpHe() {
         <li><b>החלקה של שתי אצבעות למעלה או למטה</b>: הטיית המבט</li>
         <li><b>הקשה כפולה</b>: התקרבות · <b>הקשה בשתי אצבעות</b>: התרחקות · <b>הקשה כפולה וגרירה</b>: זום באצבע אחת</li>
         <li><b>לחיצה</b> על פריט: פרטים, תמונה וקישורים לוויקיפדיה. בטלפון החלון נפתח מלמטה, ואפשר לגרור אותו למעלה או לסגור אותו בהחלקה למטה.</li>
-        <li><b>המצפן</b> מחזיר את המבט לכיוון ההתחלתי, <b>⛶</b> מציג את כל הציר, ו-<b>2D / 3D</b> עובר בין נוף תלת־ממדי למבט מלמעלה כמו במפה</li>
+        <li><b>המצפן</b> מחזיר את המבט לכיוון ההתחלתי, <b>◎</b> מציג את הכול, <b>⛶</b> עובר למסך מלא (מומלץ כשמחזיקים את הטלפון לרוחב), ו-<b>2D / 3D</b> עובר בין נוף תלת־ממדי למבט מלמעלה כמו במפה</li>
         <li>בטלפון, הקשה על מקום ריק מסתירה את הכפתורים ומחזירה אותם</li>
         <li><b>← →</b> במקלדת: מעבר לאירוע הבא או הקודם · <b>Esc</b>: סגירה</li>
         <li>פס הזמן התחתון: לחיצה או גרירה מעבירה אתכם לכל נקודה בזמן</li>
@@ -175,7 +175,7 @@ function HelpEn() {
         <li><b>Slide two fingers up or down</b>: tilt the view</li>
         <li><b>Double tap</b>: zoom in · <b>two-finger tap</b>: zoom out · <b>double tap and drag</b>: one-finger zoom</li>
         <li><b>Click</b> an item: details, a picture and links to Wikipedia. On a phone the card slides up from the bottom; drag it up for more, or swipe it down to close.</li>
-        <li><b>The compass</b> turns the view back, <b>⛶</b> shows everything, and <b>2D / 3D</b> switches between the landscape and a flat, map-like view from above</li>
+        <li><b>The compass</b> turns the view back, <b>◎</b> shows everything, <b>⛶</b> goes full screen (best with the phone held sideways), and <b>2D / 3D</b> switches between the landscape and a flat, map-like view from above</li>
         <li>On a phone, tap an empty spot to hide or show the buttons</li>
         <li><b>← →</b> keys: previous or next event · <b>Esc</b>: close</li>
         <li>The bar at the bottom: click or drag to jump anywhere in time</li>

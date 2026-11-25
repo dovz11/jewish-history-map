@@ -136,6 +136,10 @@ const STRINGS = {
   compass: { he: 'איפוס הכיוון וההטיה', en: 'Reset heading and tilt' },
   home: { he: 'מבט על הכול', en: 'Show everything' },
   fullscreen: { he: 'מסך מלא', en: 'Full screen' },
+  exitFullscreen: { he: 'יציאה ממסך מלא', en: 'Exit full screen' },
+  landscapeFull: { he: 'מסך מלא: יותר מקום לציר הזמן', en: 'Full screen: more room for the timeline' },
+  landscapeIOS: { he: 'להסתרת סרגלי הדפדפן: שיתוף ⬆︎ ← „הוספה למסך הבית”', en: 'To hide the browser bars: Share ⬆︎ → “Add to Home Screen”' },
+  dismiss: { he: 'סגירה', en: 'Dismiss' },
   sheetHandle: { he: 'גררו כדי להגדיל או להקטין', en: 'Drag to resize' },
   dating: { he: 'תיארוך', en: 'Dating' },
 } satisfies Record<string, { he: string; en: string }>;

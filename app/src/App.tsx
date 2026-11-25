@@ -10,7 +10,7 @@ import { Minimap } from './ui/Minimap';
 import { Help, ListView, Tooltip } from './ui/Overlays';
 import { Toolbar } from './ui/Toolbar';
 import { GlobeControls } from './ui/GlobeControls';
-import { MapButtons } from './ui/MapButtons';
+import { LandscapeHint, MapButtons } from './ui/MapButtons';
 import type { Dim } from './lib/dim';
 
 const Scene = lazy(() => import('./scene/Scene').then((m) => ({ default: m.Scene })));
@@ -140,6 +140,7 @@ function App() {
       <Minimap />
       {view === 'globe' ? <GlobeControls /> : <Legend />}
       <MapButtons />
+      <LandscapeHint />
       <Tooltip />
       <ListView />
       <Help />

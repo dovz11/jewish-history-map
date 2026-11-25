@@ -50,7 +50,8 @@ Era years and Hebrew years (in Hebrew numerals).
 | Turn the view | Right-drag | Twist two fingers |
 | Tilt | Right-drag | Slide two fingers up or down |
 | Face forward again, untilted | Compass button | Same |
-| See everything | ⛶ button | Same |
+| See everything | ◎ button | Same |
+| Full screen (hides the browser bars) | ⛶ button, or the menu | Same; offered automatically when a phone is turned sideways |
 | Flat 2D view or 3D landscape | 2D / 3D button | Same |
 | Move to the next or previous event | `←` / `→` | Next/previous buttons in the panel |
 | Close the panel or a dialog | `Esc` | Swipe the card down, or tap empty space |
@@ -65,6 +66,13 @@ map. The choice is remembered, and the camera keeps its place when you switch.
 **On phones** the toolbar shrinks to a search pill with a menu (view, dating, language, list,
 full screen, help) and a layers button. Both open only when tapped. The details open as a
 bottom sheet: drag its handle up for the full text, or swipe it down to close.
+
+**Phones held sideways** get a wide view of time: the search pill moves to a corner, the details
+open as a narrow side panel, the minimap gets slimmer (on the globe the year slider replaces it),
+and the camera comes nearer so labels stay readable. Turning the phone offers full screen once
+per visit. iPhones don't allow full screen for web pages, so there the hint suggests
+"Add to Home Screen": the site then opens as an app without browser bars
+(`public/manifest.webmanifest`; icons from `npm run icons`).
 
 Clicking an item opens a panel with:
 - both datings, including the Hebrew year;

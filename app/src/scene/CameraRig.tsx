@@ -20,6 +20,12 @@ const defaultAzimuth = () => Math.atan2(viewDir().x, viewDir().z);
 
 const MAX_DIST = 900;
 
+/**
+ * Short screens (a phone held sideways) show the same width of time from nearer, so labels stay
+ * readable: shrink flight distances with the screen height.
+ */
+const nearer = () => THREE.MathUtils.clamp(window.innerHeight / 700, 0.72, 1);
+
 /** Where the camera was when the canvas last unmounted (2D <-> 3D switch keeps the place in time). */
 let lastView: { x: number; z: number; dist: number } | null = null;
 
@@ -76,7 +82,7 @@ export function CameraRig() {
       c.setLookAt(p0.x, p0.y, p0.z, sx, 2, -4, false);
       const tx = yearToX(-1450);
       const t = setTimeout(() => {
-        const p = new THREE.Vector3(tx, 2, -2).addScaledVector(viewDir(), FLAT ? 110 : 80);
+        const p = new THREE.Vector3(tx, 2, -2).addScaledVector(viewDir(), (FLAT ? 110 : 80) * nearer());
         c.setLookAt(p.x, p.y, p.z, tx, 2, -2, true);
       }, 1400);
       return () => clearTimeout(t);
@@ -96,7 +102,7 @@ export function CameraRig() {
     if (!c || !fly) return;
     // in 2D the cards spread back along the lanes, so look a little further back
     const z = (fly.z ?? -2) - (FLAT ? 3 : 0);
-    const dist = (fly.dist ?? 45) * (FLAT ? 1.25 : 1);
+    const dist = (fly.dist ?? 45) * (FLAT ? 1.25 : 1) * nearer();
     const p = new THREE.Vector3(fly.x, 2, z).addScaledVector(viewDir(), dist);
     c.setLookAt(p.x, p.y, p.z, fly.x, 2, z, true);
   }, [fly]);

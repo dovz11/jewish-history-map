@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "enrich": "node scripts/enrich-wiki.mjs",
     "review-sheet": "node scripts/review-sheet.mjs",
-    "og-image": "node scripts/make-og.mjs"
+    "og-image": "node scripts/make-og.mjs",
+    "icons": "node scripts/make-icons.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

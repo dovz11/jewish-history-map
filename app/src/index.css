@@ -238,10 +238,36 @@ a { color: var(--accent); }
   .map-buttons { bottom: 70px; }
   .map-buttons .fab { width: 40px; height: 40px; }
   .dim-toggle button { width: 40px; height: 34px; }
-  .view-globe .map-buttons { bottom: 70px; inset-inline-end: auto; inset-inline-start: 10px; }
-  .globe-controls { bottom: 64px; width: min(560px, 60vw); padding: 4px 8px; }
+  .globe-controls { bottom: 52px; width: min(560px, 60vw); padding: 4px 8px; }
   .globe-controls small { display: none; }
+
+  /* every pixel of height counts sideways: a slimmer minimap, tighter buttons, clear of the notch */
+  .minimap { height: 40px; bottom: 6px; padding: 4px 8px 13px; left: max(8px, env(safe-area-inset-left)); right: max(8px, env(safe-area-inset-right)); }
+  .minimap-labels span { font-size: 0.6rem; }
+  .map-buttons { bottom: 54px; gap: 6px; }
+  /* on the globe the year slider does the minimap's job */
+  .view-globe .minimap { display: none; }
+  .view-globe .globe-controls { bottom: 8px; }
+  .view-globe .map-buttons { bottom: 8px; }
+  /* with the details open, the time controls move into the free part of the screen */
+  .app:has(.panel) .globe-controls {
+    left: auto; right: auto; transform: none; inset-inline-end: 66px;
+    width: calc(100vw - min(380px, 42vw) - 90px);
+  }
+  .panel .wiki img { max-height: 120px; }
+  .panel .summary { font-size: 0.98rem; }
 }
+
+/* the "go full screen" offer when a phone is turned sideways */
+.landscape-hint {
+  position: absolute; z-index: 7; bottom: 56px; left: 50%; translate: -50% 0; display: flex; align-items: center; gap: 4px;
+  padding: 4px; background: rgba(255, 250, 240, 0.97); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow);
+  animation: drop 0.25s ease-out; max-width: calc(100vw - 20px);
+}
+.landscape-hint .primary { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 0; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 700; }
+.landscape-hint span { padding: 6px 12px; font-size: 0.9rem; }
+.landscape-hint .close { border: 0; background: none; font-size: 1.4rem; line-height: 1; padding: 4px 10px; color: var(--ink-soft); }
+.fab.on { background: var(--ink); color: #fff; }
 
 /* ---------- narrow screens: the details panel becomes a bottom sheet ---------- */
 @media (max-width: 760px) {
