@@ -12,6 +12,8 @@ import { SovereigntyLane } from './SovereigntyLane';
 import { TimeAxis } from './TimeAxis';
 import { RabbinicArches } from './RabbinicArches';
 import { PeopleLane } from './PeopleLane';
+import { FLAT } from '../lib/dim';
+import { onCanvasMiss } from '../lib/focus';
 
 export function Scene() {
   const lanes = useStore((s) => s.lanes);
@@ -22,7 +24,7 @@ export function Scene() {
       dpr={[1, 2]}
       camera={{ position: [0, 60, 90], fov: 45, near: 0.5, far: 3000 }}
       gl={{ antialias: true }}
-      onPointerMissed={() => useStore.getState().select(null)}
+      onPointerMissed={onCanvasMiss}
     >
       <color attach="background" args={[COLORS.background]} />
       <fog attach="fog" args={[COLORS.background, 160, 700]} />
@@ -33,6 +35,8 @@ export function Scene() {
         <meshStandardMaterial color={COLORS.ground} roughness={1} />
       </mesh>
       <Suspense fallback={null}>
+        {/* 2D: everything is pressed flat (billboards keep facing the camera, so cards and labels stay readable) */}
+        <group scale={[1, FLAT ? 0.02 : 1, 1]}>
         {lanes.eras && <EraBands />}
         <TimeAxis />
         <LaneLabels />
@@ -41,6 +45,7 @@ export function Scene() {
         {lanes.history && <HistoryLane />}
         {lanes.rabbinic && <RabbinicArches />}
         {lanes.people && <PeopleLane />}
+        </group>
       </Suspense>
       <CameraRig />
     </Canvas>

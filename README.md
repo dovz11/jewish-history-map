@@ -41,17 +41,30 @@ dashed arc leads to a small marker at its traditional date. For example, the des
 First Temple is 586 BCE academically and 423 BCE traditionally. The time axis shows Common
 Era years and Hebrew years (in Hebrew numerals).
 
-**Navigation**
+**Navigation.** The touch gestures follow Google Earth.
 
 | Action | Mouse or keyboard | Touch |
 |---|---|---|
 | Pan along time and across lanes | Drag with the left button | One finger |
-| Zoom | Wheel | Pinch |
-| Rotate | Right-drag | Three fingers |
+| Zoom | Wheel, or double-click to zoom in | Pinch; double tap to zoom in; two-finger tap to zoom out; double tap and drag for one-finger zoom |
+| Turn the view | Right-drag | Twist two fingers |
+| Tilt | Right-drag | Slide two fingers up or down |
+| Face forward again, untilted | Compass button | Same |
+| See everything | ⛶ button | Same |
+| Flat 2D view or 3D landscape | 2D / 3D button | Same |
 | Move to the next or previous event | `←` / `→` | Next/previous buttons in the panel |
-| Close the panel or a dialog | `Esc` | Tap empty space |
+| Close the panel or a dialog | `Esc` | Swipe the card down, or tap empty space |
+| Hide or show the buttons (full screen) | — | Tap empty space |
 | Jump anywhere in time | Click or drag on the minimap at the bottom | Same |
 | Find an item | Search box | Same |
+
+**2D and 3D.** In 2D the timeline is seen straight from above, like the printed poster: heights
+are flattened and the stacked cards step back along their lanes. The globe becomes a flat world
+map. The choice is remembered, and the camera keeps its place when you switch.
+
+**On phones** the toolbar shrinks to a search pill with a menu (view, dating, language, list,
+full screen, help) and a layers button. Both open only when tapped. The details open as a
+bottom sheet: drag its handle up for the full text, or swipe it down to close.
 
 Clicking an item opens a panel with:
 - both datings, including the Hebrew year;
@@ -61,8 +74,8 @@ Clicking an item opens a panel with:
 - context: who ruled at the time and how many Jews there were then.
 
 Every view can be linked directly, for example `#event=expulsion-spain&mode=acad`, or
-`#ruler=persia`, `#era=era-second-temple`, `#pop=1939`. Add `&view=globe` to open the globe and
-`&lang=en` for English.
+`#ruler=persia`, `#era=era-second-temple`, `#pop=1939`. Add `&view=globe` to open the globe,
+`&dim=2d` for the flat view and `&lang=en` for English.
 
 If the browser can't display 3D (no WebGL), the app shows an accessible chronological list
 instead.

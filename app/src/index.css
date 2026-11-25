@@ -19,7 +19,7 @@
 
 * { box-sizing: border-box; }
 html, body, #root { margin: 0; height: 100%; overflow: hidden; }
-button { font: inherit; color: inherit; cursor: pointer; }
+button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulation; }
 a { color: var(--accent); }
 
 .app { position: fixed; inset: 0; }
@@ -36,6 +36,7 @@ a { color: var(--accent); }
 .toolbar h1 { margin: 0; font-size: 1.25rem; font-weight: 900; white-space: nowrap; }
 .toolbar h1 .sub { font-weight: 400; color: var(--ink-soft); }
 
+.search-wrap { display: contents; }
 .search { position: relative; flex: 1 1 200px; max-width: 340px; }
 .search input {
   width: 100%; padding: 7px 12px; border-radius: 10px; border: 1px solid var(--line);
@@ -147,18 +148,99 @@ a { color: var(--accent); }
 .listview.standalone .modal-body { margin: 16px auto; box-shadow: none; max-height: none; }
 .notice { text-align: center; color: var(--ink-soft); margin-top: 90px; }
 
-/* ---------- small screens ---------- */
-@media (max-width: 760px) {
-  .toolbar { gap: 6px 8px; padding: 6px 8px; top: 6px; inset-inline: 6px; }
-  .toolbar h1 { font-size: 1rem; }
-  .toolbar h1 .sub { display: none; }
-  .search { order: 5; flex-basis: 100%; max-width: none; }
-  .lanes label { padding: 3px 7px; font-size: 0.8rem; }
-  .seg button { padding: 4px 8px; font-size: 0.85rem; }
-  .panel { top: auto; bottom: 0; inset-inline: 0; width: auto; max-height: 55vh; border-radius: 14px 14px 0 0; }
-  .legend { display: none; }
-  .minimap { height: 58px; bottom: 6px; inset-inline: 6px; }
+/* ---------- toolbar layout: one bar on desktop ---------- */
+.mobile-only, .icon-btn.mobile-only { display: none; }
+.drawer { display: contents; }
+.lanes { order: 1; }
+.tools { order: 2; }
+.icon-btn { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border: 0; border-radius: 50%; background: none; color: var(--ink); }
+.icon-btn[aria-expanded='true'] { background: #efe5cf; }
+.sheet-handle { display: none; }
+
+/* ---------- floating map buttons (compass, overview, 2D/3D) ---------- */
+.map-buttons {
+  position: absolute; z-index: 4; inset-inline-end: 14px; bottom: 132px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
 }
+.fab {
+  display: grid; place-items: center; width: 46px; height: 46px; padding: 0;
+  border: 1px solid var(--line); border-radius: 50%; background: rgba(255, 250, 240, 0.95); color: var(--ink); box-shadow: var(--shadow);
+}
+.compass .needle { transform: rotate(var(--heading, 0deg)); transform-box: fill-box; transform-origin: center; }
+.fab.dim-toggle { height: auto; border-radius: 23px; overflow: hidden; display: flex; flex-direction: column; }
+.dim-toggle button { width: 46px; height: 40px; border: 0; background: none; font-weight: 900; font-size: 0.95rem; }
+.dim-toggle button + button { border-top: 1px solid var(--line); }
+.dim-toggle button.on { background: var(--ink); color: #fff; }
+.view-globe .map-buttons { bottom: 180px; }
+
+/* ---------- full-screen view: tap the map (touch screens) to tuck the controls away ---------- */
+.toolbar, .minimap, .legend, .globe-controls, .map-buttons { transition: translate 0.3s ease, opacity 0.3s ease; }
+.chrome-off .toolbar { translate: 0 calc(-100% - 30px); opacity: 0; pointer-events: none; }
+.chrome-off .minimap, .chrome-off .legend, .chrome-off .globe-controls { translate: 0 calc(100% + 120px); opacity: 0; pointer-events: none; }
+.chrome-off .map-buttons { opacity: 0; pointer-events: none; }
+
+/* hover tooltips stick after a tap on touch screens */
+@media (hover: none) { .tooltip { display: none !important; } }
+
+/* ---------- small screens (Google Earth–style) ---------- */
+@media (max-width: 760px) {
+  .mobile-only { display: revert; }
+  .icon-btn.mobile-only { display: grid; }
+
+  /* a floating search pill: menu · search · layers */
+  .toolbar {
+    top: calc(8px + env(safe-area-inset-top)); inset-inline: 8px; flex-wrap: nowrap; gap: 2px; padding: 3px 4px;
+    border-radius: 24px; background: rgba(255, 250, 240, 0.97);
+  }
+  .toolbar > h1 { display: none; }
+  .search { flex: 1 1 auto; max-width: none; }
+  .search input { border: 0; background: transparent; padding: 9px 6px; font-size: 16px; /* 16px: no iOS zoom on focus */ }
+  .search input:focus { outline: none; }
+  .hits { top: calc(100% + 10px); inset-inline: -44px; }
+  .hits li { padding: 10px; }
+
+  /* menu and layers open as drop-down sheets under the pill */
+  .drawer, .lanes { display: none; }
+  .drawer.open, .lanes.open {
+    display: flex; position: absolute; top: calc(100% + 8px); inset-inline: 0; z-index: 2;
+    padding: 14px; gap: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow);
+    max-height: calc(100dvh - 120px); overflow: auto; animation: drop 0.18s ease-out;
+  }
+  .drawer.open { flex-direction: column; align-items: stretch; }
+  .drawer h2 { margin: 0; font-size: 1.15rem; font-weight: 900; }
+  .drawer h2 .sub { font-weight: 400; color: var(--ink-soft); }
+  .drawer .seg { display: flex; }
+  .drawer .seg button { flex: 1; padding: 10px 6px; }
+  .drawer .tools { margin: 0; flex-wrap: wrap; gap: 8px; }
+  .drawer .tools button { padding: 9px 14px; }
+  .lanes.open { flex-wrap: wrap; gap: 8px; }
+  .lanes label { padding: 9px 14px; font-size: 0.95rem; }
+
+  /* the details panel becomes a bottom sheet */
+  .panel {
+    top: auto; bottom: 0; inset-inline: 0; width: auto; max-height: 46dvh; padding: 0 18px calc(18px + env(safe-area-inset-bottom));
+    border-radius: 18px 18px 0 0; border-bottom: 0; transition: max-height 0.25s ease, height 0.25s ease; animation: sheet-up 0.25s ease-out;
+  }
+  .panel.full { height: calc(100dvh - 70px - env(safe-area-inset-top)); max-height: none; }
+  .sheet-handle {
+    display: block; position: sticky; top: 0; z-index: 1; margin: 0 -18px; padding: 10px 0 12px;
+    background: linear-gradient(rgba(255, 250, 240, 1) 70%, rgba(255, 250, 240, 0)); touch-action: none; cursor: grab;
+  }
+  .sheet-handle span { display: block; width: 42px; height: 5px; margin: 0 auto; border-radius: 3px; background: #c9b991; }
+  .panel-close { top: 10px; z-index: 2; }
+  .panel h2 { margin-top: 0; font-size: 1.35rem; }
+
+  .legend { display: none; }
+  .minimap { height: 52px; bottom: calc(6px + env(safe-area-inset-bottom)); inset-inline: 8px; padding: 5px 8px 16px; }
+  .map-buttons { inset-inline-end: 10px; bottom: calc(70px + env(safe-area-inset-bottom)); gap: 8px; }
+  .view-globe .map-buttons { bottom: calc(132px + env(safe-area-inset-bottom)); }
+  .fab { width: 44px; height: 44px; }
+  .fab.fab.dim-toggle { height: auto; }
+  .dim-toggle button { width: 44px; }
+  .minimap-labels span:nth-child(even) { display: none; }
+}
+@keyframes drop { from { transform: translateY(-8px); opacity: 0; } }
+@keyframes sheet-up { from { transform: translateY(40%); opacity: 0.4; } }
 
 /* ---------- globe view ---------- */
 .view-globe .toolbar { background: rgba(255, 250, 240, 0.95); }
@@ -183,7 +265,7 @@ a { color: var(--accent); }
 .chip:hover { background: #f3ead6; }
 
 @media (max-width: 760px) {
-  .globe-controls { bottom: 70px; gap: 5px; padding: 6px 8px; }
+  .globe-controls { bottom: calc(64px + env(safe-area-inset-bottom)); gap: 5px; padding: 6px 8px; }
   .globe-controls small { display: none; }
   .globe-year { min-width: 84px; }
   .globe-year strong { font-size: 1.05rem; }

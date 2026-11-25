@@ -3,6 +3,8 @@ import { useStore } from '../store';
 import { eraById, eventById, mainSpan, navOrder, people, personById, personYear, rabbinicById, rulerById } from './data';
 import { LANES, xToYear, yearToX } from './timeScale';
 import { personPlaceAt } from './places';
+import { isTouch } from './dim';
+import { lastMultiTapAt } from './touch';
 
 /** Select an item and fly the camera to it. */
 export function focusItem(ref: ItemRef) {
@@ -120,4 +122,22 @@ export function stepPerson(delta: 1 | -1) {
   const i = sel?.type === 'person' ? people.findIndex((p) => p.id === sel.id) : -1;
   const next = people[Math.max(0, Math.min(people.length - 1, i === -1 ? 0 : i + delta))];
   focusItem({ type: 'person', id: next.id });
+}
+
+/**
+ * A click or tap on empty space: closes the details, or (on touch screens, with nothing open)
+ * tucks the floating controls away for a full-screen view, like Google Earth.
+ * Waits briefly, so the first tap of a double-tap zoom doesn't toggle anything.
+ */
+export function onCanvasMiss() {
+  const st = useStore.getState();
+  if (st.selected) { st.select(null); return; }
+  if (!isTouch()) return;
+  const at = performance.now();
+  if (at - lastMultiTapAt < 450) return;
+  setTimeout(() => {
+    if (lastMultiTapAt > at) return;
+    const s = useStore.getState();
+    if (!s.selected) s.setChrome(!s.chrome);
+  }, 340);
 }

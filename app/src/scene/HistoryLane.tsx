@@ -9,6 +9,7 @@ import { LANES, yearToX } from '../lib/timeScale';
 import type { DateMode, HistoryEvent } from '../data/types';
 import { sameRef, useStore } from '../store';
 import { COLORS, FONT_BOLD, FONT_REGULAR } from './constants';
+import { FLAT } from '../lib/dim';
 
 const LEVEL_H = 2.7;
 const BASE_H = 2.4;
@@ -42,6 +43,8 @@ const EventMarker = memo(function EventMarker({ event, mode, level }: { event: H
   const h = BASE_H + level * LEVEL_H;
   const scale = 0.75 + event.importance * 0.1;
   const color = tradOnly ? COLORS.trad : KIND_COLORS[event.kind];
+  // 2D: cards can't stack upwards, so they step back along the lane instead
+  const card: [number, number, number] = FLAT ? [x, 1 + level * 0.5, z - 1.3 - level * 2.15] : [x, h + 1.0, z];
 
   const endX = span.end !== undefined ? yearToX(span.end) : null;
   const ghostX = ghost ? yearToX(ghost.start) : null;
@@ -56,7 +59,7 @@ const EventMarker = memo(function EventMarker({ event, mode, level }: { event: H
   useFrame(({ camera, clock }) => {
     const g = cardRef.current;
     if (g) {
-      tmp.set(x, h, z);
+      tmp.set(card[0], FLAT ? 0 : h, card[2]);
       const d = camera.position.distanceTo(tmp);
       g.visible = selected || hover || d < LOD_DIST[event.importance];
     }
@@ -138,7 +141,7 @@ const EventMarker = memo(function EventMarker({ event, mode, level }: { event: H
       )}
       {/* card */}
       <group ref={cardRef}>
-        <Billboard position={[x, h + 1.0, z]}>
+        <Billboard position={card}>
           <group scale={scale} onClick={onClick} onPointerOver={over} onPointerOut={out}>
             <mesh position={[0, bounds[1] / 2 - 0.1, -0.02]}>
               <planeGeometry args={[bounds[0] + 0.6, bounds[1] + 0.35]} />

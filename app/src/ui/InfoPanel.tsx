@@ -1,3 +1,4 @@
+import { useRef, useState, type PointerEvent as RPointerEvent } from 'react';
 import type { Dating, ItemRef, WikiRef } from '../data/types';
 import { L, lang, t } from '../i18n';
 import {
@@ -16,11 +17,47 @@ import { useWikiSummary } from './useWiki';
 export const ARROW_PAST = () => (DIR < 0 ? '→' : '←');
 export const ARROW_FUTURE = () => (DIR < 0 ? '←' : '→');
 
+/**
+ * Desktop: a side panel. Phones: a bottom sheet, like Google Earth's knowledge card. It opens half-way,
+ * the handle drags it up to full height or down to close, and a tap on the handle toggles the two heights.
+ */
 export function InfoPanel() {
   const selected = useStore((s) => s.selected);
+  const [full, setFull] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+  const drag = useRef<{ y0: number; h0: number; moved: boolean } | null>(null);
   if (!selected) return null;
+
+  const onDown = (e: RPointerEvent) => {
+    if (window.innerWidth > 760 || !ref.current) return;
+    drag.current = { y0: e.clientY, h0: ref.current.getBoundingClientRect().height, moved: false };
+    try { (e.currentTarget as Element).setPointerCapture(e.pointerId); } catch { /* synthetic or already released pointer */ }
+  };
+  const onMove = (e: RPointerEvent) => {
+    const d = drag.current, el = ref.current;
+    if (!d || !el) return;
+    if (Math.abs(e.clientY - d.y0) > 6) d.moved = true;
+    el.style.transition = 'none';
+    el.style.maxHeight = 'none';
+    el.style.height = `${Math.max(60, d.h0 - (e.clientY - d.y0))}px`;
+  };
+  const onUp = (e: RPointerEvent) => {
+    const d = drag.current, el = ref.current;
+    drag.current = null;
+    if (!d || !el) return;
+    const h = d.h0 - (e.clientY - d.y0);
+    el.style.transition = el.style.maxHeight = el.style.height = '';
+    const vh = window.innerHeight;
+    if (!d.moved) setFull((f) => !f);
+    else if (h < vh * 0.2) useStore.getState().select(null);
+    else setFull(h > vh * 0.55);
+  };
+
   return (
-    <aside className="panel" aria-live="polite">
+    <aside className={`panel${full ? ' full' : ''}`} aria-live="polite" ref={ref}>
+      <div className="sheet-handle" onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} title={t('sheetHandle')} aria-hidden>
+        <span />
+      </div>
       <button className="panel-close" onClick={() => useStore.getState().select(null)} aria-label={t('close')}>×</button>
       <PanelBody item={selected} />
     </aside>

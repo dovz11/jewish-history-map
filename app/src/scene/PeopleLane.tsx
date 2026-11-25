@@ -10,6 +10,7 @@ import { focusItem } from '../lib/focus';
 import { LANES, yearToU, yearToX } from '../lib/timeScale';
 import { sameRef, useStore } from '../store';
 import { COLORS, FONT_BOLD, FONT_REGULAR } from './constants';
+import { FLAT } from '../lib/dim';
 
 /** Distance beyond which a person of the given importance hides their name card. */
 const LOD_DIST: Record<number, number> = { 1: 45, 2: 70, 3: 120, 4: 200, 5: 10000 };
@@ -33,6 +34,8 @@ const Figure = memo(function Figure({ person, level }: { person: Person; level: 
   // stagger figures in depth by level, so crowded periods stay readable
   const z = LANES.people + 1.6 - (level % 3) * 1.4;
   const cardY = 3.1 + level * 1.75;
+  // 2D: cards step back along the lane instead of up
+  const card: [number, number, number] = FLAT ? [x, 2 + level * 0.5, z - 1.2 - level * 1.55] : [x, cardY, z];
   const color = CATEGORY_COLORS[person.category];
   const scale = 0.8 + person.importance * 0.08;
   const selected = useStore((s) => sameRef(s.selected, { type: 'person', id: person.id }));
@@ -42,7 +45,7 @@ const Figure = memo(function Figure({ person, level }: { person: Person; level: 
 
   useFrame(({ camera }) => {
     if (!cardRef.current) return;
-    tmp.set(x, cardY, z);
+    tmp.set(card[0], FLAT ? 0 : cardY, card[2]);
     cardRef.current.visible = selected || hover || camera.position.distanceTo(tmp) < LOD_DIST[person.importance];
   });
 
@@ -81,8 +84,8 @@ const Figure = memo(function Figure({ person, level }: { person: Person; level: 
         </mesh>
       </group>
       <group ref={cardRef}>
-        <Line points={[[x, 1.95 * scale, z], [x, cardY - 0.15, z]]} color={color} lineWidth={1} transparent opacity={0.6} />
-        <Billboard position={[x, cardY, z]}>
+        {!FLAT && <Line points={[[x, 1.95 * scale, z], [x, cardY - 0.15, z]]} color={color} lineWidth={1} transparent opacity={0.6} />}
+        <Billboard position={card}>
           <group onClick={onClick} onPointerOver={over} onPointerOut={out}>
             <mesh position={[0, bounds[1] / 2 - 0.12, -0.02]}>
               <planeGeometry args={[bounds[0] + 0.45, bounds[1] + 0.2]} />

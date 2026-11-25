@@ -1,16 +1,18 @@
 import { L } from '../i18n';
-import { DIR } from '../lib/timeScale';
-import { Billboard, Line, OrbitControls, Text } from '@react-three/drei';
-import { Canvas, useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
+import { Billboard, Line, Text } from '@react-three/drei';
+import { Canvas, useFrame, type ThreeEvent } from '@react-three/fiber';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
-import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import type { Center, HistoryEvent, Migration, Person } from '../data/types';
 import { CATEGORY_COLORS, KIND_COLORS, mainSpan } from '../lib/data';
 import { formatSpan } from '../lib/dates';
 import {
-  activeCenters, activeEvents, activeMigrations, activePeople, personPlaceAt, arcPoints, GLOBE_R, latLonToVec3, placeById, placeVec,
+  activeCenters, activeEvents, activeMigrations, activePeople, personPlaceAt, arcPoints, camRange, GLOBE_R, lift, MAP_H, MAP_W,
+  placeById, placeVec, surface as surfacePoint, upAt,
 } from '../lib/globe';
+import { FLAT } from '../lib/dim';
+import { onCanvasMiss } from '../lib/focus';
+import { GlobeCamera } from './GlobeCamera';
 import { sameRef, useStore } from '../store';
 import { COLORS, FONT_BOLD, FONT_REGULAR } from './constants';
 
@@ -18,12 +20,12 @@ const base = import.meta.env.BASE_URL;
 
 export function GlobeScene() {
   return (
-    <Canvas flat dpr={[1, 2]} camera={{ position: [0, 0, 34], fov: 40, near: 0.1, far: 500 }} onPointerMissed={() => useStore.getState().select(null)}>
+    <Canvas flat dpr={[1, 2]} camera={{ position: [0, 0, 34], fov: 40, near: 0.1, far: 500 }} onPointerMissed={onCanvasMiss}>
       <color attach="background" args={['#1d2a3a']} />
       <ambientLight intensity={1.1} />
       <directionalLight position={[30, 20, 30]} intensity={1.2} />
-      <Stars />
-      <Earth />
+      {!FLAT && <Stars />}
+      {FLAT ? <FlatMap /> : <Earth />}
       <Centers />
       <EventPins />
       <PeoplePins />
@@ -95,6 +97,17 @@ function Earth() {
   );
 }
 
+/** 2D: the same parchment map laid out flat. */
+function FlatMap() {
+  const tex = useEarthTexture();
+  return (
+    <mesh raycast={() => null}>
+      <planeGeometry args={[MAP_W, MAP_H]} />
+      <meshBasicMaterial key={tex ? 'map' : 'plain'} map={tex} color={tex ? '#ffffff' : '#a9c3cf'} />
+    </mesh>
+  );
+}
+
 /** Deterministic star field (seeded, so it is identical on every render). */
 function makeStars() {
   let seed = 7;
@@ -126,6 +139,7 @@ function useFacing(pos: THREE.Vector3, maxDist = Infinity) {
   const tmp = useMemo(() => new THREE.Vector3(), []);
   useFrame(({ camera }) => {
     if (!ref.current) return;
+    if (FLAT) { ref.current.visible = camRange(camera) < maxDist; return; }
     tmp.copy(camera.position).normalize();
     ref.current.visible = tmp.dot(n) > 0.15 && camera.position.length() < maxDist;
   });
@@ -140,9 +154,9 @@ function Centers() {
 
 const CenterMarker = memo(function CenterMarker({ center }: { center: Center }) {
   const p = placeById.get(center.place)!;
-  const pos = useMemo(() => latLonToVec3(p.lat, p.lon, GLOBE_R + 0.02), [p]);
+  const pos = useMemo(() => surfacePoint(p.lat, p.lon, 0.02), [p]);
   const labelRef = useFacing(pos, center.weight === 3 ? Infinity : center.weight === 2 ? 23 : 17);
-  const quat = useMemo(() => new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), pos.clone().normalize()), [pos]);
+  const quat = useMemo(() => new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), upAt(pos)), [pos]);
   const ringRef = useRef<THREE.Mesh>(null);
   const r = 0.09 + center.weight * 0.07;
   useFrame(({ clock }) => {
@@ -168,7 +182,7 @@ const CenterMarker = memo(function CenterMarker({ center }: { center: Center }) 
         </mesh>
       </group>
       <group ref={labelRef}>
-        <Billboard position={pos.clone().multiplyScalar(1.012)}>
+        <Billboard position={lift(pos, 0.12)}>
           <Text font={FONT_BOLD} fontSize={0.15 + center.weight * 0.045} color="#3b2f12" outlineWidth={0.025} outlineColor="#fff8e6" anchorX="center" anchorY="top" position={[0, -r - 0.05, 0]} direction="auto" raycast={() => null}>
             {L(center.title)}
           </Text>
@@ -192,15 +206,15 @@ function EventPins() {
 const EventPin = memo(function EventPin({ event, place, primary }: { event: HistoryEvent; place: string; primary: boolean }) {
   const mode = useStore((s) => s.mode);
   const selected = useStore((s) => sameRef(s.selected, { type: 'event', id: event.id }));
-  const surface = useMemo(() => placeVec(place, GLOBE_R)!, [place]);
+  const surface = useMemo(() => placeVec(place)!, [place]);
   const h = 0.6 + event.importance * 0.18;
-  const top = useMemo(() => surface.clone().multiplyScalar((GLOBE_R + h) / GLOBE_R), [surface, h]);
+  const top = useMemo(() => lift(surface, h), [surface, h]);
   const groupRef = useFacing(surface);
   const labelRef = useRef<THREE.Group>(null);
-  const quat = useMemo(() => new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), surface.clone().normalize()), [surface]);
+  const quat = useMemo(() => new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), upAt(surface)), [surface]);
   const color = KIND_COLORS[event.kind];
   useFrame(({ camera }) => {
-    if (labelRef.current) labelRef.current.visible = primary && (selected || camera.position.length() < 26 || event.importance >= 4);
+    if (labelRef.current) labelRef.current.visible = primary && (selected || camRange(camera) < 26 || event.importance >= 4);
   });
   const onClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
@@ -226,7 +240,7 @@ const EventPin = memo(function EventPin({ event, place, primary }: { event: Hist
         </mesh>
       </group>
       <group ref={labelRef}>
-        <Billboard position={top.clone().multiplyScalar(1.03)}>
+        <Billboard position={lift(top, 0.3)}>
           <group onClick={onClick} onPointerOver={over} onPointerOut={out}>
             <Text font={FONT_BOLD} fontSize={0.3} maxWidth={4} textAlign="center" color={COLORS.ink} outlineWidth={0.03} outlineColor="#fffaf0" anchorX="center" anchorY="bottom" direction="auto">
               {L(event.title)}
@@ -248,14 +262,17 @@ function PeoplePins() {
 
 const PersonPin = memo(function PersonPin({ person, place }: { person: Person; place: string }) {
   const selected = useStore((s) => sameRef(s.selected, { type: 'person', id: person.id }));
-  const pos = useMemo(() => placeVec(place, GLOBE_R + 0.05)!, [place]);
+  const pos = useMemo(() => placeVec(place, 0.05)!, [place]);
   // nudge sideways so a person doesn't sit exactly on a center or event pin
-  const off = useMemo(() => pos.clone().add(new THREE.Vector3(0.25, -0.25, 0.1)).setLength(GLOBE_R + 0.05), [pos]);
+  const off = useMemo(
+    () => (FLAT ? pos.clone().add(new THREE.Vector3(0.25, -0.25, 0)) : pos.clone().add(new THREE.Vector3(0.25, -0.25, 0.1)).setLength(GLOBE_R + 0.05)),
+    [pos],
+  );
   const groupRef = useFacing(off);
   const labelRef = useRef<THREE.Group>(null);
   const color = CATEGORY_COLORS[person.category];
   useFrame(({ camera }) => {
-    if (labelRef.current) labelRef.current.visible = selected || camera.position.length() < 22 || person.importance >= 4;
+    if (labelRef.current) labelRef.current.visible = selected || camRange(camera) < 22 || person.importance >= 4;
   });
   const onClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
@@ -274,7 +291,7 @@ const PersonPin = memo(function PersonPin({ person, place }: { person: Person; p
         <meshStandardMaterial color={selected ? COLORS.selected : color} emissive={color} emissiveIntensity={0.35} />
       </mesh>
       <group ref={labelRef}>
-        <Billboard position={off.clone().multiplyScalar(1.015)}>
+        <Billboard position={lift(off, 0.15)}>
           <Text font={FONT_REGULAR} fontSize={0.2} color={color} outlineWidth={0.025} outlineColor="#fffaf0" anchorX="center" anchorY="bottom" position={[0, 0.14, 0]} direction="auto" raycast={() => null}>
             {L(person.name)}
           </Text>
@@ -331,7 +348,7 @@ const MigrationArcs = memo(function MigrationArcs({ migration }: { migration: Mi
         </group>
       ))}
       <group ref={labelRef}>
-        <Billboard position={mid.clone().multiplyScalar(1.02)}>
+        <Billboard position={lift(mid, 0.2)}>
           <Text font={FONT_BOLD} fontSize={0.24} color="#8e2a1f" outlineWidth={0.025} outlineColor="#fff" anchorX="center" anchorY="bottom" direction="auto" raycast={() => null}>
             {L(migration.title)}
           </Text>
@@ -349,63 +366,5 @@ function ArrowHead({ pts }: { pts: THREE.Vector3[] }) {
       <coneGeometry args={[0.09, 0.28, 10]} />
       <meshBasicMaterial color="#c0392b" />
     </mesh>
-  );
-}
-
-/** Orbit controls plus smooth turning towards a requested place. */
-function GlobeCamera() {
-  const ref = useRef<OrbitControlsImpl>(null);
-  const focus = useStore((s) => s.globeFocus);
-  const camera = useThree((s) => s.camera);
-  const goal = useRef<THREE.Vector3 | null>(null);
-
-  useEffect(() => {
-    // start over the Middle East
-    if (!focus) camera.position.copy(latLonToVec3(28, 38, 34));
-  }, [camera, focus]);
-
-  useEffect(() => {
-    if (!focus) return;
-    const p = placeById.get(focus.place);
-    if (!p) return;
-    const dist = Math.min(camera.position.length(), 26);
-    // aim slightly south of the place so pins and labels sit in the upper-middle of the view
-    goal.current = latLonToVec3(p.lat - 6, p.lon, dist);
-  }, [focus, camera]);
-
-  // when the info panel is open on a wide screen, shift the projection so the globe sits beside it
-  const hasPanel = useStore((s) => s.selected !== null);
-  const size = useThree((s) => s.size);
-  useEffect(() => {
-    const cam = camera as THREE.PerspectiveCamera;
-    const panelW = Math.min(440, size.width * 0.4);
-    if (hasPanel && size.width > 760) cam.setViewOffset(size.width, size.height, (-DIR * panelW) / 2, 0, size.width, size.height);
-    else cam.clearViewOffset();
-    cam.updateProjectionMatrix();
-  }, [hasPanel, size, camera]);
-
-  useFrame((_, dt) => {
-    if (!goal.current) return;
-    const cur = camera.position;
-    const len = THREE.MathUtils.lerp(cur.length(), goal.current.length(), Math.min(1, dt * 3));
-    const dir = cur.clone().normalize().lerp(goal.current.clone().normalize(), Math.min(1, dt * 3)).normalize();
-    cur.copy(dir.multiplyScalar(len));
-    ref.current?.update();
-    if (cur.distanceTo(goal.current) < 0.05) goal.current = null;
-  });
-
-  return (
-    <OrbitControls
-      ref={ref}
-      makeDefault
-      enablePan={false}
-      enableDamping
-      dampingFactor={0.08}
-      minDistance={13}
-      maxDistance={60}
-      rotateSpeed={0.5}
-      zoomSpeed={0.8}
-      onStart={() => (goal.current = null)}
-    />
   );
 }

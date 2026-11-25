@@ -10,6 +10,8 @@ import { Minimap } from './ui/Minimap';
 import { Help, ListView, Tooltip } from './ui/Overlays';
 import { Toolbar } from './ui/Toolbar';
 import { GlobeControls } from './ui/GlobeControls';
+import { MapButtons } from './ui/MapButtons';
+import type { Dim } from './lib/dim';
 
 const Scene = lazy(() => import('./scene/Scene').then((m) => ({ default: m.Scene })));
 const GlobeScene = lazy(() => import('./scene/GlobeScene').then((m) => ({ default: m.GlobeScene })));
@@ -43,6 +45,7 @@ function parseHash(): { ref: ItemRef | null; mode: DateMode | null; globe: boole
 function writeHash(ref: ItemRef | null, mode: DateMode, globe: boolean) {
   const p = new URLSearchParams();
   if (globe) p.set('view', 'globe');
+  if (useStore.getState().dim === '2d') p.set('dim', '2d');
   if (lang !== 'he') p.set('lang', lang);
   if (ref?.type === 'pop') p.set('pop', String(ref.year));
   else if (ref) p.set(ref.type, ref.id);
@@ -60,6 +63,8 @@ export default function Root() {
 function App() {
   const [webgl] = useState(hasWebGL);
   const view = useStore((s) => s.view);
+  const dim = useStore((s) => s.dim);
+  const chrome = useStore((s) => s.chrome);
 
   // deep link in, then keep the hash in sync
   useEffect(() => {
@@ -70,7 +75,7 @@ function App() {
     if (ref) setTimeout(() => focusItem(ref), 300);
     else if (!localStorage.getItem('jhm-help-seen')) useStore.getState().setHelpOpen(true);
     const unsub = useStore.subscribe((s, prev) => {
-      if (s.selected !== prev.selected || s.mode !== prev.mode || s.view !== prev.view) writeHash(s.selected, s.mode, s.view === 'globe');
+      if (s.selected !== prev.selected || s.mode !== prev.mode || s.view !== prev.view || s.dim !== prev.dim) writeHash(s.selected, s.mode, s.view === 'globe');
       // the selected item moves when the dating system changes: follow it
       if (s.mode !== prev.mode && s.selected) focusItem(s.selected);
     });
@@ -81,6 +86,8 @@ function App() {
         useStore.getState().setLang(wanted);
         return;
       }
+      const dim = new URLSearchParams(location.hash.slice(1)).get('dim') as Dim | null;
+      if ((dim === '2d' || dim === '3d') && dim !== useStore.getState().dim) useStore.getState().setDim(dim);
       const { ref } = parseHash();
       if (ref) focusItem(ref);
     };
@@ -121,16 +128,18 @@ function App() {
   }
 
   return (
-    <div className={`app view-${view}`}>
+    <div className={`app view-${view} dim-${dim}${chrome ? '' : ' chrome-off'}`}>
       <div className="canvas-wrap">
         <Suspense fallback={<div className="loading">{t('loading')}</div>}>
-          {view === 'globe' ? <GlobeScene /> : <Scene />}
+          {/* a 2D/3D switch rebuilds the scene (positions depend on it); the cameras resume where they were */}
+          {view === 'globe' ? <GlobeScene key={dim} /> : <Scene key={dim} />}
         </Suspense>
       </div>
       <Toolbar />
       <InfoPanel />
       <Minimap />
       {view === 'globe' ? <GlobeControls /> : <Legend />}
+      <MapButtons />
       <Tooltip />
       <ListView />
       <Help />

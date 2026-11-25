@@ -58,7 +58,7 @@ export function uToYear(u: number): number {
 export const yearToX = (year: number) => DIR * yearToU(year);
 export const xToYear = (x: number) => uToYear(x / DIR);
 
-/** Scene z positions of the lanes (camera looks from +z towards -z). */
+/** Scene z positions of the lanes (camera looks from +z towards -z). Spread further apart in 2D, see dim.ts. */
 export const LANES = {
   axis: 13,
   tradStrip: 10.2,
@@ -70,7 +70,7 @@ export const LANES = {
   rabbinic: -20,
   people: -20,
   eraLabels: -30,
-} as const;
+};
 
 /** Nice tick years for the time axis, denser where the scale is expanded. */
 export function tickYears(): number[] {

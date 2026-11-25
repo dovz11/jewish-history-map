@@ -126,6 +126,18 @@ const STRINGS = {
   langSwitch: { he: 'English', en: 'עברית' },
   langSwitchTip: { he: 'Switch to English', en: 'מעבר לעברית' },
   start: { he: 'יוצאים לדרך', en: "Let's go" },
+  // mobile & map buttons
+  menu: { he: 'תפריט', en: 'Menu' },
+  dimLabel: { he: 'דו־ממד או תלת־ממד', en: '2D or 3D' },
+  dim2d: { he: '2D', en: '2D' },
+  dim3d: { he: '3D', en: '3D' },
+  dim2dTip: { he: 'מבט מלמעלה, כמו מפה', en: 'Flat, seen from above like a map' },
+  dim3dTip: { he: 'נוף תלת־ממדי', en: '3D landscape' },
+  compass: { he: 'איפוס הכיוון וההטיה', en: 'Reset heading and tilt' },
+  home: { he: 'מבט על הכול', en: 'Show everything' },
+  fullscreen: { he: 'מסך מלא', en: 'Full screen' },
+  sheetHandle: { he: 'גררו כדי להגדיל או להקטין', en: 'Drag to resize' },
+  dating: { he: 'תיארוך', en: 'Dating' },
 } satisfies Record<string, { he: string; en: string }>;
 
 export type StringKey = keyof typeof STRINGS;

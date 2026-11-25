@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { DateMode, ItemRef } from '../data/types';
 import { L, lang, t, type StringKey } from '../i18n';
 import { eras, events, mainSpan, people, rabbinicEras, rulers } from '../lib/data';
@@ -21,40 +21,76 @@ const LANES: { key: LaneKey; label: StringKey }[] = [
   { key: 'people', label: 'lanePeople' },
 ];
 
+/**
+ * Desktop: one bar with everything. Phones: a floating search pill (Google Earth style) with a
+ * menu button and a layers button; the other controls open as drop-down sheets only when asked for.
+ */
 export function Toolbar() {
   const mode = useStore((s) => s.mode);
   const lanes = useStore((s) => s.lanes);
   const view = useStore((s) => s.view);
   const st = useStore.getState();
+  const [open, setOpen] = useState<'menu' | 'layers' | null>(null);
+  const ref = useRef<HTMLElement>(null);
+  const toggle = (which: 'menu' | 'layers') => setOpen((o) => (o === which ? null : which));
+
+  // a touch anywhere else (the map, the panel) folds the sheets away
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: PointerEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(null); };
+    window.addEventListener('pointerdown', away);
+    return () => window.removeEventListener('pointerdown', away);
+  }, [open]);
+
+  const then = (fn: () => void) => () => { fn(); setOpen(null); };
+  const canFullscreen = typeof document !== 'undefined' && document.fullscreenEnabled;
   return (
-    <header className="toolbar">
+    <header className="toolbar" ref={ref}>
+      <button className="icon-btn mobile-only" aria-label={t('menu')} aria-expanded={open === 'menu'} onClick={() => toggle('menu')}>
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+      </button>
       <h1>
         {t('appTitle')} <span className="sub">{t('appSub')}</span>
       </h1>
-      <Search />
-      <div className="seg view-seg" role="radiogroup" aria-label={t('viewLabel')}>
-        <button role="radio" aria-checked={view === 'timeline'} className={view === 'timeline' ? 'on' : ''} onClick={() => switchView('timeline')} title={t('viewTimelineTip')}>{t('viewTimeline')}</button>
-        <button role="radio" aria-checked={view === 'globe'} className={view === 'globe' ? 'on' : ''} onClick={() => switchView('globe')} title={t('viewGlobeTip')}>{t('viewGlobe')}</button>
+      <div className="search-wrap" onFocusCapture={() => setOpen(null)}>
+        <Search />
       </div>
-      <div className="seg" role="radiogroup" aria-label={t('datingLabel')}>
-        {MODES.map((m) => (
-          <button key={m.key} role="radio" aria-checked={mode === m.key} className={mode === m.key ? 'on' : ''} title={t(m.title)} onClick={() => st.setMode(m.key)}>
-            {t(m.label)}
-          </button>
-        ))}
+      {view === 'timeline' && (
+        <button className="icon-btn mobile-only" aria-label={t('layers')} aria-expanded={open === 'layers'} onClick={() => toggle('layers')}>
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden><path d="M12 3 2 8.5 12 14l10-5.5L12 3Zm-7.6 9.3L2 13.6 12 19l10-5.4-2.4-1.3L12 16.5l-7.6-4.2Z" fill="currentColor" /></svg>
+        </button>
+      )}
+      <div className={`drawer${open === 'menu' ? ' open' : ''}`}>
+        <h2 className="mobile-only">{t('appTitle')} <span className="sub">{t('appSub')}</span></h2>
+        <div className="seg view-seg" role="radiogroup" aria-label={t('viewLabel')}>
+          <button role="radio" aria-checked={view === 'timeline'} className={view === 'timeline' ? 'on' : ''} onClick={then(() => switchView('timeline'))} title={t('viewTimelineTip')}>{t('viewTimeline')}</button>
+          <button role="radio" aria-checked={view === 'globe'} className={view === 'globe' ? 'on' : ''} onClick={then(() => switchView('globe'))} title={t('viewGlobeTip')}>{t('viewGlobe')}</button>
+        </div>
+        <div className="seg" role="radiogroup" aria-label={t('datingLabel')}>
+          {MODES.map((m) => (
+            <button key={m.key} role="radio" aria-checked={mode === m.key} className={mode === m.key ? 'on' : ''} title={t(m.title)} onClick={() => st.setMode(m.key)}>
+              {t(m.label)}
+            </button>
+          ))}
+        </div>
+        <div className="tools">
+          <button onClick={then(() => st.setLang(lang === 'he' ? 'en' : 'he'))} title={t('langSwitchTip')} lang={lang === 'he' ? 'en' : 'he'}>{t('langSwitch')}</button>
+          <button onClick={then(() => st.setListOpen(true))} title={t('listTip')}>{t('list')}</button>
+          {canFullscreen && (
+            <button className="mobile-only" onClick={then(() => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(() => {}))}>
+              ⛶ {t('fullscreen')}
+            </button>
+          )}
+          <button onClick={then(() => st.setHelpOpen(true))} title={t('help')} aria-label={t('help')}>?</button>
+        </div>
       </div>
-      <div className="lanes" aria-label={t('layers')} hidden={view === 'globe'}>
+      <div className={`lanes${open === 'layers' ? ' open' : ''}`} aria-label={t('layers')} hidden={view === 'globe'}>
         {LANES.map((l) => (
           <label key={l.key} className={lanes[l.key] ? 'on' : ''}>
             <input type="checkbox" checked={lanes[l.key]} onChange={() => st.toggleLane(l.key)} />
             {t(l.label)}
           </label>
         ))}
-      </div>
-      <div className="tools">
-        <button onClick={() => st.setLang(lang === 'he' ? 'en' : 'he')} title={t('langSwitchTip')} lang={lang === 'he' ? 'en' : 'he'}>{t('langSwitch')}</button>
-        <button onClick={() => st.setListOpen(true)} title={t('listTip')}>{t('list')}</button>
-        <button onClick={() => st.setHelpOpen(true)} title={t('help')} aria-label={t('help')}>?</button>
       </div>
     </header>
   );
