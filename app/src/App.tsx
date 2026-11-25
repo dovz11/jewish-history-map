@@ -72,6 +72,12 @@ function App() {
       if (s.mode !== prev.mode && s.selected) focusItem(s.selected);
     });
     const onHash = () => {
+      // a pasted link may ask for another language: switching remounts the app, which re-reads the hash
+      const wanted = new URLSearchParams(location.hash.slice(1)).get('lang') ?? 'he';
+      if ((wanted === 'he' || wanted === 'en') && wanted !== lang) {
+        useStore.getState().setLang(wanted);
+        return;
+      }
       const { ref } = parseHash();
       if (ref) focusItem(ref);
     };
