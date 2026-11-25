@@ -107,8 +107,9 @@ export interface WikiSummary {
   thumbnail?: string;
   url: string;
   wikidata?: string;
-  /** English page title from interlanguage links */
+  /** page title in the other language, from interlanguage links */
   en?: string;
+  he?: string;
 }
 
 export type DateMode = 'acad' | 'trad' | 'both';

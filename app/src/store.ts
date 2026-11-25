@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import type { DateMode, ItemRef } from './data/types';
+import type { DateMode, ItemRef, Lang } from './data/types';
+import { applyLang, lang as initialLang } from './i18n';
 
 export type LaneKey = 'history' | 'demography' | 'sovereignty' | 'eras';
 export type ViewKind = 'timeline' | 'globe';
@@ -31,6 +32,7 @@ interface State {
   /** place the globe should turn towards */
   globeFocus: { place: string; nonce: number } | null;
   playing: boolean;
+  lang: Lang;
 
   setMode(m: DateMode): void;
   toggleLane(l: LaneKey): void;
@@ -44,6 +46,8 @@ interface State {
   setGlobeYear(y: number): void;
   focusPlace(place: string): void;
   setPlaying(v: boolean): void;
+  /** switch language: flips the time direction and remounts the app */
+  setLang(l: Lang): void;
 }
 
 let nonce = 0;
@@ -62,6 +66,7 @@ export const useStore = create<State>((set) => ({
   globeYear: -586,
   globeFocus: null,
   playing: false,
+  lang: initialLang,
 
   setMode: (mode) => set({ mode }),
   toggleLane: (l) => set((s) => ({ lanes: { ...s.lanes, [l]: !s.lanes[l] } })),
@@ -75,6 +80,10 @@ export const useStore = create<State>((set) => ({
   setGlobeYear: (globeYear) => set({ globeYear }),
   focusPlace: (place) => set({ globeFocus: { place, nonce: ++nonce } }),
   setPlaying: (playing) => set({ playing }),
+  setLang: (l) => {
+    applyLang(l);
+    set({ lang: l, hoverText: null, fly: null });
+  },
 }));
 
 export const sameRef = (a: ItemRef | null, b: ItemRef | null) =>

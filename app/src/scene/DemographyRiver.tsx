@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { Billboard, Text } from '@react-three/drei';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
@@ -61,9 +62,9 @@ export function DemographyRiver() {
     e.stopPropagation();
     const year = xToYear(e.point.x);
     const tot = popTotal(year), isr = popIsrael(year);
-    let t = `${formatYear(year)}: כ-${formatMillions(tot)} יהודים בעולם`;
-    if (isr > 0.005) t += ` · בארץ ישראל: ${formatMillions(isr)} (${Math.round((isr / tot) * 100)}%)`;
-    useStore.getState().setHover(t);
+    let text = `${formatYear(year)}: ${t('approxShort')}${formatMillions(tot)} · ${t('jewsInWorld')}`;
+    if (isr > 0.005) text += ` · ${t('inIsrael')}: ${formatMillions(isr)} (${Math.round((isr / tot) * 100)}%)`;
+    useStore.getState().setHover(text);
     document.body.style.cursor = 'pointer';
   };
   const onOut = () => {
@@ -111,10 +112,10 @@ function PopLabels() {
       {pts.map((p, i) => (
         <group key={p.year} ref={(g) => { refs.current[i] = g; }}>
           <Billboard position={[yearToX(p.year), heightOf(p.total) + 0.9, LANES.river]}>
-            <Text font={FONT_BOLD} fontSize={0.6} color={COLORS.river} anchorX="center" anchorY="bottom" direction="rtl" outlineWidth={0.04} outlineColor="#fff">
+            <Text font={FONT_BOLD} fontSize={0.6} color={COLORS.river} anchorX="center" anchorY="bottom" direction="auto" outlineWidth={0.04} outlineColor="#fff">
               {formatMillions(p.total)}
             </Text>
-            <Text font={FONT_REGULAR} fontSize={0.36} color={COLORS.inkSoft} anchorX="center" anchorY="top" position={[0, -0.02, 0]} direction="rtl">
+            <Text font={FONT_REGULAR} fontSize={0.36} color={COLORS.inkSoft} anchorX="center" anchorY="top" position={[0, -0.02, 0]} direction="auto">
               {formatYear(p.year)}
             </Text>
           </Billboard>

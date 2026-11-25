@@ -1,21 +1,22 @@
 import { useMemo, useState } from 'react';
 import type { DateMode, ItemRef } from '../data/types';
+import { L, lang, t, type StringKey } from '../i18n';
 import { eras, events, mainSpan, rulers } from '../lib/data';
 import { formatSpan } from '../lib/dates';
 import { focusItem, switchView } from '../lib/focus';
 import { type LaneKey, useStore } from '../store';
 
-const MODES: { key: DateMode; label: string; title: string }[] = [
-  { key: 'acad', label: 'מחקרי', title: 'תיארוך לפי המחקר ההיסטורי והארכאולוגי' },
-  { key: 'trad', label: 'מסורתי', title: 'תיארוך לפי המסורת (סדר עולם והלוח העברי)' },
-  { key: 'both', label: 'שניהם', title: 'מחקרי, ולצידו הגרסה המסורתית כצל מקווקו' },
+const MODES: { key: DateMode; label: StringKey; title: StringKey }[] = [
+  { key: 'acad', label: 'modeAcad', title: 'modeAcadTip' },
+  { key: 'trad', label: 'modeTrad', title: 'modeTradTip' },
+  { key: 'both', label: 'modeBoth', title: 'modeBothTip' },
 ];
 
-const LANES: { key: LaneKey; label: string }[] = [
-  { key: 'history', label: 'אירועים' },
-  { key: 'demography', label: 'דמוגרפיה' },
-  { key: 'sovereignty', label: 'שלטון' },
-  { key: 'eras', label: 'תקופות' },
+const LANES: { key: LaneKey; label: StringKey }[] = [
+  { key: 'history', label: 'laneHistory' },
+  { key: 'demography', label: 'laneDemography' },
+  { key: 'sovereignty', label: 'laneSovereignty' },
+  { key: 'eras', label: 'laneEras' },
 ];
 
 export function Toolbar() {
@@ -26,37 +27,38 @@ export function Toolbar() {
   return (
     <header className="toolbar">
       <h1>
-        ציר הזמן היהודי <span className="sub">בתלת־ממד</span>
+        {t('appTitle')} <span className="sub">{t('appSub')}</span>
       </h1>
       <Search />
-      <div className="seg view-seg" role="radiogroup" aria-label="תצוגה">
-        <button role="radio" aria-checked={view === 'timeline'} className={view === 'timeline' ? 'on' : ''} onClick={() => switchView('timeline')} title="ציר הזמן התלת־ממדי">ציר זמן</button>
-        <button role="radio" aria-checked={view === 'globe'} className={view === 'globe' ? 'on' : ''} onClick={() => switchView('globe')} title="מפת העולם: קהילות ונדידות לאורך הזמן">🌍 גלובוס</button>
+      <div className="seg view-seg" role="radiogroup" aria-label={t('viewLabel')}>
+        <button role="radio" aria-checked={view === 'timeline'} className={view === 'timeline' ? 'on' : ''} onClick={() => switchView('timeline')} title={t('viewTimelineTip')}>{t('viewTimeline')}</button>
+        <button role="radio" aria-checked={view === 'globe'} className={view === 'globe' ? 'on' : ''} onClick={() => switchView('globe')} title={t('viewGlobeTip')}>{t('viewGlobe')}</button>
       </div>
-      <div className="seg" role="radiogroup" aria-label="שיטת תיארוך">
+      <div className="seg" role="radiogroup" aria-label={t('datingLabel')}>
         {MODES.map((m) => (
-          <button key={m.key} role="radio" aria-checked={mode === m.key} className={mode === m.key ? 'on' : ''} title={m.title} onClick={() => st.setMode(m.key)}>
-            {m.label}
+          <button key={m.key} role="radio" aria-checked={mode === m.key} className={mode === m.key ? 'on' : ''} title={t(m.title)} onClick={() => st.setMode(m.key)}>
+            {t(m.label)}
           </button>
         ))}
       </div>
-      <div className="lanes" aria-label="שכבות" hidden={view === 'globe'}>
+      <div className="lanes" aria-label={t('layers')} hidden={view === 'globe'}>
         {LANES.map((l) => (
           <label key={l.key} className={lanes[l.key] ? 'on' : ''}>
             <input type="checkbox" checked={lanes[l.key]} onChange={() => st.toggleLane(l.key)} />
-            {l.label}
+            {t(l.label)}
           </label>
         ))}
       </div>
       <div className="tools">
-        <button onClick={() => st.setListOpen(true)} title="רשימה כרונולוגית של כל הפריטים">☰ רשימה</button>
-        <button onClick={() => st.setHelpOpen(true)} title="עזרה וניווט" aria-label="עזרה">?</button>
+        <button onClick={() => st.setLang(lang === 'he' ? 'en' : 'he')} title={t('langSwitchTip')} lang={lang === 'he' ? 'en' : 'he'}>{t('langSwitch')}</button>
+        <button onClick={() => st.setListOpen(true)} title={t('listTip')}>{t('list')}</button>
+        <button onClick={() => st.setHelpOpen(true)} title={t('help')} aria-label={t('help')}>?</button>
       </div>
     </header>
   );
 }
 
-interface Hit { ref: ItemRef; label: string; sub: string }
+interface Hit { ref: ItemRef; label: string; alt: string; sub: string }
 
 function Search() {
   const [q, setQ] = useState('');
@@ -65,16 +67,16 @@ function Search() {
   const mode = useStore((s) => s.mode);
   const all = useMemo<Hit[]>(
     () => [
-      ...events.map((e) => ({ ref: { type: 'event', id: e.id } as ItemRef, label: e.title.he, sub: formatSpan(mainSpan(e.dating, mode)) })),
-      ...rulers.map((r) => ({ ref: { type: 'ruler', id: r.id } as ItemRef, label: r.title.he, sub: 'שלטון · ' + formatSpan(mainSpan(r.dating, mode)) })),
-      ...eras.map((r) => ({ ref: { type: 'era', id: r.id } as ItemRef, label: r.title.he, sub: 'תקופה' })),
+      ...events.map((e) => ({ ref: { type: 'event', id: e.id } as ItemRef, label: L(e.title), alt: `${e.title.he} ${e.title.en ?? ''}`, sub: formatSpan(mainSpan(e.dating, mode)) })),
+      ...rulers.map((r) => ({ ref: { type: 'ruler', id: r.id } as ItemRef, label: L(r.title), alt: `${r.title.he} ${r.title.en ?? ''}`, sub: `${t('laneSovereignty')} · ${formatSpan(mainSpan(r.dating, mode))}` })),
+      ...eras.map((r) => ({ ref: { type: 'era', id: r.id } as ItemRef, label: L(r.title), alt: `${r.title.he} ${r.title.en ?? ''}`, sub: t('era') })),
     ],
     [mode],
   );
   const norm = (s: string) => s.replace(/["'״׳\-–]/g, '').toLowerCase();
-  const hits = q.trim()
-    ? all.filter((h) => norm(h.label).includes(norm(q.trim())) || h.sub.includes(q.trim())).slice(0, 10)
-    : [];
+  const nq = norm(q.trim());
+  // search both languages, so either script finds the item
+  const hits = nq ? all.filter((h) => norm(h.alt).includes(nq) || h.sub.includes(q.trim())).slice(0, 10) : [];
   const choose = (h: Hit) => {
     focusItem(h.ref);
     setQ('');
@@ -84,9 +86,9 @@ function Search() {
     <div className="search">
       <input
         type="search"
-        placeholder="חיפוש אירוע, שלטון או שנה…"
+        placeholder={t('search')}
         value={q}
-        aria-label="חיפוש"
+        aria-label={t('searchLabel')}
         onChange={(e) => { setQ(e.target.value); setOpen(true); setActive(0); }}
         onFocus={() => setOpen(true)}
         onBlur={() => setTimeout(() => setOpen(false), 150)}

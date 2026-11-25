@@ -3,6 +3,8 @@ import type { DateMode, ItemRef } from './data/types';
 import { eraById, eventById, rulerById } from './lib/data';
 import { focusItem, stepEvent } from './lib/focus';
 import { useStore } from './store';
+import { lang, t } from './i18n';
+import { DIR } from './lib/timeScale';
 import { InfoPanel } from './ui/InfoPanel';
 import { Minimap } from './ui/Minimap';
 import { Help, ListView, Tooltip } from './ui/Overlays';
@@ -38,6 +40,7 @@ function parseHash(): { ref: ItemRef | null; mode: DateMode | null; globe: boole
 function writeHash(ref: ItemRef | null, mode: DateMode, globe: boolean) {
   const p = new URLSearchParams();
   if (globe) p.set('view', 'globe');
+  if (lang !== 'he') p.set('lang', lang);
   if (ref?.type === 'pop') p.set('pop', String(ref.year));
   else if (ref) p.set(ref.type, ref.id);
   if (mode !== 'both') p.set('mode', mode);
@@ -45,13 +48,20 @@ function writeHash(ref: ItemRef | null, mode: DateMode, globe: boolean) {
   history.replaceState(null, '', h ? `#${h}` : location.pathname + location.search);
 }
 
-export default function App() {
+/** Remount everything when the language changes: text, time direction and 3D layout all depend on it. */
+export default function Root() {
+  const lang = useStore((s) => s.lang);
+  return <App key={lang} />;
+}
+
+function App() {
   const [webgl] = useState(hasWebGL);
   const view = useStore((s) => s.view);
 
   // deep link in, then keep the hash in sync
   useEffect(() => {
     const { ref, mode, globe } = parseHash();
+    writeHash(ref, mode ?? useStore.getState().mode, globe || useStore.getState().view === 'globe');
     if (mode) useStore.getState().setMode(mode);
     if (globe) useStore.getState().setViewKind('globe');
     if (ref) setTimeout(() => focusItem(ref), 300);
@@ -69,7 +79,7 @@ export default function App() {
     return () => { unsub(); window.removeEventListener('hashchange', onHash); };
   }, []);
 
-  // keyboard: arrows step through events (time flows right-to-left), Esc closes
+  // keyboard: arrows step through events in the reading direction, Esc closes
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement)?.tagName === 'INPUT') return;
@@ -80,7 +90,9 @@ export default function App() {
         else st.select(null);
       } else if (st.selected && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
         e.preventDefault();
-        stepEvent(e.key === 'ArrowLeft' ? 1 : -1);
+        // the future lies to the left in Hebrew and to the right in English
+        const toFuture = (e.key === 'ArrowLeft') === (DIR < 0);
+        stepEvent(toFuture ? 1 : -1);
       } else if (e.key === 'n' || e.key === 'מ') stepEvent(1);
       else if (e.key === 'p' || e.key === 'פ') stepEvent(-1);
     };
@@ -92,7 +104,7 @@ export default function App() {
     return (
       <div className="app no-webgl">
         <Toolbar />
-        <p className="notice">הדפדפן שלכם אינו תומך בתלת־ממד (WebGL), ולכן מוצגת רשימה כרונולוגית.</p>
+        <p className="notice">{t('noWebgl')}</p>
         <ListView standalone />
         <InfoPanel />
       </div>
@@ -102,7 +114,7 @@ export default function App() {
   return (
     <div className={`app view-${view}`}>
       <div className="canvas-wrap">
-        <Suspense fallback={<div className="loading">טוען…</div>}>
+        <Suspense fallback={<div className="loading">{t('loading')}</div>}>
           {view === 'globe' ? <GlobeScene /> : <Scene />}
         </Suspense>
       </div>
@@ -121,10 +133,10 @@ function Legend() {
   const mode = useStore((s) => s.mode);
   return (
     <div className="legend" aria-hidden>
-      <span><i style={{ background: '#3d78b8' }} /> יהודים בעולם</span>
-      <span><i style={{ background: '#e0b13a' }} /> בארץ ישראל</span>
-      <span><i style={{ background: '#2f62b5', boxShadow: 'inset 0 3px #f2d27a' }} /> שלטון יהודי</span>
-      {mode === 'both' && <span><i className="dashed" /> תיארוך מסורתי</span>}
+      <span><i style={{ background: '#3d78b8' }} /> {t('legendWorld')}</span>
+      <span><i style={{ background: '#e0b13a' }} /> {t('legendIsrael')}</span>
+      <span><i style={{ background: '#2f62b5', boxShadow: 'inset 0 3px #f2d27a' }} /> {t('legendJewishRule')}</span>
+      {mode === 'both' && <span><i className="dashed" /> {t('legendTrad')}</span>}
     </div>
   );
 }

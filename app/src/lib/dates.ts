@@ -1,4 +1,5 @@
 import type { Span } from '../data/types';
+import { lang } from '../i18n';
 
 /** Gregorian year (negative = BCE) -> Anno Mundi (Hebrew year), approximate (the Hebrew year starts in autumn). */
 export function toAnnoMundi(year: number): number {
@@ -25,36 +26,53 @@ export function gematria(n: number): string {
   return prefix + s;
 }
 
-/** "586 לפנה״ס" / "1492" */
-export function formatYear(year: number): string {
-  const y = Math.round(year);
-  return y < 0 ? `${-y} לפנה״ס` : `${y}`;
+/** The Hebrew year as shown in the current language: gematria in Hebrew, "AM 5252" in English. */
+export function hebrewYear(year: number): string {
+  const am = toAnnoMundi(year);
+  return lang === 'he' ? gematria(am) : `AM ${am}`;
 }
 
-/** Short axis label: "586 לפנה״ס" / "1492 לסה״נ" only near the era boundary */
+const BCE = () => (lang === 'he' ? 'לפנה״ס' : 'BCE');
+const CE = () => (lang === 'he' ? 'לסה״נ' : 'CE');
+const APPROX = () => (lang === 'he' ? 'בערך ' : 'c. ');
+
+/** "586 לפנה״ס" / "586 BCE" / "1492" */
+export function formatYear(year: number): string {
+  const y = Math.round(year);
+  return y < 0 ? `${-y} ${BCE()}` : `${y}`;
+}
+
+/** Axis label: marks CE explicitly for the first millennium. */
 export function formatYearShort(year: number): string {
   const y = Math.round(year);
-  if (y < 0) return `${-y} לפנה״ס`;
-  if (y < 1000) return `${y} לסה״נ`;
+  if (y < 0) return `${-y} ${BCE()}`;
+  if (y < 1000) return `${y} ${CE()}`;
   return `${y}`;
 }
 
 export function formatSpan(span: Span): string {
-  const a = span.approx ? 'בערך ' : '';
+  const a = span.approx ? APPROX() : '';
   if (span.end === undefined || span.end === span.start) return a + formatYear(span.start);
-  // "1348–1351", "167–164 לפנה״ס", "37 לפנה״ס – 4 לסה״נ"
-  if (span.start < 0 && span.end < 0) return `${a}${-span.start}–${-span.end} לפנה״ס`;
-  if (span.start < 0 && span.end > 0) return `${a}${-span.start} לפנה״ס – ${span.end} לסה״נ`;
+  if (span.start < 0 && span.end < 0) return `${a}${-span.start}–${-span.end} ${BCE()}`;
+  if (span.start < 0 && span.end > 0) return `${a}${-span.start} ${BCE()} – ${span.end} ${CE()}`;
   return `${a}${span.start}–${span.end}`;
 }
 
 export function formatAM(span: Span): string {
+  if (lang === 'en') {
+    const s = toAnnoMundi(span.start);
+    return span.end === undefined || span.end === span.start ? `AM ${s}` : `AM ${s}–${toAnnoMundi(span.end)}`;
+  }
   const s = gematria(toAnnoMundi(span.start));
   if (span.end === undefined || span.end === span.start) return `שנת ${s} לבריאה`;
   return `${s}–${gematria(toAnnoMundi(span.end))}`;
 }
 
 export function formatMillions(m: number): string {
+  if (lang === 'en') {
+    if (m >= 1) return `${m.toLocaleString('en-US', { maximumFractionDigits: 2 })} million`;
+    return `${(Math.round(m * 1000) * 1000).toLocaleString('en-US')}`;
+  }
   if (m >= 1) return `${m.toLocaleString('he-IL', { maximumFractionDigits: 2 })} מיליון`;
   return `${Math.round(m * 1000).toLocaleString('he-IL')} אלף`;
 }

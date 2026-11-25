@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
-import { formatYear, gematria, toAnnoMundi } from '../lib/dates';
+import { formatYear, hebrewYear } from '../lib/dates';
+import { t } from '../i18n';
+import { ARROW_FUTURE, ARROW_PAST } from './InfoPanel';
 import { activeCenters, globeEventOrder } from '../lib/places';
 import { U_MAX, uToYear, yearToU, YEAR_MAX } from '../lib/timeScale';
 import { useStore } from '../store';
@@ -48,8 +50,8 @@ export function GlobeControls() {
   const y = Math.round(year);
   const centersNow = activeCenters(year).length;
   return (
-    <div className="globe-controls" role="group" aria-label="שליטה בזמן בגלובוס">
-      <button onClick={() => step(-1)} title="האירוע הקודם" aria-label="האירוע הקודם">→</button>
+    <div className="globe-controls" role="group" aria-label={t('globeTime')}>
+      <button onClick={() => step(-1)} title={t('prevEvent')} aria-label={t('prevEvent')}>{ARROW_PAST()}</button>
       <button
         className="play"
         onClick={() => {
@@ -57,30 +59,30 @@ export function GlobeControls() {
           if (!playing && st.globeYear >= YEAR_MAX - 5) st.setGlobeYear(-1900);
           st.setPlaying(!playing);
         }}
-        aria-label={playing ? 'עצירה' : 'הפעלה'}
-        title={playing ? 'עצירה' : 'נסיעה בזמן'}
+        aria-label={playing ? t('pause') : t('play')}
+        title={playing ? t('pause') : t('play')}
       >
         {playing ? '❚❚' : '▶'}
       </button>
-      <button onClick={() => step(1)} title="האירוע הבא" aria-label="האירוע הבא">←</button>
+      <button onClick={() => step(1)} title={t('nextEvent')} aria-label={t('nextEvent')}>{ARROW_FUTURE()}</button>
       <div className="globe-year">
         <strong>{formatYear(y)}</strong>
-        <span>{gematria(toAnnoMundi(y))}</span>
+        <span>{hebrewYear(y)}</span>
       </div>
       <input
         type="range"
         min={0}
         max={U_MAX}
         step={0.1}
-        // in RTL the range minimum sits on the right, matching the past-on-the-right timeline
+        // the range follows the document direction: minimum (the past) on the right in Hebrew, on the left in English
         value={yearToU(year)}
-        aria-label="שנה"
+        aria-label={t('year')}
         onChange={(e) => {
           useStore.getState().setPlaying(false);
           useStore.getState().setGlobeYear(Math.round(uToYear(+e.target.value)));
         }}
       />
-      <small className="muted">{centersNow} מרכזים יהודיים פעילים</small>
+      <small className="muted">{centersNow} {t('activeCenters')}</small>
     </div>
   );
 }

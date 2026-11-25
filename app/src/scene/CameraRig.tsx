@@ -9,8 +9,8 @@ import { DIR, U_MAX, yearToX } from '../lib/timeScale';
 const ACTION = CameraControlsImpl.ACTION;
 
 /** Default viewing offset: camera stands in front of (and above) its target. */
-// looking slightly from the past side (right), so later times recede into the distance
-const VIEW_DIR = new THREE.Vector3(0.38, 0.62, 1).normalize();
+/** Looking slightly from the past side, so later times recede into the distance (depends on reading direction). */
+const viewDir = () => new THREE.Vector3(-0.38 * DIR, 0.62, 1).normalize();
 
 export function CameraRig() {
   const ref = useRef<CameraControlsImpl>(null);
@@ -39,8 +39,8 @@ export function CameraRig() {
     }
     const halfW = halfH * cam.aspect;
     const frac = Math.min(440, window.innerWidth * 0.4) / window.innerWidth;
-    // positive focal offset moves the camera right, so the target appears further left
-    c.setFocalOffset(halfW * frac, 0, 0, true);
+    // the panel sits on the reading-start side (right in Hebrew, left in English): push the target the other way
+    c.setFocalOffset(-DIR * halfW * frac, 0, 0, true);
   }, [hasPanel, fly, camera]);
 
   // initial framing: overview of the whole corridor, then a gentle move to the start
@@ -50,16 +50,14 @@ export function CameraRig() {
     const minX = Math.min(0, DIR * U_MAX) - 20, maxX = Math.max(0, DIR * U_MAX) + 20;
     c.setBoundary(new THREE.Box3(new THREE.Vector3(minX, -2, -40), new THREE.Vector3(maxX, 40, 30)));
     c.boundaryEnclosesCamera = false;
-    // map-like panning: vertical drag moves across the lanes instead of up into the sky
-    c.verticalDragToForward = true;
     const hasDeepLink = location.hash.length > 1;
     if (!hasDeepLink) {
       const sx = yearToX(-2600);
-      const p0 = new THREE.Vector3(sx, 2, -4).addScaledVector(VIEW_DIR, 190);
+      const p0 = new THREE.Vector3(sx, 2, -4).addScaledVector(viewDir(), 190);
       c.setLookAt(p0.x, p0.y, p0.z, sx, 2, -4, false);
       const tx = yearToX(-1450);
       const t = setTimeout(() => {
-        const p = new THREE.Vector3(tx, 2, -2).addScaledVector(VIEW_DIR, 80);
+        const p = new THREE.Vector3(tx, 2, -2).addScaledVector(viewDir(), 80);
         c.setLookAt(p.x, p.y, p.z, tx, 2, -2, true);
       }, 1400);
       return () => clearTimeout(t);
@@ -71,7 +69,7 @@ export function CameraRig() {
     if (!c || !fly) return;
     const z = fly.z ?? -2;
     const dist = fly.dist ?? 45;
-    const p = new THREE.Vector3(fly.x, 2, z).addScaledVector(VIEW_DIR, dist);
+    const p = new THREE.Vector3(fly.x, 2, z).addScaledVector(viewDir(), dist);
     c.setLookAt(p.x, p.y, p.z, fly.x, 2, z, true);
   }, [fly]);
 
@@ -124,6 +122,7 @@ export function CameraRig() {
       dollyToCursor
       smoothTime={0.45}
       draggingSmoothTime={0.12}
+      // TRUCK pans over the ground plane (map-like) in camera-controls v3
       mouseButtons={{ left: ACTION.TRUCK, middle: ACTION.DOLLY, right: ACTION.ROTATE, wheel: ACTION.DOLLY }}
       touches={{ one: ACTION.TOUCH_TRUCK, two: ACTION.TOUCH_DOLLY_TRUCK, three: ACTION.TOUCH_ROTATE }}
     />

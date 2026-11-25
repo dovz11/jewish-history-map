@@ -1,3 +1,4 @@
+import { L, t } from '../i18n';
 import { Billboard, QuadraticBezierLine, Text } from '@react-three/drei';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import { memo, useMemo, useRef, useState } from 'react';
@@ -129,8 +130,8 @@ const EventMarker = memo(function EventMarker({ event, mode, level }: { event: H
             gapSize={0.35}
           />
           <Billboard ref={ghostLabelRef} position={[ghostX, 1.45, z + 2.2]}>
-            <Text font={FONT_REGULAR} fontSize={0.42} color={COLORS.trad} anchorX="center" anchorY="bottom" direction="rtl">
-              {`מסורת: ${formatSpan(ghost!)}`}
+            <Text font={FONT_REGULAR} fontSize={0.42} color={COLORS.trad} anchorX="center" anchorY="bottom" direction="auto">
+              {`${t('tradPrefix')}: ${formatSpan(ghost!)}`}
             </Text>
           </Billboard>
         </group>
@@ -156,7 +157,7 @@ const EventMarker = memo(function EventMarker({ event, mode, level }: { event: H
               anchorY="bottom"
               position={[0, 0.42, 0]}
               color={COLORS.ink}
-              direction="rtl"
+              direction="auto"
               lineHeight={1.1}
               onSync={(t) => {
                 const info = (t as unknown as { textRenderInfo?: { blockBounds: number[] } }).textRenderInfo;
@@ -167,10 +168,10 @@ const EventMarker = memo(function EventMarker({ event, mode, level }: { event: H
                 }
               }}
             >
-              {event.title.he}
+              {L(event.title)}
             </Text>
-            <Text font={FONT_REGULAR} fontSize={0.4} anchorX="center" anchorY="bottom" position={[0, -0.05, 0]} color={COLORS.inkSoft} direction="rtl">
-              {(tradOnly ? 'לפי המסורת · ' : '') + formatSpan(span)}
+            <Text font={FONT_REGULAR} fontSize={0.4} anchorX="center" anchorY="bottom" position={[0, -0.05, 0]} color={COLORS.inkSoft} direction="auto">
+              {(tradOnly ? `${t('tradOnly')} · ` : '') + formatSpan(span)}
             </Text>
           </group>
         </Billboard>

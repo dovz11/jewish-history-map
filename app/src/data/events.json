@@ -2,7 +2,7 @@
   {
     "id": "creation",
     "title": { "he": "בריאת העולם", "en": "Creation of the World" },
-    "dating": { "acad": null, "trad": { "start": -3761 }, "note": { "he": "ראשית מניין השנים העברי (שנת א' לבריאה). אין לכך תיארוך מחקרי." } },
+    "dating": { "acad": null, "trad": { "start": -3761 }, "note": { "he": "ראשית מניין השנים העברי (שנת א' לבריאה). אין לכך תיארוך מחקרי.", "en": "The epoch of the Hebrew calendar (year 1 from Creation). There is no academic date." } },
     "importance": 4, "kind": "biblical",
     "summary": { "he": "לפי המסורת היהודית, העולם נברא בשנת 3761 לפנה\"ס, והיא נקודת המוצא של הלוח העברי.", "en": "According to Jewish tradition the world was created in 3761 BCE, the epoch of the Hebrew calendar." },
     "wiki": { "he": "בריאת העולם", "en": "Genesis creation narrative" }
@@ -10,7 +10,7 @@
   {
     "id": "flood",
     "title": { "he": "המבול", "en": "The Flood" },
-    "dating": { "acad": null, "trad": { "start": -2105 }, "note": { "he": "שנת 1656 לבריאה לפי המסורת." } },
+    "dating": { "acad": null, "trad": { "start": -2105 }, "note": { "he": "שנת 1656 לבריאה לפי המסורת.", "en": "Year 1656 from Creation according to tradition." } },
     "importance": 3, "kind": "biblical",
     "summary": { "he": "סיפור המבול ותיבת נח בספר בראשית. לפי המסורת התרחש בשנת 1656 לבריאה.", "en": "The biblical story of the Flood and Noah's Ark, dated by tradition to the year 1656 from Creation." },
     "wiki": { "he": "המבול", "en": "Genesis flood narrative" }
@@ -18,7 +18,7 @@
   {
     "id": "abraham",
     "title": { "he": "אברהם אבינו", "en": "Abraham" },
-    "dating": { "acad": null, "trad": { "start": -1813 }, "note": { "he": "לפי המסורת נולד בשנת 1948 לבריאה. חוקרים רבים משייכים את סיפורי האבות לאלף השני לפנה\"ס, ללא תיארוך מוסכם." } },
+    "dating": { "acad": null, "trad": { "start": -1813 }, "note": { "he": "לפי המסורת נולד בשנת 1948 לבריאה. חוקרים רבים משייכים את סיפורי האבות לאלף השני לפנה\"ס, ללא תיארוך מוסכם.", "en": "By tradition born in year 1948 from Creation. Many scholars place the patriarchal stories in the 2nd millennium BCE, with no agreed date." } },
     "importance": 5, "kind": "biblical",
     "summary": { "he": "אבי האומה, שלפי המקרא יצא מאור כשדים וחרן אל ארץ כנען בעקבות ברית עם האל.", "en": "Founding patriarch who, according to the Bible, left Ur and Haran for Canaan following God's covenant." },
     "wiki": { "he": "אברהם", "en": "Abraham" },
@@ -27,7 +27,7 @@
   {
     "id": "descent-egypt",
     "title": { "he": "ירידת יעקב ובניו למצרים", "en": "Jacob's descent to Egypt" },
-    "dating": { "acad": null, "trad": { "start": -1523 }, "note": { "he": "שנת 2238 לבריאה לפי המסורת." } },
+    "dating": { "acad": null, "trad": { "start": -1523 }, "note": { "he": "שנת 2238 לבריאה לפי המסורת.", "en": "Year 2238 from Creation according to tradition." } },
     "importance": 3, "kind": "migration",
     "summary": { "he": "בעקבות הרעב בכנען יורדים יעקב ושבעים נפש מבני ביתו למצרים, שם ישב יוסף בנו.", "en": "Fleeing famine, Jacob and his household of seventy go down to Egypt, where his son Joseph lived." },
     "wiki": { "he": "יעקב", "en": "Jacob" },
@@ -36,7 +36,7 @@
   {
     "id": "exodus",
     "title": { "he": "יציאת מצרים ומתן תורה", "en": "The Exodus and Sinai" },
-    "dating": { "acad": { "start": -1250, "approx": true }, "trad": { "start": -1313 }, "note": { "he": "לפי המסורת: שנת 2448 לבריאה. היסטוריוניות האירוע שנויה במחלוקת; מי שמקבלים גרעין היסטורי מציעים לרוב את המאה ה-13 לפנה\"ס." } },
+    "dating": { "acad": { "start": -1250, "approx": true }, "trad": { "start": -1313 }, "note": { "he": "לפי המסורת: שנת 2448 לבריאה. היסטוריוניות האירוע שנויה במחלוקת; מי שמקבלים גרעין היסטורי מציעים לרוב את המאה ה-13 לפנה\"ס.", "en": "By tradition year 2448 from Creation. Its historicity is debated; those who accept a historical core usually suggest the 13th century BCE." } },
     "importance": 5, "kind": "biblical",
     "summary": { "he": "בני ישראל יוצאים מעבדות לחירות בהנהגת משה, ובהר סיני מקבלים את התורה. האירוע המכונן בזיכרון הלאומי.", "en": "Led by Moses, the Israelites go from slavery to freedom and receive the Torah at Mount Sinai — the founding event of national memory." },
     "wiki": { "he": "יציאת מצרים", "en": "The Exodus" },
@@ -45,7 +45,7 @@
   {
     "id": "conquest",
     "title": { "he": "הכניסה לארץ כנען", "en": "Entry into Canaan" },
-    "dating": { "acad": { "start": -1200, "approx": true }, "trad": { "start": -1273 }, "note": { "he": "לפי המסורת: שנת 2488 לבריאה. במחקר: התהוות ההתיישבות הישראלית בהר המרכזי בסוף תקופת הברונזה המאוחרת; ציון \"ישראל\" הראשון מופיע בסטלת מרנפתח (1208 לפנה\"ס בערך)." } },
+    "dating": { "acad": { "start": -1200, "approx": true }, "trad": { "start": -1273 }, "note": { "he": "לפי המסורת: שנת 2488 לבריאה. במחקר: התהוות ההתיישבות הישראלית בהר המרכזי בסוף תקופת הברונזה המאוחרת; ציון \"ישראל\" הראשון מופיע בסטלת מרנפתח (1208 לפנה\"ס בערך).", "en": "By tradition year 2488 from Creation. Scholars see Israelite settlement emerging in the central highlands at the end of the Late Bronze Age; the first mention of \"Israel\" is on the Merneptah Stele (c. 1208 BCE)." } },
     "importance": 4, "kind": "biblical",
     "summary": { "he": "בהנהגת יהושע בן נון נכנסים השבטים לארץ ומתיישבים בה. בהמשך באה תקופת השופטים.", "en": "Under Joshua the tribes enter the land and settle it, followed by the period of the Judges." },
     "wiki": { "he": "התנחלות השבטים", "en": "Israelite highland settlement" },
@@ -54,7 +54,7 @@
   {
     "id": "david",
     "title": { "he": "דוד המלך", "en": "King David" },
-    "dating": { "acad": { "start": -1010, "approx": true }, "trad": { "start": -877 }, "note": { "he": "לפי המסורת מלך משנת 2884 לבריאה. כתובת תל דן (המאה ה-9 לפנה\"ס) מזכירה את \"בית דוד\"." } },
+    "dating": { "acad": { "start": -1010, "approx": true }, "trad": { "start": -877 }, "note": { "he": "לפי המסורת מלך משנת 2884 לבריאה. כתובת תל דן (המאה ה-9 לפנה\"ס) מזכירה את \"בית דוד\".", "en": "By tradition king from year 2884 from Creation. The Tel Dan inscription (9th century BCE) mentions the \"House of David\"." } },
     "importance": 5, "kind": "political",
     "summary": { "he": "דוד מאחד את השבטים, כובש את ירושלים והופך אותה לבירת הממלכה המאוחדת.", "en": "David unites the tribes, conquers Jerusalem and makes it the capital of the united monarchy." },
     "wiki": { "he": "דוד", "en": "David" },
@@ -63,7 +63,7 @@
   {
     "id": "first-temple",
     "title": { "he": "בניית בית המקדש הראשון", "en": "First Temple built" },
-    "dating": { "acad": { "start": -957, "approx": true }, "trad": { "start": -833 }, "note": { "he": "לפי המסורת: שנת 2928 לבריאה." } },
+    "dating": { "acad": { "start": -957, "approx": true }, "trad": { "start": -833 }, "note": { "he": "לפי המסורת: שנת 2928 לבריאה.", "en": "Year 2928 from Creation according to tradition." } },
     "importance": 5, "kind": "religious",
     "summary": { "he": "שלמה המלך בונה את בית המקדש בירושלים, שהופך למרכז הפולחן של עם ישראל.", "en": "King Solomon builds the Temple in Jerusalem, the center of Israelite worship." },
     "wiki": { "he": "בית המקדש הראשון", "en": "Solomon's Temple" },
@@ -81,7 +81,7 @@
   {
     "id": "assyrian-exile",
     "title": { "he": "גלות עשרת השבטים", "en": "Assyrian exile" },
-    "dating": { "acad": { "start": -722 }, "trad": { "start": -556 }, "note": { "he": "לפי המסורת: 133 שנה לפני חורבן הבית הראשון." } },
+    "dating": { "acad": { "start": -722 }, "trad": { "start": -556 }, "note": { "he": "לפי המסורת: 133 שנה לפני חורבן הבית הראשון.", "en": "By tradition 133 years before the destruction of the First Temple." } },
     "importance": 4, "kind": "catastrophe",
     "summary": { "he": "אשור כובשת את שומרון ומחריבה את ממלכת ישראל. תושביה מוגלים, ומכאן מקור המסורת על \"עשרת השבטים האבודים\".", "en": "Assyria conquers Samaria and destroys the Kingdom of Israel; its people are deported — the origin of the 'Ten Lost Tribes'." },
     "wiki": { "he": "גלות אשור", "en": "Assyrian captivity" },
@@ -90,7 +90,7 @@
   {
     "id": "destruction-first",
     "title": { "he": "חורבן בית ראשון וגלות בבל", "en": "Destruction of the First Temple" },
-    "dating": { "acad": { "start": -586 }, "trad": { "start": -423 }, "note": { "he": "לפי המסורת: שנת 3338 לבריאה. ההפרש של כ-165 שנה נובע בעיקר מקיצור התקופה הפרסית במסורת (\"השנים החסרות\")." } },
+    "dating": { "acad": { "start": -586 }, "trad": { "start": -423 }, "note": { "he": "לפי המסורת: שנת 3338 לבריאה. ההפרש של כ-165 שנה נובע בעיקר מקיצור התקופה הפרסית במסורת (\"השנים החסרות\").", "en": "By tradition year 3338 from Creation. The gap of about 165 years comes mainly from the shorter Persian period in tradition (the \"missing years\")." } },
     "importance": 5, "kind": "catastrophe",
     "summary": { "he": "נבוכדנאצר מלך בבל מחריב את ירושלים ואת המקדש, וחלק גדול מיהודה מוגלה לבבל. נקבע כצום תשעה באב.", "en": "Nebuchadnezzar of Babylon destroys Jerusalem and the Temple; much of Judah is exiled to Babylon. Commemorated on Tisha B'Av." },
     "wiki": { "he": "חורבן בית ראשון", "en": "Siege of Jerusalem (587 BC)" },
@@ -117,7 +117,7 @@
   {
     "id": "purim",
     "title": { "he": "נס פורים", "en": "The Purim story" },
-    "dating": { "acad": null, "trad": { "start": -356 }, "note": { "he": "לפי המסורת: שנת 3405 לבריאה. חוקרים רבים מזהים את אחשוורוש עם חשיירש הראשון (486–465 לפנה\"ס), אך אין תיארוך מוסכם." } },
+    "dating": { "acad": null, "trad": { "start": -356 }, "note": { "he": "לפי המסורת: שנת 3405 לבריאה. חוקרים רבים מזהים את אחשוורוש עם חשיירש הראשון (486–465 לפנה\"ס), אך אין תיארוך מוסכם.", "en": "By tradition year 3405 from Creation. Many scholars identify Ahasuerus with Xerxes I (486–465 BCE), but there is no agreed date." } },
     "importance": 3, "kind": "religious",
     "summary": { "he": "מגילת אסתר מספרת על הצלת יהודי האימפריה הפרסית מגזרת המן בימי אחשוורוש.", "en": "The Book of Esther tells of the rescue of the Jews of the Persian Empire from Haman's decree." },
     "wiki": { "he": "פורים", "en": "Purim" },
@@ -135,7 +135,7 @@
   {
     "id": "alexander",
     "title": { "he": "אלכסנדר מוקדון כובש את הארץ", "en": "Alexander the Great conquers the land" },
-    "dating": { "acad": { "start": -332 }, "trad": { "start": -313 }, "note": { "he": "מכאן ואילך התיארוך המסורתי והמחקרי מתלכדים כמעט לחלוטין (מניין השטרות, 312 לפנה\"ס)." } },
+    "dating": { "acad": { "start": -332 }, "trad": { "start": -313 }, "note": { "he": "מכאן ואילך התיארוך המסורתי והמחקרי מתלכדים כמעט לחלוטין (מניין השטרות, 312 לפנה\"ס).", "en": "From here on the traditional and academic datings almost coincide (the Seleucid era, 312 BCE)." } },
     "importance": 3, "kind": "political",
     "summary": { "he": "תחילת התקופה ההלניסטית: הארץ עוברת לשלטון יווני, ובהמשך לבית תלמי ולבית סלאוקוס.", "en": "The Hellenistic period begins: the land passes to Greek rule, later to the Ptolemies and Seleucids." },
     "wiki": { "he": "אלכסנדר מוקדון", "en": "Alexander the Great" },
@@ -290,7 +290,7 @@
     "dating": { "acad": { "start": 1306 } },
     "importance": 2, "kind": "catastrophe",
     "summary": { "he": "פיליפ הרביעי מגרש את יהודי צרפת ומחרים את רכושם. הם הורשו לחזור ושוב גורשו ב-1394.", "en": "Philip IV expels the Jews of France and seizes their property; they were readmitted and expelled again in 1394." },
-    "wiki": { "he": "גירוש צרפת", "en": "Expulsion of Jews from France" },
+    "wiki": { "he": "גירוש צרפת", "en": "History of the Jews in France" },
     "places": ["paris"]
   },
   {
@@ -533,7 +533,7 @@
     "dating": { "acad": { "start": 1948, "end": 1951 } },
     "importance": 3, "kind": "migration",
     "summary": { "he": "תוך שלוש שנים מכפילה המדינה את אוכלוסייתה: ניצולי שואה ועולים מארצות האסלאם, כולל מבצע \"על כנפי נשרים\" מתימן ומבצע עזרא ונחמיה מעיראק.", "en": "Israel doubles its population in three years: Holocaust survivors and Jews from Muslim lands, including airlifts from Yemen and Iraq." },
-    "wiki": { "he": "העלייה ההמונית", "en": "1948–1951 immigration to Israel" },
+    "wiki": { "he": "העלייה ההמונית", "en": "Aliyah" },
     "places": ["sanaa", "baghdad", "tel-aviv"]
   },
   {

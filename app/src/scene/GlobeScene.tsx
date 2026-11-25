@@ -1,3 +1,5 @@
+import { L } from '../i18n';
+import { DIR } from '../lib/timeScale';
 import { Billboard, Line, OrbitControls, Text } from '@react-three/drei';
 import { Canvas, useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
@@ -153,7 +155,7 @@ const CenterMarker = memo(function CenterMarker({ center }: { center: Center }) 
     <group>
       <group position={pos} quaternion={quat}>
         <mesh
-          onPointerOver={(e) => { e.stopPropagation(); useStore.getState().setHover(`${center.title.he} · ${p.name.he} · ${formatSpan({ start: center.from, end: center.to })}`); }}
+          onPointerOver={(e) => { e.stopPropagation(); useStore.getState().setHover(`${L(center.title)} · ${L(p.name)} · ${formatSpan({ start: center.from, end: center.to })}`); }}
           onPointerOut={() => useStore.getState().setHover(null)}
         >
           <circleGeometry args={[r, 24]} />
@@ -166,8 +168,8 @@ const CenterMarker = memo(function CenterMarker({ center }: { center: Center }) 
       </group>
       <group ref={labelRef}>
         <Billboard position={pos.clone().multiplyScalar(1.012)}>
-          <Text font={FONT_BOLD} fontSize={0.15 + center.weight * 0.045} color="#3b2f12" outlineWidth={0.025} outlineColor="#fff8e6" anchorX="center" anchorY="top" position={[0, -r - 0.05, 0]} direction="rtl" raycast={() => null}>
-            {center.title.he}
+          <Text font={FONT_BOLD} fontSize={0.15 + center.weight * 0.045} color="#3b2f12" outlineWidth={0.025} outlineColor="#fff8e6" anchorX="center" anchorY="top" position={[0, -r - 0.05, 0]} direction="auto" raycast={() => null}>
+            {L(center.title)}
           </Text>
         </Billboard>
       </group>
@@ -207,7 +209,7 @@ const EventPin = memo(function EventPin({ event, place, primary }: { event: Hist
   const over = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
     document.body.style.cursor = 'pointer';
-    useStore.getState().setHover(`${event.title.he} · ${placeById.get(place)?.name.he} · ${formatSpan(mainSpan(event.dating, mode))}`);
+    useStore.getState().setHover(`${L(event.title)} · ${L(placeById.get(place)?.name)} · ${formatSpan(mainSpan(event.dating, mode))}`);
   };
   const out = () => { document.body.style.cursor = ''; useStore.getState().setHover(null); };
   return (
@@ -225,10 +227,10 @@ const EventPin = memo(function EventPin({ event, place, primary }: { event: Hist
       <group ref={labelRef}>
         <Billboard position={top.clone().multiplyScalar(1.03)}>
           <group onClick={onClick} onPointerOver={over} onPointerOut={out}>
-            <Text font={FONT_BOLD} fontSize={0.3} maxWidth={4} textAlign="center" color={COLORS.ink} outlineWidth={0.03} outlineColor="#fffaf0" anchorX="center" anchorY="bottom" direction="rtl">
-              {event.title.he}
+            <Text font={FONT_BOLD} fontSize={0.3} maxWidth={4} textAlign="center" color={COLORS.ink} outlineWidth={0.03} outlineColor="#fffaf0" anchorX="center" anchorY="bottom" direction="auto">
+              {L(event.title)}
             </Text>
-            <Text font={FONT_REGULAR} fontSize={0.18} color={COLORS.inkSoft} outlineWidth={0.02} outlineColor="#fffaf0" anchorX="center" anchorY="top" position={[0, -0.02, 0]} direction="rtl">
+            <Text font={FONT_REGULAR} fontSize={0.18} color={COLORS.inkSoft} outlineWidth={0.02} outlineColor="#fffaf0" anchorX="center" anchorY="top" position={[0, -0.02, 0]} direction="auto">
               {formatSpan(mainSpan(event.dating, mode))}
             </Text>
           </group>
@@ -278,7 +280,7 @@ const MigrationArcs = memo(function MigrationArcs({ migration }: { migration: Mi
             dashed
             dashSize={0.35}
             gapSize={0.2}
-            onPointerOver={(e) => { e.stopPropagation(); useStore.getState().setHover(`${migration.title.he} · ${formatSpan(mainSpan(migration.dating, useStore.getState().mode))}`); }}
+            onPointerOver={(e) => { e.stopPropagation(); useStore.getState().setHover(`${L(migration.title)} · ${formatSpan(mainSpan(migration.dating, useStore.getState().mode))}`); }}
             onPointerOut={() => useStore.getState().setHover(null)}
           />
           <ArrowHead pts={pts} />
@@ -286,8 +288,8 @@ const MigrationArcs = memo(function MigrationArcs({ migration }: { migration: Mi
       ))}
       <group ref={labelRef}>
         <Billboard position={mid.clone().multiplyScalar(1.02)}>
-          <Text font={FONT_BOLD} fontSize={0.24} color="#8e2a1f" outlineWidth={0.025} outlineColor="#fff" anchorX="center" anchorY="bottom" direction="rtl" raycast={() => null}>
-            {migration.title.he}
+          <Text font={FONT_BOLD} fontSize={0.24} color="#8e2a1f" outlineWidth={0.025} outlineColor="#fff" anchorX="center" anchorY="bottom" direction="auto" raycast={() => null}>
+            {L(migration.title)}
           </Text>
         </Billboard>
       </group>
@@ -333,7 +335,7 @@ function GlobeCamera() {
   useEffect(() => {
     const cam = camera as THREE.PerspectiveCamera;
     const panelW = Math.min(440, size.width * 0.4);
-    if (hasPanel && size.width > 760) cam.setViewOffset(size.width, size.height, panelW / 2, 0, size.width, size.height);
+    if (hasPanel && size.width > 760) cam.setViewOffset(size.width, size.height, (-DIR * panelW) / 2, 0, size.width, size.height);
     else cam.clearViewOffset();
     cam.updateProjectionMatrix();
   }, [hasPanel, size, camera]);

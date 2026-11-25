@@ -1,3 +1,4 @@
+import { L } from '../i18n';
 import { Text } from '@react-three/drei';
 import type { ThreeEvent } from '@react-three/fiber';
 import { eras, mainSpan } from '../lib/data';
@@ -34,7 +35,7 @@ export function EraBands() {
             </mesh>
             <Text
               font={FONT_BLACK}
-              fontSize={Math.min(5, Math.max(1.6, len / (era.title.he.length * 0.7)))}
+              fontSize={Math.min(5, Math.max(1.6, len / (L(era.title).length * 0.7)))}
               maxWidth={len}
               anchorX="center"
               anchorY="bottom"
@@ -44,12 +45,12 @@ export function EraBands() {
               outlineWidth={0.06}
               outlineColor="#7a6a4a"
               outlineOpacity={0.5}
-              direction="rtl"
+              direction="auto"
               onClick={onClick}
               onPointerOver={() => (document.body.style.cursor = 'pointer')}
               onPointerOut={() => (document.body.style.cursor = '')}
             >
-              {era.title.he}
+              {L(era.title)}
             </Text>
           </group>
         );

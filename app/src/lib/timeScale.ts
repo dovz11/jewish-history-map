@@ -3,7 +3,7 @@
  * Early millennia are compressed, recent centuries (dense with events) are expanded.
  *
  * Scene x = DIR * u. Hebrew reads right-to-left, so the past is on the right
- * and time flows leftwards (DIR = -1).
+ * and time flows leftwards (DIR = -1); in English DIR = +1.
  */
 const BREAKS: [year: number, u: number][] = [
   [-3800, 0],
@@ -25,7 +25,11 @@ export const YEAR_MIN = BREAKS[0][0];
 export const YEAR_MAX = BREAKS[BREAKS.length - 1][0];
 export const U_MAX = BREAKS[BREAKS.length - 1][1];
 
-export const DIR = -1;
+/** -1: time flows right-to-left (Hebrew); +1: left-to-right (English). Set by i18n before first render. */
+export let DIR: 1 | -1 = -1;
+export function setTimeDirection(d: 1 | -1) {
+  DIR = d;
+}
 
 export function yearToU(year: number): number {
   if (year <= BREAKS[0][0]) return BREAKS[0][1];

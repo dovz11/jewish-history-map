@@ -1,5 +1,6 @@
+import { t } from '../i18n';
 import { Text } from '@react-three/drei';
-import { LANES, yearToX } from '../lib/timeScale';
+import { DIR, LANES, yearToX } from '../lib/timeScale';
 import { useStore } from '../store';
 import { COLORS, FONT_BLACK } from './constants';
 
@@ -10,10 +11,10 @@ export function LaneLabels() {
   const lanes = useStore((s) => s.lanes);
   const mode = useStore((s) => s.mode);
   const items: { z: number; text: string; show: boolean; color: string }[] = [
-    { z: LANES.history + 1.5, text: 'אירועים', show: lanes.history, color: COLORS.ink },
-    { z: LANES.river + 5.5, text: 'אוכלוסיית העם היהודי', show: lanes.demography, color: COLORS.river },
-    { z: LANES.sovereignty + 2.2, text: 'שלטון בארץ ישראל', show: lanes.sovereignty, color: COLORS.ink },
-    { z: LANES.tradStrip + 1.2, text: 'שלטון — לפי התיארוך המסורתי', show: lanes.sovereignty && mode === 'both', color: COLORS.trad },
+    { z: LANES.history + 1.5, text: t('laneTitleHistory'), show: lanes.history, color: COLORS.ink },
+    { z: LANES.river + 5.5, text: t('laneTitlePop'), show: lanes.demography, color: COLORS.river },
+    { z: LANES.sovereignty + 2.2, text: t('laneTitleRule'), show: lanes.sovereignty, color: COLORS.ink },
+    { z: LANES.tradStrip + 1.2, text: t('laneTitleRuleTrad'), show: lanes.sovereignty && mode === 'both', color: COLORS.trad },
   ];
   return (
     <group>
@@ -25,11 +26,11 @@ export function LaneLabels() {
             fontSize={0.8}
             color={i.color}
             fillOpacity={0.75}
-            anchorX="right"
+            anchorX={DIR < 0 ? 'right' : 'left'}
             anchorY="middle"
             position={[yearToX(y), 0.04, i.z]}
             rotation={[-Math.PI / 2, 0, 0]}
-            direction="rtl"
+            direction="auto"
             raycast={() => null}
           >
             {i.text}

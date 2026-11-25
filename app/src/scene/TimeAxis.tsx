@@ -2,7 +2,7 @@ import { Text } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { gematria, toAnnoMundi, formatYearShort } from '../lib/dates';
+import { hebrewYear, formatYearShort } from '../lib/dates';
 import { LANES, tickYears, yearToX, YEAR_MAX, YEAR_MIN } from '../lib/timeScale';
 import { COLORS, FONT_BOLD, FONT_REGULAR } from './constants';
 
@@ -38,10 +38,10 @@ export function TimeAxis() {
             </mesh>
             {/* labels lie in front of the axis, tilted up towards the camera; Hebrew year below, CE above */}
             <group position={[0, 0.05, major ? 3.2 : 2.6]} rotation-x={-1.15}>
-              <Text font={FONT_REGULAR} fontSize={major ? 0.6 : 0.42} color={COLORS.trad} anchorX="center" anchorY="bottom" position={[0, 0, 0]} direction="rtl">
-                {gematria(toAnnoMundi(y))}
+              <Text font={FONT_REGULAR} fontSize={major ? 0.6 : 0.42} color={COLORS.trad} anchorX="center" anchorY="bottom" position={[0, 0, 0]} direction="auto">
+                {hebrewYear(y)}
               </Text>
-              <Text font={major ? FONT_BOLD : FONT_REGULAR} fontSize={major ? 0.85 : 0.6} color={COLORS.ink} anchorX="center" anchorY="bottom" position={[0, major ? 0.75 : 0.55, 0]} direction="rtl">
+              <Text font={major ? FONT_BOLD : FONT_REGULAR} fontSize={major ? 0.85 : 0.6} color={COLORS.ink} anchorX="center" anchorY="bottom" position={[0, major ? 0.75 : 0.55, 0]} direction="auto">
                 {formatYearShort(y)}
               </Text>
             </group>

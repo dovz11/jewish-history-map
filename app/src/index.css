@@ -111,7 +111,7 @@ a { color: var(--accent); }
 .minimap svg { width: 100%; height: 100%; display: block; cursor: pointer; touch-action: none; border-radius: 6px; }
 .minimap .viewport { fill: rgba(31, 95, 168, 0.14); stroke: #1f5fa8; stroke-width: 1; vector-effect: non-scaling-stroke; }
 .minimap-labels { position: absolute; inset-inline: 10px; bottom: 2px; height: 14px; direction: ltr; }
-.minimap-labels span { position: absolute; transform: translateX(-50%); font-size: 0.68rem; color: var(--ink-soft); white-space: nowrap; direction: rtl; }
+.minimap-labels span { position: absolute; transform: translateX(-50%); font-size: 0.68rem; color: var(--ink-soft); white-space: nowrap; unicode-bidi: plaintext; }
 
 .legend {
   position: absolute; z-index: 3; bottom: 92px; inset-inline-end: 14px; display: flex; flex-wrap: wrap; gap: 4px 12px;

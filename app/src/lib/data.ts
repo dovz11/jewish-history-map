@@ -2,7 +2,6 @@ import eventsJson from '../data/events.json';
 import rulersJson from '../data/rulers.json';
 import erasJson from '../data/eras.json';
 import populationJson from '../data/population.json';
-import wikiCacheJson from '../data/wiki-cache.json';
 import type { DateMode, Dating, Era, HistoryEvent, ItemRef, PopulationPoint, Ruler, Span, WikiSummary } from '../data/types';
 import { yearToU } from './timeScale';
 
@@ -10,7 +9,15 @@ export const events = (eventsJson as HistoryEvent[]).slice().sort((a, b) => prim
 export const rulers = rulersJson as Ruler[];
 export const eras = erasJson as Era[];
 export const population = (populationJson as PopulationPoint[]).slice().sort((a, b) => a.year - b.year);
-export const wikiCache = wikiCacheJson as Record<string, WikiSummary>;
+
+/** Wikipedia summaries cached at build time; one lazily loaded file per language. */
+const wikiCaches: Partial<Record<'he' | 'en', Record<string, WikiSummary>>> = {};
+export function loadWikiCache(lang: 'he' | 'en'): Promise<Record<string, WikiSummary>> {
+  if (wikiCaches[lang]) return Promise.resolve(wikiCaches[lang]!);
+  const p = lang === 'he' ? import('../data/wiki-cache.he.json') : import('../data/wiki-cache.en.json');
+  return p.then((m) => (wikiCaches[lang] = m.default as Record<string, WikiSummary>));
+}
+export const getWikiCache = (lang: 'he' | 'en') => wikiCaches[lang];
 
 export const eventById = new Map(events.map((e) => [e.id, e]));
 export const rulerById = new Map(rulers.map((r) => [r.id, r]));
@@ -126,15 +133,15 @@ export const KIND_COLORS: Record<HistoryEvent['kind'], string> = {
   zionism: '#1f6fb0',
 };
 
-export const KIND_LABELS: Record<HistoryEvent['kind'], string> = {
-  biblical: 'מקרא',
-  political: 'מדיני',
-  catastrophe: 'אסון ורדיפות',
-  religious: 'דת והלכה',
-  migration: 'הגירה ועלייה',
-  cultural: 'תרבות והגות',
-  war: 'מלחמה ומרד',
-  zionism: 'ציונות ומדינה',
+export const KIND_LABELS: Record<HistoryEvent['kind'], { he: string; en: string }> = {
+  biblical: { he: 'מקרא', en: 'Bible' },
+  political: { he: 'מדיני', en: 'Politics' },
+  catastrophe: { he: 'אסון ורדיפות', en: 'Catastrophe & persecution' },
+  religious: { he: 'דת והלכה', en: 'Religion & law' },
+  migration: { he: 'הגירה ועלייה', en: 'Migration & aliyah' },
+  cultural: { he: 'תרבות והגות', en: 'Culture & thought' },
+  war: { he: 'מלחמה ומרד', en: 'War & revolt' },
+  zionism: { he: 'ציונות ומדינה', en: 'Zionism & the State' },
 };
 
 export const POWER_COLORS: Record<string, string> = {

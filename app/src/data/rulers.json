@@ -51,7 +51,7 @@
   {
     "id": "persia", "power": "persia",
     "title": { "he": "פרס", "en": "Persian Empire" },
-    "dating": { "acad": { "start": -539, "end": -332 }, "trad": { "start": -371, "end": -313 }, "note": { "he": "במסורת התקופה הפרסית נמשכת כ-34 שנה בלבד לאחר בניין הבית השני; במחקר היא נמשכת למעלה ממאתיים שנה." } },
+    "dating": { "acad": { "start": -539, "end": -332 }, "trad": { "start": -371, "end": -313 }, "note": { "he": "במסורת התקופה הפרסית נמשכת כ-34 שנה בלבד לאחר בניין הבית השני; במחקר היא נמשכת למעלה ממאתיים שנה.", "en": "In tradition the Persian period lasts only about 34 years after the Second Temple was built; in scholarship it lasts more than two centuries." } },
     "summary": { "he": "פחוות יהוד באימפריה האחמנית: תקופת שיבת ציון והבית השני.", "en": "The province of Yehud in the Achaemenid Empire: the Return to Zion and the Second Temple." },
     "wiki": { "he": "האימפריה האחמנית", "en": "Achaemenid Empire" }
   },
@@ -109,7 +109,7 @@
     "title": { "he": "הח'ליפות: ראשידון, אומיים, עבאסים", "en": "Early caliphates" },
     "dating": { "acad": { "start": 638, "end": 969 } },
     "summary": { "he": "שלטון מוסלמי ערבי: הח'ליפים הראשונים, השושלת האומיית (בניית כיפת הסלע) והעבאסים.", "en": "Arab Muslim rule: the Rashidun, the Umayyads (who built the Dome of the Rock) and the Abbasids." },
-    "wiki": { "he": "התקופה המוסלמית המוקדמת בארץ ישראל", "en": "Early Muslim period" }
+    "wiki": { "he": "התקופה המוסלמית המוקדמת בארץ ישראל", "en": "Bilad al-Sham" }
   },
   {
     "id": "fatimids", "power": "arab",

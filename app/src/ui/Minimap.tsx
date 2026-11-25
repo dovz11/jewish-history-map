@@ -3,12 +3,13 @@ import { eras, events, mainSpan, popTotal, POP_FROM, POP_TO, KIND_COLORS } from 
 import { formatYearShort } from '../lib/dates';
 import { DIR, U_MAX, uToYear, yearToU } from '../lib/timeScale';
 import { useStore } from '../store';
+import { L, t } from '../i18n';
 
 const H = 54;
-const LABELS = [-3500, -2000, -1000, -500, 0, 500, 1000, 1500, 1800, 1900, 1950, 2000];
+const LABELS = [-3500, -2000, -1000, -500, 1, 500, 1000, 1500, 1800, 1900, 1950, 2000];
 
-/** SVG x for a corridor distance u: the past is on the right (RTL). */
-const sx = (u: number) => U_MAX - u;
+/** SVG x for a corridor distance u: the past sits on the right in Hebrew, on the left in English. */
+const sx = (u: number) => (DIR < 0 ? U_MAX - u : u);
 
 /** Overview strip of the whole timeline; click or drag to travel. */
 export function Minimap() {
@@ -30,7 +31,8 @@ export function Minimap() {
   const travel = (clientX: number) => {
     const svg = svgRef.current!;
     const r = svg.getBoundingClientRect();
-    const u = U_MAX - ((clientX - r.left) / r.width) * U_MAX;
+    const f = (clientX - r.left) / r.width;
+    const u = (DIR < 0 ? 1 - f : f) * U_MAX;
     const st = useStore.getState();
     if (st.view === 'globe') {
       st.setPlaying(false);
@@ -40,7 +42,7 @@ export function Minimap() {
 
   const vu = viewX / DIR;
   return (
-    <nav className="minimap" aria-label="מפת ציר הזמן">
+    <nav className="minimap" aria-label={t('minimap')}>
       <svg
         ref={svgRef}
         viewBox={`0 0 ${U_MAX} ${H}`}
@@ -52,7 +54,7 @@ export function Minimap() {
         {eras.map((era) => {
           const s = mainSpan(era.dating, mode);
           const a = sx(yearToU(s.start)), b = sx(yearToU(s.end!));
-          return <rect key={era.id} x={Math.min(a, b)} y={0} width={Math.abs(a - b)} height={H} fill={era.color} opacity={0.6}><title>{era.title.he}</title></rect>;
+          return <rect key={era.id} x={Math.min(a, b)} y={0} width={Math.abs(a - b)} height={H} fill={era.color} opacity={0.6}><title>{L(era.title)}</title></rect>;
         })}
         <path d={popPath} fill="#3d78b8" opacity={0.55} />
         {events.map((e) => {
@@ -62,7 +64,7 @@ export function Minimap() {
         {view === 'globe' ? (
           <rect className="needle" x={sx(yearToU(globeYear)) - 1.2} y={0} width={2.4} height={H} />
         ) : (
-          <rect className="viewport" x={sx(vu + halfW)} y={1} width={Math.max(2, halfW * 2)} height={H - 2} rx={2} />
+          <rect className="viewport" x={Math.min(sx(vu + halfW), sx(vu - halfW))} y={1} width={Math.max(2, halfW * 2)} height={H - 2} rx={2} />
         )}
       </svg>
       <div className="minimap-labels">

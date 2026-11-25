@@ -1,8 +1,9 @@
 # ציר הזמן היהודי בתלת־ממד · 3D Jewish History Timeline
 
 An interactive 3D timeline of Jewish history that runs in the browser. You can fly through
-history as a landscape. Time flows right to left, as Hebrew is read, and the content is in
-Hebrew.
+history as a landscape, or watch it unfold on a globe. The interface is in **Hebrew** and
+**English**, switched with the language button. In Hebrew time flows right to left, as Hebrew is
+read. In English it flows left to right.
 
 It is inspired by the "Jewish timeline" poster on odyeda.com. All content here was written
 from scratch or taken from Wikipedia. Nothing is copied from the poster.
@@ -56,7 +57,8 @@ Clicking an item opens a panel with:
 - context: who ruled at the time and how many Jews there were then.
 
 Every view can be linked directly, for example `#event=expulsion-spain&mode=acad`, or
-`#ruler=persia`, `#era=era-second-temple`, `#pop=1939`.
+`#ruler=persia`, `#era=era-second-temple`, `#pop=1939`. Add `&view=globe` to open the globe and
+`&lang=en` for English.
 
 If the browser can't display 3D (no WebGL), the app shows an accessible chronological list
 instead.
@@ -68,7 +70,7 @@ cd app
 npm install
 npm run dev        # http://localhost:5173
 npm run build      # static site in app/dist
-npm run enrich     # validate Wikipedia titles and refresh src/data/wiki-cache.json
+npm run enrich     # validate he+en Wikipedia titles, refresh src/data/wiki-cache.{he,en}.json
 ```
 
 Built with Vite, React 19, TypeScript, three.js through
@@ -88,7 +90,8 @@ app/
   src/lib/dates.ts           year formatting, Hebrew calendar year, gematria
   src/scene/                 3D: camera, lanes, axis, eras, GlobeScene
   src/lib/globe.ts           globe projection, what is active in a given year
-  src/ui/                    toolbar, info panel, minimap, list, help
+  src/ui/                    toolbar, info panel, minimap, list, help, globe controls
+  src/i18n.ts                UI strings (he/en), language switching, time direction
 .github/workflows/deploy.yml GitHub Pages deployment
 ```
 
@@ -100,6 +103,7 @@ app/
    - `dating.acad` is `null` for items known only from tradition.
    - Add `dating.trad` only when the traditional date differs from the academic one.
 2. Set `wiki.he` to the exact Hebrew Wikipedia article title, and `wiki.en` to the English one.
+   Give every text both `he` and `en`. The app falls back to Hebrew when `en` is missing.
 3. Run `npm run enrich`. It fails and lists the problems if any title is missing or is a
    disambiguation page. Check that redirects point to the intended article.
 
@@ -124,5 +128,4 @@ The build is fully static. It uses a relative base, so it works from any folder 
 ## Roadmap
 
 
-- English interface.
 - More lanes: rabbinic eras, personalities, Jewish literature, world history.

@@ -1,3 +1,4 @@
+import { L, t } from '../i18n';
 import { Text } from '@react-three/drei';
 import { type ThreeEvent } from '@react-three/fiber';
 import { memo, useState } from 'react';
@@ -44,7 +45,7 @@ const RulerBlock = memo(function RulerBlock({ ruler, span, ghost = false }: { ru
     e.stopPropagation();
     setHover(true);
     document.body.style.cursor = 'pointer';
-    useStore.getState().setHover(`${ghost ? 'תיארוך מסורתי · ' : ''}${ruler.title.he} · ${formatSpan(span)}`);
+    useStore.getState().setHover(`${ghost ? `${t('tradDatingPrefix')} · ` : ''}${L(ruler.title)} · ${formatSpan(span)}`);
   };
   const out = () => {
     setHover(false);
@@ -52,7 +53,7 @@ const RulerBlock = memo(function RulerBlock({ ruler, span, ghost = false }: { ru
     useStore.getState().setHover(null);
   };
 
-  const fs = Math.min(1.0, Math.max(0.35, len / (ruler.title.he.length * 0.62)));
+  const fs = Math.min(1.0, Math.max(0.35, len / (L(ruler.title).length * 0.62)));
   const showLabel = len > 2.2;
 
   return (
@@ -86,10 +87,10 @@ const RulerBlock = memo(function RulerBlock({ ruler, span, ghost = false }: { ru
             position={ghost ? [cx, height + 0.02, z] : [cx, height / 2, z + depth / 2 + 0.01]}
             rotation={ghost ? [-Math.PI / 2, 0, 0] : [0, 0, 0]}
             color={ghost ? COLORS.trad : '#fff'}
-            direction="rtl"
+            direction="auto"
             raycast={() => null}
           >
-            {ruler.title.he}
+            {L(ruler.title)}
           </Text>
           {!ghost && len > 6 && (
             <Text
@@ -100,7 +101,7 @@ const RulerBlock = memo(function RulerBlock({ ruler, span, ghost = false }: { ru
               position={[cx, height + 0.03, z + 0.5]}
               rotation={[-Math.PI / 2, 0, 0]}
               color={COLORS.ink}
-              direction="rtl"
+              direction="auto"
               raycast={() => null}
             >
               {formatSpan(span)}
