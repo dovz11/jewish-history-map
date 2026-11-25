@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { analyticsOn } from '../lib/analytics';
 import { L, lang, t } from '../i18n';
 import { CATEGORY_COLORS, CATEGORY_LABELS, eras, events, mainSpan, people, rabbinicEras, rulers, KIND_COLORS, KIND_LABELS, POWER_COLORS } from '../lib/data';
 import { formatSpan } from '../lib/dates';
@@ -159,6 +160,9 @@ function HelpHe() {
         האתר והמידע שבו ניתנים „כמות שהם” (AS IS), בלי אחריות מכל סוג. ייתכנו בהם טעויות בתאריכים, במספרים ובתיאורים,
         ואין להסתמך עליהם כמקור מוסמך.
       </p>
+      {analyticsOn && <p className="muted">
+        פרטיות: האתר סופר ביקורים בעזרת Umami, בלי עוגיות ובלי מידע אישי. נשמרים רק נתונים כלליים (מדינה, סוג מכשיר, האתר שממנו הגעתם, זמן השהייה והפריטים שנפתחו).
+      </p>}
       <p className="muted">
         חומרים של אחרים נשארים ברישיון שלהם: קטעי הטקסט מוויקיפדיה ברישיון CC BY-SA 4.0 (שם הערך מצוין מתחת לכל קטע),
         התמונות נטענות מוויקישיתוף ולכל אחת מהן רישיון משלה, הגופן Heebo ברישיון SIL OFL 1.1, וקווי החוף מ-Natural Earth (נחלת הכלל).
@@ -215,6 +219,9 @@ function HelpEn() {
         The site and its information are provided “as is”, without warranty of any kind. They may contain mistakes in dates, numbers and descriptions,
         and should not be relied on as an authoritative source.
       </p>
+      {analyticsOn && <p className="muted">
+        Privacy: the site counts visits with Umami, without cookies or personal data. Only general figures are kept (country, device type, referring site, time spent and the items opened).
+      </p>}
       <p className="muted">
         Material by others keeps its own license: the Wikipedia excerpts are under CC BY-SA 4.0 (the article is named under each excerpt),
         the images load from Wikimedia Commons and each has its own license, the Heebo font is under the SIL OFL 1.1, and the coastlines come from Natural Earth (public domain).
