@@ -1,0 +1,22 @@
+[
+  { "id": "era-genesis",  "title": { "he": "ראשית ואבות", "en": "Beginnings and Patriarchs" }, "color": "#d9c9a3",
+    "dating": { "acad": null, "trad": { "start": -3761, "end": -1313 } }, "wiki": { "he": "ספר בראשית", "en": "Book of Genesis" } },
+  { "id": "era-bible", "title": { "he": "תקופת המקרא", "en": "Biblical period" }, "color": "#c9b38a",
+    "dating": { "acad": { "start": -1250, "end": -1000 }, "trad": { "start": -1313, "end": -877 } }, "wiki": { "he": "תקופת המקרא", "en": "History of ancient Israel and Judah" } },
+  { "id": "era-first-temple", "title": { "he": "בית ראשון", "en": "First Temple period" }, "color": "#b9d1c2",
+    "dating": { "acad": { "start": -1000, "end": -586 }, "trad": { "start": -877, "end": -423 } }, "wiki": { "he": "תקופת בית ראשון", "en": "First Temple period" } },
+  { "id": "era-exile", "title": { "he": "גלות בבל", "en": "Babylonian exile" }, "color": "#d8b4a8",
+    "dating": { "acad": { "start": -586, "end": -538 }, "trad": { "start": -423, "end": -371 } }, "wiki": { "he": "גלות בבל", "en": "Babylonian captivity" } },
+  { "id": "era-second-temple", "title": { "he": "בית שני", "en": "Second Temple period" }, "color": "#b7c8de",
+    "dating": { "acad": { "start": -538, "end": 70 }, "trad": { "start": -371, "end": 70 } }, "wiki": { "he": "תקופת בית שני", "en": "Second Temple period" } },
+  { "id": "era-mishnah-talmud", "title": { "he": "המשנה והתלמוד", "en": "Mishnah and Talmud" }, "color": "#cfc0de",
+    "dating": { "acad": { "start": 70, "end": 638 } }, "wiki": { "he": "תנאים", "en": "Tannaim" } },
+  { "id": "era-middle-ages", "title": { "he": "ימי הביניים", "en": "Middle Ages" }, "color": "#e0cfa8",
+    "dating": { "acad": { "start": 638, "end": 1492 } }, "wiki": { "he": "יהודים בימי הביניים", "en": "Jewish history" } },
+  { "id": "era-early-modern", "title": { "he": "ראשית העת החדשה", "en": "Early modern period" }, "color": "#c5d8b4",
+    "dating": { "acad": { "start": 1492, "end": 1781 } }, "wiki": { "he": "העת החדשה המוקדמת", "en": "Early modern period" } },
+  { "id": "era-modern", "title": { "he": "העת החדשה", "en": "Modern era" }, "color": "#b4d3d8",
+    "dating": { "acad": { "start": 1781, "end": 1948 } }, "wiki": { "he": "העת החדשה", "en": "Late modern period" } },
+  { "id": "era-israel", "title": { "he": "מדינת ישראל", "en": "State of Israel" }, "color": "#a9c4ea",
+    "dating": { "acad": { "start": 1948, "end": 2026 } }, "wiki": { "he": "היסטוריה של מדינת ישראל", "en": "History of Israel (1948–present)" } }
+]

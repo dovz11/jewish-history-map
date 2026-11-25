@@ -1,0 +1,62 @@
+import { create } from 'zustand';
+import type { DateMode, ItemRef } from './data/types';
+
+export type LaneKey = 'history' | 'demography' | 'sovereignty' | 'eras';
+
+export interface FlyRequest {
+  /** scene x to center on */
+  x: number;
+  /** scene z to look at */
+  z?: number;
+  /** camera distance */
+  dist?: number;
+  nonce: number;
+}
+
+interface State {
+  mode: DateMode;
+  lanes: Record<LaneKey, boolean>;
+  selected: ItemRef | null;
+  hoverText: string | null;
+  /** year at the center of the view, and the visible half-width in scene units */
+  viewX: number;
+  viewHalfWidth: number;
+  fly: FlyRequest | null;
+  listOpen: boolean;
+  helpOpen: boolean;
+
+  setMode(m: DateMode): void;
+  toggleLane(l: LaneKey): void;
+  select(ref: ItemRef | null): void;
+  setHover(t: string | null): void;
+  setView(x: number, halfWidth: number): void;
+  flyTo(x: number, opts?: { z?: number; dist?: number }): void;
+  setListOpen(v: boolean): void;
+  setHelpOpen(v: boolean): void;
+}
+
+let nonce = 0;
+
+export const useStore = create<State>((set) => ({
+  mode: 'both',
+  lanes: { history: true, demography: true, sovereignty: true, eras: true },
+  selected: null,
+  hoverText: null,
+  viewX: 0,
+  viewHalfWidth: 100,
+  fly: null,
+  listOpen: false,
+  helpOpen: false,
+
+  setMode: (mode) => set({ mode }),
+  toggleLane: (l) => set((s) => ({ lanes: { ...s.lanes, [l]: !s.lanes[l] } })),
+  select: (selected) => set({ selected }),
+  setHover: (hoverText) => set({ hoverText }),
+  setView: (viewX, viewHalfWidth) => set({ viewX, viewHalfWidth }),
+  flyTo: (x, opts) => set({ fly: { x, ...opts, nonce: ++nonce } }),
+  setListOpen: (listOpen) => set({ listOpen }),
+  setHelpOpen: (helpOpen) => set({ helpOpen }),
+}));
+
+export const sameRef = (a: ItemRef | null, b: ItemRef | null) =>
+  !!a && !!b && a.type === b.type && ('id' in a ? a.id === (b as { id: string }).id : a.year === (b as { year: number }).year);

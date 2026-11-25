@@ -1,0 +1,163 @@
+[
+  {
+    "id": "egypt-canaan", "power": "egypt",
+    "title": { "he": "ערי כנען בחסות מצרים", "en": "Canaanite city-states under Egypt" },
+    "dating": { "acad": { "start": -1550, "end": -1150, "approx": true }, "trad": { "start": -1550, "end": -1273 } },
+    "summary": { "he": "בתקופת הברונזה המאוחרת שלטה מצרים בערי המדינה הכנעניות, כפי שמתועד במכתבי אל-עמארנה.", "en": "In the Late Bronze Age Egypt dominated the Canaanite city-states, as documented in the Amarna letters." },
+    "wiki": { "he": "כנען", "en": "Canaan" }
+  },
+  {
+    "id": "judges", "power": "israel", "jewish": true,
+    "title": { "he": "השבטים ותקופת השופטים", "en": "Tribes and Judges" },
+    "dating": { "acad": { "start": -1150, "end": -1020, "approx": true }, "trad": { "start": -1273, "end": -879 } },
+    "summary": { "he": "שבטי ישראל יושבים בארץ ללא שלטון מרכזי, ובשעת סכנה קמים שופטים להנהיגם.", "en": "The Israelite tribes live without central government, led in times of crisis by judges." },
+    "wiki": { "he": "תקופת השופטים", "en": "Biblical judges" }
+  },
+  {
+    "id": "united-monarchy", "power": "israel", "jewish": true,
+    "title": { "he": "הממלכה המאוחדת", "en": "United Monarchy" },
+    "dating": { "acad": { "start": -1020, "end": -930, "approx": true }, "trad": { "start": -879, "end": -797 } },
+    "summary": { "he": "ממלכתם של שאול, דוד ושלמה. ממדיה ואופייה שנויים במחלוקת מחקרית.", "en": "The kingdom of Saul, David and Solomon; its extent and character are debated by scholars." },
+    "wiki": { "he": "ממלכת ישראל המאוחדת", "en": "Kingdom of Israel (united monarchy)" }
+  },
+  {
+    "id": "kingdom-israel", "power": "israel", "jewish": true, "row": 1,
+    "title": { "he": "ממלכת ישראל", "en": "Kingdom of Israel" },
+    "dating": { "acad": { "start": -930, "end": -722 }, "trad": { "start": -797, "end": -556 } },
+    "summary": { "he": "הממלכה הצפונית, ובירתה שומרון. הוחרבה בידי אשור.", "en": "The northern kingdom, with its capital at Samaria, destroyed by Assyria." },
+    "wiki": { "he": "ממלכת ישראל", "en": "Kingdom of Israel (Samaria)" }
+  },
+  {
+    "id": "kingdom-judah", "power": "israel", "jewish": true,
+    "title": { "he": "ממלכת יהודה", "en": "Kingdom of Judah" },
+    "dating": { "acad": { "start": -930, "end": -586 }, "trad": { "start": -797, "end": -423 } },
+    "summary": { "he": "הממלכה הדרומית, ובירתה ירושלים, שבה שלטה שושלת בית דוד. הוחרבה בידי בבל.", "en": "The southern kingdom, with its capital at Jerusalem, ruled by the House of David; destroyed by Babylon." },
+    "wiki": { "he": "ממלכת יהודה", "en": "Kingdom of Judah" }
+  },
+  {
+    "id": "assyria", "power": "mesopotamia", "row": 1,
+    "title": { "he": "אשור (בצפון)", "en": "Assyria (north)" },
+    "dating": { "acad": { "start": -722, "end": -612 }, "trad": { "start": -556, "end": -423 } },
+    "summary": { "he": "לאחר חורבן ממלכת ישראל הופך שטחה לפחוות אשוריות.", "en": "After the fall of Israel its territory becomes Assyrian provinces." },
+    "wiki": { "he": "האימפריה האשורית החדשה", "en": "Neo-Assyrian Empire" }
+  },
+  {
+    "id": "babylon", "power": "mesopotamia",
+    "title": { "he": "בבל", "en": "Babylonia" },
+    "dating": { "acad": { "start": -586, "end": -539 }, "trad": { "start": -423, "end": -371 } },
+    "summary": { "he": "תקופת גלות בבל, אחרי חורבן ירושלים.", "en": "The Babylonian exile following the destruction of Jerusalem." },
+    "wiki": { "he": "האימפריה הבבלית החדשה", "en": "Neo-Babylonian Empire" }
+  },
+  {
+    "id": "persia", "power": "persia",
+    "title": { "he": "פרס", "en": "Persian Empire" },
+    "dating": { "acad": { "start": -539, "end": -332 }, "trad": { "start": -371, "end": -313 }, "note": { "he": "במסורת התקופה הפרסית נמשכת כ-34 שנה בלבד לאחר בניין הבית השני; במחקר היא נמשכת למעלה ממאתיים שנה." } },
+    "summary": { "he": "פחוות יהוד באימפריה האחמנית: תקופת שיבת ציון והבית השני.", "en": "The province of Yehud in the Achaemenid Empire: the Return to Zion and the Second Temple." },
+    "wiki": { "he": "האימפריה האחמנית", "en": "Achaemenid Empire" }
+  },
+  {
+    "id": "ptolemies", "power": "greek",
+    "title": { "he": "יוון ובית תלמי", "en": "Macedon and Ptolemies" },
+    "dating": { "acad": { "start": -332, "end": -200 }, "trad": { "start": -313, "end": -200 } },
+    "summary": { "he": "אחרי כיבושי אלכסנדר שלטו בארץ התלמיים, יורשיו במצרים.", "en": "After Alexander, the land is ruled by his Ptolemaic successors in Egypt." },
+    "wiki": { "he": "הממלכה התלמית", "en": "Ptolemaic Kingdom" }
+  },
+  {
+    "id": "seleucids", "power": "greek",
+    "title": { "he": "בית סלאוקוס", "en": "Seleucid Empire" },
+    "dating": { "acad": { "start": -200, "end": -140 } },
+    "summary": { "he": "אחרי קרב פניאס עוברת הארץ לסלאוקים. גזירות אנטיוכוס הרביעי הציתו את מרד החשמונאים.", "en": "After the Battle of Panium the Seleucids take over; Antiochus IV's decrees spark the Maccabean revolt." },
+    "wiki": { "he": "האימפריה הסלאוקית", "en": "Seleucid Empire" }
+  },
+  {
+    "id": "hasmoneans", "power": "israel", "jewish": true,
+    "title": { "he": "ממלכת החשמונאים", "en": "Hasmonean kingdom" },
+    "dating": { "acad": { "start": -140, "end": -63 } },
+    "summary": { "he": "עצמאות יהודית בהנהגת בית חשמונאי, משמעון ועד מלחמת האחים בין הורקנוס לאריסטובולוס.", "en": "Jewish independence under the Hasmonean dynasty, from Simon to the civil war between Hyrcanus and Aristobulus." },
+    "wiki": { "he": "ממלכת החשמונאים", "en": "Hasmonean dynasty" }
+  },
+  {
+    "id": "herodians", "power": "rome", "jewish": true, "row": 1,
+    "title": { "he": "בית הורדוס", "en": "Herodian kingdom" },
+    "dating": { "acad": { "start": -37, "end": 44 } },
+    "summary": { "he": "מלכי חסות מטעם רומא: הורדוס, בניו ואגריפס הראשון.", "en": "Roman client kings: Herod, his sons, and Agrippa I." },
+    "wiki": { "he": "בית הורדוס", "en": "Herodian dynasty" }
+  },
+  {
+    "id": "rome", "power": "rome",
+    "title": { "he": "רומא", "en": "Roman Empire" },
+    "dating": { "acad": { "start": -63, "end": 324 } },
+    "summary": { "he": "יהודה, ואחרי מרד בר כוכבא \"סוריה פלשתינה\", היא פרובינקיה באימפריה הרומית.", "en": "Judea — renamed Syria Palaestina after Bar Kokhba — is a province of the Roman Empire." },
+    "wiki": { "he": "יהודה (פרובינקיה רומית)", "en": "Judaea (Roman province)" }
+  },
+  {
+    "id": "byzantium", "power": "rome",
+    "title": { "he": "ביזנטיון", "en": "Byzantine Empire" },
+    "dating": { "acad": { "start": 324, "end": 638 } },
+    "summary": { "he": "הארץ תחת האימפריה הרומית המזרחית הנוצרית. ב-614–628 נכבשה לזמן קצר בידי פרס הסאסאנית.", "en": "The land under the Christian Eastern Roman Empire, briefly taken by Sasanian Persia in 614–628." },
+    "wiki": { "he": "ארץ ישראל בתקופה הביזנטית", "en": "Byzantine Empire" }
+  },
+  {
+    "id": "sasanian", "power": "persia", "row": 1,
+    "title": { "he": "הכיבוש הפרסי", "en": "Sasanian conquest" },
+    "dating": { "acad": { "start": 614, "end": 628 } },
+    "summary": { "he": "פרס הסאסאנית כובשת את הארץ בעזרת כוח יהודי, ולזמן קצר יש ליהודים אחיזה בירושלים.", "en": "Sasanian Persia conquers the land with Jewish help; Jews briefly gain a foothold in Jerusalem." },
+    "wiki": { "he": "כיבוש ירושלים בידי הפרסים", "en": "Sasanian conquest of Jerusalem" }
+  },
+  {
+    "id": "early-caliphates", "power": "arab",
+    "title": { "he": "הח'ליפות: ראשידון, אומיים, עבאסים", "en": "Early caliphates" },
+    "dating": { "acad": { "start": 638, "end": 969 } },
+    "summary": { "he": "שלטון מוסלמי ערבי: הח'ליפים הראשונים, השושלת האומיית (בניית כיפת הסלע) והעבאסים.", "en": "Arab Muslim rule: the Rashidun, the Umayyads (who built the Dome of the Rock) and the Abbasids." },
+    "wiki": { "he": "התקופה המוסלמית המוקדמת בארץ ישראל", "en": "Early Muslim period" }
+  },
+  {
+    "id": "fatimids", "power": "arab",
+    "title": { "he": "הפאטמים", "en": "Fatimid Caliphate" },
+    "dating": { "acad": { "start": 969, "end": 1099 } },
+    "summary": { "he": "הח'ליפות השיעית ממצרים, עם תקופת שלטון קצרה של הסלג'וקים (1073–1098).", "en": "The Shi'ite caliphate based in Egypt, with an interlude of Seljuk rule (1073–1098)." },
+    "wiki": { "he": "הח'ליפות הפאטמית", "en": "Fatimid Caliphate" }
+  },
+  {
+    "id": "crusaders", "power": "crusader",
+    "title": { "he": "הצלבנים", "en": "Crusader Kingdom" },
+    "dating": { "acad": { "start": 1099, "end": 1291 } },
+    "summary": { "he": "ממלכת ירושלים הצלבנית. ירושלים נכבשה מידיה בידי צלאח א-דין ב-1187, ועכו, מעוזה האחרון, נפלה ב-1291.", "en": "The Crusader Kingdom of Jerusalem; Saladin took Jerusalem in 1187 and Acre, the last stronghold, fell in 1291." },
+    "wiki": { "he": "ממלכת ירושלים", "en": "Kingdom of Jerusalem" }
+  },
+  {
+    "id": "ayyubids", "power": "arab", "row": 1,
+    "title": { "he": "האיובים", "en": "Ayyubids" },
+    "dating": { "acad": { "start": 1187, "end": 1260 } },
+    "summary": { "he": "שושלת צלאח א-דין, שכבשה את ירושלים מידי הצלבנים.", "en": "Saladin's dynasty, which took Jerusalem from the Crusaders." },
+    "wiki": { "he": "השושלת האיובית", "en": "Ayyubid dynasty" }
+  },
+  {
+    "id": "mamluks", "power": "arab",
+    "title": { "he": "הממלוכים", "en": "Mamluk Sultanate" },
+    "dating": { "acad": { "start": 1291, "end": 1516 } },
+    "summary": { "he": "הסולטנות הממלוכית ממצרים, שגירשה את הצלבנים ועצרה את המונגולים בעין ג'אלות (1260).", "en": "The Mamluk Sultanate of Egypt, which expelled the Crusaders and stopped the Mongols at Ain Jalut (1260)." },
+    "wiki": { "he": "הסולטנות הממלוכית", "en": "Mamluk Sultanate" }
+  },
+  {
+    "id": "ottomans", "power": "ottoman",
+    "title": { "he": "האימפריה העות'מאנית", "en": "Ottoman Empire" },
+    "dating": { "acad": { "start": 1516, "end": 1917 } },
+    "summary": { "he": "ארבע מאות שנות שלטון עות'מאני. בימי סולימאן המפואר נבנו חומות ירושלים.", "en": "Four centuries of Ottoman rule; Suleiman the Magnificent built Jerusalem's walls." },
+    "wiki": { "he": "התקופה העות'מאנית בארץ ישראל", "en": "Ottoman Syria" }
+  },
+  {
+    "id": "british", "power": "british",
+    "title": { "he": "המנדט הבריטי", "en": "British Mandate" },
+    "dating": { "acad": { "start": 1917, "end": 1948 } },
+    "summary": { "he": "בריטניה כובשת את הארץ במלחמת העולם הראשונה ומקבלת מחבר הלאומים מנדט, שכלל את הצהרת בלפור.", "en": "Britain conquers the land in World War I and receives a League of Nations mandate incorporating the Balfour Declaration." },
+    "wiki": { "he": "המנדט הבריטי", "en": "Mandatory Palestine" }
+  },
+  {
+    "id": "state-of-israel", "power": "israel", "jewish": true,
+    "title": { "he": "מדינת ישראל", "en": "State of Israel" },
+    "dating": { "acad": { "start": 1948, "end": 2026 } },
+    "summary": { "he": "ריבונות יהודית מחודשת אחרי כאלפיים שנה.", "en": "Renewed Jewish sovereignty after some two thousand years." },
+    "wiki": { "he": "מדינת ישראל", "en": "Israel" }
+  }
+]

@@ -1,0 +1,599 @@
+[
+  {
+    "id": "creation",
+    "title": { "he": "בריאת העולם", "en": "Creation of the World" },
+    "dating": { "acad": null, "trad": { "start": -3761 }, "note": { "he": "ראשית מניין השנים העברי (שנת א' לבריאה). אין לכך תיארוך מחקרי." } },
+    "importance": 4, "kind": "biblical",
+    "summary": { "he": "לפי המסורת היהודית, העולם נברא בשנת 3761 לפנה\"ס, והיא נקודת המוצא של הלוח העברי.", "en": "According to Jewish tradition the world was created in 3761 BCE, the epoch of the Hebrew calendar." },
+    "wiki": { "he": "בריאת העולם", "en": "Genesis creation narrative" }
+  },
+  {
+    "id": "flood",
+    "title": { "he": "המבול", "en": "The Flood" },
+    "dating": { "acad": null, "trad": { "start": -2105 }, "note": { "he": "שנת 1656 לבריאה לפי המסורת." } },
+    "importance": 3, "kind": "biblical",
+    "summary": { "he": "סיפור המבול ותיבת נח בספר בראשית. לפי המסורת התרחש בשנת 1656 לבריאה.", "en": "The biblical story of the Flood and Noah's Ark, dated by tradition to the year 1656 from Creation." },
+    "wiki": { "he": "המבול", "en": "Genesis flood narrative" }
+  },
+  {
+    "id": "abraham",
+    "title": { "he": "אברהם אבינו", "en": "Abraham" },
+    "dating": { "acad": null, "trad": { "start": -1813 }, "note": { "he": "לפי המסורת נולד בשנת 1948 לבריאה. חוקרים רבים משייכים את סיפורי האבות לאלף השני לפנה\"ס, ללא תיארוך מוסכם." } },
+    "importance": 5, "kind": "biblical",
+    "summary": { "he": "אבי האומה, שלפי המקרא יצא מאור כשדים וחרן אל ארץ כנען בעקבות ברית עם האל.", "en": "Founding patriarch who, according to the Bible, left Ur and Haran for Canaan following God's covenant." },
+    "wiki": { "he": "אברהם", "en": "Abraham" },
+    "places": ["ur", "haran", "hebron"]
+  },
+  {
+    "id": "descent-egypt",
+    "title": { "he": "ירידת יעקב ובניו למצרים", "en": "Jacob's descent to Egypt" },
+    "dating": { "acad": null, "trad": { "start": -1523 }, "note": { "he": "שנת 2238 לבריאה לפי המסורת." } },
+    "importance": 3, "kind": "migration",
+    "summary": { "he": "בעקבות הרעב בכנען יורדים יעקב ושבעים נפש מבני ביתו למצרים, שם ישב יוסף בנו.", "en": "Fleeing famine, Jacob and his household of seventy go down to Egypt, where his son Joseph lived." },
+    "wiki": { "he": "יעקב", "en": "Jacob" },
+    "places": ["hebron", "goshen"]
+  },
+  {
+    "id": "exodus",
+    "title": { "he": "יציאת מצרים ומתן תורה", "en": "The Exodus and Sinai" },
+    "dating": { "acad": { "start": -1250, "approx": true }, "trad": { "start": -1313 }, "note": { "he": "לפי המסורת: שנת 2448 לבריאה. היסטוריוניות האירוע שנויה במחלוקת; מי שמקבלים גרעין היסטורי מציעים לרוב את המאה ה-13 לפנה\"ס." } },
+    "importance": 5, "kind": "biblical",
+    "summary": { "he": "בני ישראל יוצאים מעבדות לחירות בהנהגת משה, ובהר סיני מקבלים את התורה. האירוע המכונן בזיכרון הלאומי.", "en": "Led by Moses, the Israelites go from slavery to freedom and receive the Torah at Mount Sinai — the founding event of national memory." },
+    "wiki": { "he": "יציאת מצרים", "en": "The Exodus" },
+    "places": ["goshen", "sinai"]
+  },
+  {
+    "id": "conquest",
+    "title": { "he": "הכניסה לארץ כנען", "en": "Entry into Canaan" },
+    "dating": { "acad": { "start": -1200, "approx": true }, "trad": { "start": -1273 }, "note": { "he": "לפי המסורת: שנת 2488 לבריאה. במחקר: התהוות ההתיישבות הישראלית בהר המרכזי בסוף תקופת הברונזה המאוחרת; ציון \"ישראל\" הראשון מופיע בסטלת מרנפתח (1208 לפנה\"ס בערך)." } },
+    "importance": 4, "kind": "biblical",
+    "summary": { "he": "בהנהגת יהושע בן נון נכנסים השבטים לארץ ומתיישבים בה. בהמשך באה תקופת השופטים.", "en": "Under Joshua the tribes enter the land and settle it, followed by the period of the Judges." },
+    "wiki": { "he": "התנחלות השבטים", "en": "Israelite highland settlement" },
+    "places": ["jericho", "shiloh"]
+  },
+  {
+    "id": "david",
+    "title": { "he": "דוד המלך", "en": "King David" },
+    "dating": { "acad": { "start": -1010, "approx": true }, "trad": { "start": -877 }, "note": { "he": "לפי המסורת מלך משנת 2884 לבריאה. כתובת תל דן (המאה ה-9 לפנה\"ס) מזכירה את \"בית דוד\"." } },
+    "importance": 5, "kind": "political",
+    "summary": { "he": "דוד מאחד את השבטים, כובש את ירושלים והופך אותה לבירת הממלכה המאוחדת.", "en": "David unites the tribes, conquers Jerusalem and makes it the capital of the united monarchy." },
+    "wiki": { "he": "דוד", "en": "David" },
+    "places": ["jerusalem", "hebron"]
+  },
+  {
+    "id": "first-temple",
+    "title": { "he": "בניית בית המקדש הראשון", "en": "First Temple built" },
+    "dating": { "acad": { "start": -957, "approx": true }, "trad": { "start": -833 }, "note": { "he": "לפי המסורת: שנת 2928 לבריאה." } },
+    "importance": 5, "kind": "religious",
+    "summary": { "he": "שלמה המלך בונה את בית המקדש בירושלים, שהופך למרכז הפולחן של עם ישראל.", "en": "King Solomon builds the Temple in Jerusalem, the center of Israelite worship." },
+    "wiki": { "he": "בית המקדש הראשון", "en": "Solomon's Temple" },
+    "places": ["jerusalem"]
+  },
+  {
+    "id": "split",
+    "title": { "he": "פילוג הממלכה", "en": "Division of the kingdom" },
+    "dating": { "acad": { "start": -930, "approx": true }, "trad": { "start": -797 } },
+    "importance": 3, "kind": "political",
+    "summary": { "he": "לאחר מות שלמה מתפצלת הממלכה לממלכת ישראל בצפון (בהנהגת ירבעם) וממלכת יהודה בדרום (בהנהגת רחבעם).", "en": "After Solomon's death the kingdom splits into Israel in the north (Jeroboam) and Judah in the south (Rehoboam)." },
+    "wiki": { "he": "פילוג הממלכה", "en": "Kingdom of Israel (united monarchy)" },
+    "places": ["jerusalem", "samaria"]
+  },
+  {
+    "id": "assyrian-exile",
+    "title": { "he": "גלות עשרת השבטים", "en": "Assyrian exile" },
+    "dating": { "acad": { "start": -722 }, "trad": { "start": -556 }, "note": { "he": "לפי המסורת: 133 שנה לפני חורבן הבית הראשון." } },
+    "importance": 4, "kind": "catastrophe",
+    "summary": { "he": "אשור כובשת את שומרון ומחריבה את ממלכת ישראל. תושביה מוגלים, ומכאן מקור המסורת על \"עשרת השבטים האבודים\".", "en": "Assyria conquers Samaria and destroys the Kingdom of Israel; its people are deported — the origin of the 'Ten Lost Tribes'." },
+    "wiki": { "he": "גלות אשור", "en": "Assyrian captivity" },
+    "places": ["samaria", "nineveh"]
+  },
+  {
+    "id": "destruction-first",
+    "title": { "he": "חורבן בית ראשון וגלות בבל", "en": "Destruction of the First Temple" },
+    "dating": { "acad": { "start": -586 }, "trad": { "start": -423 }, "note": { "he": "לפי המסורת: שנת 3338 לבריאה. ההפרש של כ-165 שנה נובע בעיקר מקיצור התקופה הפרסית במסורת (\"השנים החסרות\")." } },
+    "importance": 5, "kind": "catastrophe",
+    "summary": { "he": "נבוכדנאצר מלך בבל מחריב את ירושלים ואת המקדש, וחלק גדול מיהודה מוגלה לבבל. נקבע כצום תשעה באב.", "en": "Nebuchadnezzar of Babylon destroys Jerusalem and the Temple; much of Judah is exiled to Babylon. Commemorated on Tisha B'Av." },
+    "wiki": { "he": "חורבן בית ראשון", "en": "Siege of Jerusalem (587 BC)" },
+    "places": ["jerusalem", "babylon"]
+  },
+  {
+    "id": "cyrus",
+    "title": { "he": "הצהרת כורש ושיבת ציון", "en": "Cyrus edict and Return to Zion" },
+    "dating": { "acad": { "start": -538 }, "trad": { "start": -371 } },
+    "importance": 4, "kind": "migration",
+    "summary": { "he": "כורש מלך פרס כובש את בבל ומתיר לגולים לשוב לירושלים ולבנות את המקדש מחדש.", "en": "Cyrus of Persia conquers Babylon and allows the exiles to return to Jerusalem and rebuild the Temple." },
+    "wiki": { "he": "הצהרת כורש", "en": "Edict of Cyrus" },
+    "places": ["babylon", "jerusalem"]
+  },
+  {
+    "id": "second-temple",
+    "title": { "he": "חנוכת בית המקדש השני", "en": "Second Temple dedicated" },
+    "dating": { "acad": { "start": -516 }, "trad": { "start": -353 } },
+    "importance": 5, "kind": "religious",
+    "summary": { "he": "בהנהגת זרובבל ויהושע הכהן הגדול נחנך המקדש השני בירושלים.", "en": "Under Zerubbabel and the high priest Joshua the Second Temple is dedicated in Jerusalem." },
+    "wiki": { "he": "בית המקדש השני", "en": "Second Temple" },
+    "places": ["jerusalem"]
+  },
+  {
+    "id": "purim",
+    "title": { "he": "נס פורים", "en": "The Purim story" },
+    "dating": { "acad": null, "trad": { "start": -356 }, "note": { "he": "לפי המסורת: שנת 3405 לבריאה. חוקרים רבים מזהים את אחשוורוש עם חשיירש הראשון (486–465 לפנה\"ס), אך אין תיארוך מוסכם." } },
+    "importance": 3, "kind": "religious",
+    "summary": { "he": "מגילת אסתר מספרת על הצלת יהודי האימפריה הפרסית מגזרת המן בימי אחשוורוש.", "en": "The Book of Esther tells of the rescue of the Jews of the Persian Empire from Haman's decree." },
+    "wiki": { "he": "פורים", "en": "Purim" },
+    "places": ["susa"]
+  },
+  {
+    "id": "ezra",
+    "title": { "he": "עזרא ונחמיה", "en": "Ezra and Nehemiah" },
+    "dating": { "acad": { "start": -458, "end": -432 }, "trad": { "start": -348 } },
+    "importance": 3, "kind": "religious",
+    "summary": { "he": "עזרא הסופר ונחמיה עולים מבבל, מחדשים את חומות ירושלים ומחזקים את קיום התורה בקהילה.", "en": "Ezra the Scribe and Nehemiah come from Babylon, rebuild Jerusalem's walls and renew Torah observance." },
+    "wiki": { "he": "עזרא הסופר", "en": "Ezra" },
+    "places": ["babylon", "jerusalem"]
+  },
+  {
+    "id": "alexander",
+    "title": { "he": "אלכסנדר מוקדון כובש את הארץ", "en": "Alexander the Great conquers the land" },
+    "dating": { "acad": { "start": -332 }, "trad": { "start": -313 }, "note": { "he": "מכאן ואילך התיארוך המסורתי והמחקרי מתלכדים כמעט לחלוטין (מניין השטרות, 312 לפנה\"ס)." } },
+    "importance": 3, "kind": "political",
+    "summary": { "he": "תחילת התקופה ההלניסטית: הארץ עוברת לשלטון יווני, ובהמשך לבית תלמי ולבית סלאוקוס.", "en": "The Hellenistic period begins: the land passes to Greek rule, later to the Ptolemies and Seleucids." },
+    "wiki": { "he": "אלכסנדר מוקדון", "en": "Alexander the Great" },
+    "places": ["jerusalem", "alexandria"]
+  },
+  {
+    "id": "septuagint",
+    "title": { "he": "תרגום השבעים", "en": "The Septuagint" },
+    "dating": { "acad": { "start": -250, "approx": true } },
+    "importance": 2, "kind": "cultural",
+    "summary": { "he": "תרגום התורה ליוונית באלכסנדריה, עבור הקהילה היהודית הגדולה במצרים ההלניסטית.", "en": "The Torah is translated into Greek in Alexandria for the large Jewish community of Hellenistic Egypt." },
+    "wiki": { "he": "תרגום השבעים", "en": "Septuagint" },
+    "places": ["alexandria"]
+  },
+  {
+    "id": "hasmonean-revolt",
+    "title": { "he": "מרד החשמונאים וחנוכה", "en": "Maccabean revolt and Hanukkah" },
+    "dating": { "acad": { "start": -167, "end": -164 } },
+    "importance": 5, "kind": "war",
+    "summary": { "he": "בעקבות גזירות אנטיוכוס הרביעי פורץ מרד בהנהגת מתתיהו ובניו. יהודה המכבי משחרר את ירושלים ומטהר את המקדש — מקור חג החנוכה.", "en": "After Antiochus IV's decrees, Mattathias and his sons revolt; Judah Maccabee frees Jerusalem and rededicates the Temple — the origin of Hanukkah." },
+    "wiki": { "he": "מרד החשמונאים", "en": "Maccabean Revolt" },
+    "places": ["modiin", "jerusalem"]
+  },
+  {
+    "id": "pompey",
+    "title": { "he": "פומפיוס כובש את ירושלים", "en": "Pompey takes Jerusalem" },
+    "dating": { "acad": { "start": -63 } },
+    "importance": 3, "kind": "political",
+    "summary": { "he": "בעקבות מלחמת אחים בבית חשמונאי מתערבת רומא; פומפיוס כובש את ירושלים ויהודה הופכת לחסות רומית.", "en": "Rome intervenes in a Hasmonean civil war; Pompey captures Jerusalem and Judea becomes a Roman client." },
+    "wiki": { "he": "המצור על ירושלים (63 לפנה\"ס)", "en": "Siege of Jerusalem (63 BC)" },
+    "places": ["jerusalem", "rome"]
+  },
+  {
+    "id": "herod",
+    "title": { "he": "הורדוס מלך יהודה", "en": "Herod the Great" },
+    "dating": { "acad": { "start": -37, "end": -4 } },
+    "importance": 3, "kind": "political",
+    "summary": { "he": "הורדוס, מלך חסות של רומא, מרחיב ומפאר את בית המקדש ובונה את קיסריה, מצדה והרודיון.", "en": "Herod, a Roman client king, rebuilds and enlarges the Temple and builds Caesarea, Masada and Herodium." },
+    "wiki": { "he": "הורדוס", "en": "Herod the Great" },
+    "places": ["jerusalem", "caesarea"]
+  },
+  {
+    "id": "great-revolt",
+    "title": { "he": "המרד הגדול", "en": "The Great Revolt" },
+    "dating": { "acad": { "start": 66, "end": 73 } },
+    "importance": 4, "kind": "war",
+    "summary": { "he": "מרד יהודי נגד רומא, שהסתיים בחורבן ירושלים ובנפילת מצדה.", "en": "A Jewish revolt against Rome that ended with the destruction of Jerusalem and the fall of Masada." },
+    "wiki": { "he": "המרד הגדול", "en": "First Jewish–Roman War" },
+    "places": ["jerusalem", "galilee"]
+  },
+  {
+    "id": "destruction-second",
+    "title": { "he": "חורבן בית שני", "en": "Destruction of the Second Temple" },
+    "dating": { "acad": { "start": 70 } },
+    "importance": 5, "kind": "catastrophe",
+    "summary": { "he": "טיטוס מחריב את ירושלים ואת בית המקדש. רבן יוחנן בן זכאי מקים מרכז תורני ביבנה — ראשית היהדות הרבנית.", "en": "Titus destroys Jerusalem and the Temple. Rabban Yohanan ben Zakkai founds a center of learning at Yavne — the start of rabbinic Judaism." },
+    "wiki": { "he": "חורבן בית שני", "en": "Siege of Jerusalem (70 CE)" },
+    "places": ["jerusalem", "yavne", "rome"]
+  },
+  {
+    "id": "masada",
+    "title": { "he": "נפילת מצדה", "en": "Fall of Masada" },
+    "dating": { "acad": { "start": 73, "approx": true } },
+    "importance": 2, "kind": "war",
+    "summary": { "he": "המעוז האחרון של המורדים נופל בידי הרומאים; לפי יוסף בן מתתיהו המגינים בחרו למות בידי עצמם.", "en": "The rebels' last stronghold falls to Rome; according to Josephus the defenders chose death over capture." },
+    "wiki": { "he": "מצדה", "en": "Siege of Masada" },
+    "places": ["masada"]
+  },
+  {
+    "id": "bar-kokhba",
+    "title": { "he": "מרד בר כוכבא", "en": "Bar Kokhba revolt" },
+    "dating": { "acad": { "start": 132, "end": 136 } },
+    "importance": 4, "kind": "war",
+    "summary": { "he": "מרד בהנהגת שמעון בר כוכבא ובתמיכת רבי עקיבא. דיכויו הביא להרס יהודה, לגזירות השמד ולהפיכת ירושלים לאיליה קפיטולינה.", "en": "A revolt led by Simon bar Kokhba with Rabbi Akiva's support; its suppression devastated Judea and turned Jerusalem into Aelia Capitolina." },
+    "wiki": { "he": "מרד בר כוכבא", "en": "Bar Kokhba revolt" },
+    "places": ["betar", "jerusalem"]
+  },
+  {
+    "id": "mishnah",
+    "title": { "he": "חתימת המשנה", "en": "Completion of the Mishnah" },
+    "dating": { "acad": { "start": 200, "approx": true } },
+    "importance": 4, "kind": "religious",
+    "summary": { "he": "רבי יהודה הנשיא מסדר ועורך את התורה שבעל פה בששת סדרי המשנה, בגליל.", "en": "Rabbi Judah the Prince edits the Oral Law into the six orders of the Mishnah, in the Galilee." },
+    "wiki": { "he": "משנה", "en": "Mishnah" },
+    "places": ["tzippori", "galilee"]
+  },
+  {
+    "id": "calendar",
+    "title": { "he": "קביעת הלוח העברי", "en": "Fixed Hebrew calendar" },
+    "dating": { "acad": { "start": 359, "approx": true } },
+    "importance": 2, "kind": "religious",
+    "summary": { "he": "לפי המסורת, הלל הנשיא (הלל השני) פרסם את חשבון הלוח העברי, כך שאפשר לקבוע את המועדים גם בלי קידוש החודש על פי הראייה.", "en": "By tradition, Hillel II published the calculated Hebrew calendar so that festivals could be set without sighting the new moon." },
+    "wiki": { "he": "הלוח העברי", "en": "Hebrew calendar" }
+  },
+  {
+    "id": "talmud-bavli",
+    "title": { "he": "חתימת התלמוד הבבלי", "en": "Babylonian Talmud completed" },
+    "dating": { "acad": { "start": 500, "approx": true } },
+    "importance": 4, "kind": "religious",
+    "summary": { "he": "בישיבות סורא ופומבדיתא נחתם התלמוד הבבלי, שהפך ליסוד ההלכה והלימוד היהודי לדורות.", "en": "The Babylonian Talmud is completed in the academies of Sura and Pumbedita, becoming the foundation of Jewish law and study." },
+    "wiki": { "he": "תלמוד בבלי", "en": "Babylonian Talmud" },
+    "places": ["sura", "pumbedita"]
+  },
+  {
+    "id": "muslim-conquest",
+    "title": { "he": "הכיבוש המוסלמי", "en": "Muslim conquest" },
+    "dating": { "acad": { "start": 638 } },
+    "importance": 3, "kind": "political",
+    "summary": { "he": "הח'ליף עומר כובש את ירושלים מידי הביזנטים; היהודים מורשים לשוב ולהתיישב בעיר.", "en": "Caliph Umar takes Jerusalem from Byzantium; Jews are permitted to resettle in the city." },
+    "wiki": { "he": "הכיבוש המוסלמי של ארץ ישראל", "en": "Muslim conquest of the Levant" },
+    "places": ["jerusalem"]
+  },
+  {
+    "id": "golden-age",
+    "title": { "he": "תור הזהב בספרד", "en": "Golden Age in Spain" },
+    "dating": { "acad": { "start": 950, "end": 1150, "approx": true } },
+    "importance": 3, "kind": "cultural",
+    "summary": { "he": "פריחה של שירה, הגות ומדע יהודיים בספרד המוסלמית: חסדאי אבן שפרוט, שמואל הנגיד, שלמה אבן גבירול ויהודה הלוי.", "en": "A flowering of Jewish poetry, philosophy and science in Muslim Spain: Hasdai ibn Shaprut, Samuel ha-Nagid, Ibn Gabirol and Judah Halevi." },
+    "wiki": { "he": "תור הזהב של יהדות ספרד", "en": "Golden age of Jewish culture in Spain" },
+    "places": ["cordoba", "granada"]
+  },
+  {
+    "id": "crusades",
+    "title": { "he": "גזירות תתנ\"ו", "en": "Rhineland massacres" },
+    "dating": { "acad": { "start": 1096 } },
+    "importance": 4, "kind": "catastrophe",
+    "summary": { "he": "צלבנים במסע הצלב הראשון טובחים בקהילות שו\"ם — שפיירא, וורמס ומגנצא. בהמשך, ב-1099, נטבחים גם יהודי ירושלים.", "en": "First Crusade mobs massacre the communities of Speyer, Worms and Mainz; in 1099 the Jews of Jerusalem are also killed." },
+    "wiki": { "he": "גזירות תתנ\"ו", "en": "Rhineland massacres" },
+    "places": ["mainz", "worms", "speyer"]
+  },
+  {
+    "id": "rambam",
+    "title": { "he": "הרמב\"ם", "en": "Maimonides" },
+    "dating": { "acad": { "start": 1138, "end": 1204 } },
+    "importance": 3, "kind": "cultural",
+    "summary": { "he": "רבי משה בן מימון, מגדולי הפוסקים וההוגים, מחבר \"משנה תורה\" ו\"מורה נבוכים\". נולד בקורדובה ופעל בפוסטאט שבמצרים.", "en": "Rabbi Moses ben Maimon, a towering legal scholar and philosopher, author of the Mishneh Torah and the Guide for the Perplexed." },
+    "wiki": { "he": "הרמב\"ם", "en": "Maimonides" },
+    "places": ["cordoba", "fustat"]
+  },
+  {
+    "id": "expulsion-england",
+    "title": { "he": "גירוש אנגליה", "en": "Expulsion from England" },
+    "dating": { "acad": { "start": 1290 } },
+    "importance": 3, "kind": "catastrophe",
+    "summary": { "he": "המלך אדוארד הראשון מגרש את כל יהודי אנגליה — הגירוש הכללי הראשון ממדינה באירופה.", "en": "Edward I expels all the Jews of England — the first general expulsion from a European kingdom." },
+    "wiki": { "he": "גירוש יהודי אנגליה", "en": "Edict of Expulsion" },
+    "places": ["london"]
+  },
+  {
+    "id": "expulsion-france",
+    "title": { "he": "גירוש צרפת", "en": "Expulsion from France" },
+    "dating": { "acad": { "start": 1306 } },
+    "importance": 2, "kind": "catastrophe",
+    "summary": { "he": "פיליפ הרביעי מגרש את יהודי צרפת ומחרים את רכושם. הם הורשו לחזור ושוב גורשו ב-1394.", "en": "Philip IV expels the Jews of France and seizes their property; they were readmitted and expelled again in 1394." },
+    "wiki": { "he": "גירוש צרפת", "en": "Expulsion of Jews from France" },
+    "places": ["paris"]
+  },
+  {
+    "id": "black-death",
+    "title": { "he": "פרעות המוות השחור", "en": "Black Death persecutions" },
+    "dating": { "acad": { "start": 1348, "end": 1351 } },
+    "importance": 4, "kind": "catastrophe",
+    "summary": { "he": "יהודים מואשמים בהרעלת בארות כגורם למגפה, ומאות קהילות בגרמניה ובמערב אירופה נטבחות. רבים בורחים מזרחה לפולין.", "en": "Jews are accused of poisoning wells to spread the plague; hundreds of communities in Germany and Western Europe are destroyed and many flee east to Poland." },
+    "wiki": { "he": "פרעות ביהודים בעקבות המוות השחור", "en": "Black Death Jewish persecutions" },
+    "places": ["strasbourg", "krakow"]
+  },
+  {
+    "id": "expulsion-spain",
+    "title": { "he": "גירוש ספרד", "en": "Expulsion from Spain" },
+    "dating": { "acad": { "start": 1492 } },
+    "importance": 5, "kind": "catastrophe",
+    "summary": { "he": "צו אלהמברה של פרדיננד ואיזבלה מגרש את יהודי ספרד. עשרות אלפים יוצאים לפורטוגל, צפון אפריקה, איטליה והאימפריה העות'מאנית, ורבים אחרים מתנצרים.", "en": "The Alhambra Decree expels Spain's Jews. Tens of thousands leave for Portugal, North Africa, Italy and the Ottoman Empire, and many convert." },
+    "wiki": { "he": "גירוש ספרד", "en": "Expulsion of the Jews from Spain" },
+    "places": ["granada", "toledo", "thessaloniki", "istanbul", "fez"]
+  },
+  {
+    "id": "portugal",
+    "title": { "he": "השמד בפורטוגל", "en": "Forced conversion in Portugal" },
+    "dating": { "acad": { "start": 1497 } },
+    "importance": 2, "kind": "catastrophe",
+    "summary": { "he": "המלך מנואל הראשון כופה את הנצרות על יהודי פורטוגל, ובהם רבים ממגורשי ספרד. מכאן צמחה תפוצת האנוסים.", "en": "King Manuel I forcibly converts Portugal's Jews, including many Spanish exiles — the origin of the converso diaspora." },
+    "wiki": { "he": "גירוש פורטוגל", "en": "Expulsion of the Jews from Portugal" },
+    "places": ["lisbon"]
+  },
+  {
+    "id": "venice-ghetto",
+    "title": { "he": "גטו ונציה", "en": "Venice Ghetto" },
+    "dating": { "acad": { "start": 1516 } },
+    "importance": 2, "kind": "political",
+    "summary": { "he": "ונציה מחייבת את יהודיה לגור ברובע סגור — הגטו הראשון, שהעניק את שמו לתופעה.", "en": "Venice confines its Jews to an enclosed quarter — the first 'ghetto', which gave the institution its name." },
+    "wiki": { "he": "גטו ונציה", "en": "Venetian Ghetto" },
+    "places": ["venice"]
+  },
+  {
+    "id": "safed",
+    "title": { "he": "צפת והשולחן ערוך", "en": "Safed and the Shulchan Aruch" },
+    "dating": { "acad": { "start": 1565 } },
+    "importance": 3, "kind": "religious",
+    "summary": { "he": "צפת הופכת למרכז של הלכה וקבלה: רבי יוסף קארו מדפיס את \"שולחן ערוך\", והאר\"י מפתח את תורת הקבלה.", "en": "Safed becomes a center of law and mysticism: Joseph Karo publishes the Shulchan Aruch and the Ari develops Lurianic Kabbalah." },
+    "wiki": { "he": "שולחן ערוך", "en": "Shulchan Aruch" },
+    "places": ["safed"]
+  },
+  {
+    "id": "four-lands",
+    "title": { "he": "ועד ארבע הארצות", "en": "Council of Four Lands" },
+    "dating": { "acad": { "start": 1580, "end": 1764 } },
+    "importance": 2, "kind": "political",
+    "summary": { "he": "מוסד השלטון העצמי של יהודי פולין־ליטא, ביטוי לפריחת הקהילה הגדולה בעולם באותה עת.", "en": "The self-governing body of Polish-Lithuanian Jewry, then the largest Jewish community in the world." },
+    "wiki": { "he": "ועד ארבע הארצות", "en": "Council of Four Lands" },
+    "places": ["lublin"]
+  },
+  {
+    "id": "chmielnicki",
+    "title": { "he": "גזירות ת\"ח-ת\"ט", "en": "Khmelnytsky massacres" },
+    "dating": { "acad": { "start": 1648, "end": 1649 } },
+    "importance": 4, "kind": "catastrophe",
+    "summary": { "he": "בזמן מרד הקוזקים בהנהגת בוגדן חמלניצקי נטבחים עשרות אלפי יהודים ומאות קהילות באוקראינה נחרבות.", "en": "During Bohdan Khmelnytsky's Cossack uprising tens of thousands of Jews are killed and hundreds of Ukrainian communities destroyed." },
+    "wiki": { "he": "גזירות ת\"ח ות\"ט", "en": "Khmelnytsky Uprising" },
+    "places": ["nemyriv"]
+  },
+  {
+    "id": "new-amsterdam",
+    "title": { "he": "היהודים הראשונים באמריקה הצפונית", "en": "First Jews in New Amsterdam" },
+    "dating": { "acad": { "start": 1654 } },
+    "importance": 2, "kind": "migration",
+    "summary": { "he": "23 פליטים יהודים מרסיפה שבברזיל מגיעים לניו אמסטרדם (ניו יורק) — ראשיתה של יהדות צפון אמריקה.", "en": "23 Jewish refugees from Recife, Brazil reach New Amsterdam (New York) — the beginning of North American Jewry." },
+    "wiki": { "he": "יהדות ארצות הברית", "en": "History of the Jews in the United States" },
+    "places": ["recife", "new-york"]
+  },
+  {
+    "id": "sabbatai",
+    "title": { "he": "שבתי צבי", "en": "Sabbatai Zevi" },
+    "dating": { "acad": { "start": 1665, "end": 1666 } },
+    "importance": 3, "kind": "religious",
+    "summary": { "he": "תנועה משיחית סוחפת סביב שבתי צבי מאיזמיר, שהתנפצה כשהתאסלם ב-1666.", "en": "A sweeping messianic movement around Sabbatai Zevi of Smyrna collapses when he converts to Islam in 1666." },
+    "wiki": { "he": "שבתי צבי", "en": "Sabbatai Zevi" },
+    "places": ["izmir"]
+  },
+  {
+    "id": "hasidism",
+    "title": { "he": "ראשית החסידות", "en": "Rise of Hasidism" },
+    "dating": { "acad": { "start": 1740, "approx": true } },
+    "importance": 3, "kind": "religious",
+    "summary": { "he": "רבי ישראל בעל שם טוב מייסד בפודוליה תנועת התחדשות דתית ששמה במרכז את השמחה, התפילה והדבקות.", "en": "Rabbi Israel Baal Shem Tov founds in Podolia a movement of religious revival centered on joy, prayer and devotion." },
+    "wiki": { "he": "חסידות", "en": "Hasidic Judaism" },
+    "places": ["medzhybizh"]
+  },
+  {
+    "id": "haskalah",
+    "title": { "he": "תנועת ההשכלה", "en": "The Haskalah" },
+    "dating": { "acad": { "start": 1780, "approx": true } },
+    "importance": 3, "kind": "cultural",
+    "summary": { "he": "תנועת הנאורות היהודית, בהשראת משה מנדלסון בברלין, שקראה לשלב השכלה כללית ולהשתלב בחברה הסובבת.", "en": "The Jewish Enlightenment, inspired by Moses Mendelssohn in Berlin, urging secular learning and integration." },
+    "wiki": { "he": "תנועת ההשכלה", "en": "Haskalah" },
+    "places": ["berlin"]
+  },
+  {
+    "id": "pale",
+    "title": { "he": "תחום המושב", "en": "Pale of Settlement" },
+    "dating": { "acad": { "start": 1791, "end": 1917 } },
+    "importance": 3, "kind": "political",
+    "summary": { "he": "האימפריה הרוסית מגבילה את מגורי היהודים לאזור מוגדר במערבה, שבו חיה עד מהרה רוב יהדות העולם.", "en": "The Russian Empire restricts Jewish residence to its western region, soon home to most of world Jewry." },
+    "wiki": { "he": "תחום המושב", "en": "Pale of Settlement" },
+    "places": ["vilnius", "minsk", "odessa"]
+  },
+  {
+    "id": "emancipation",
+    "title": { "he": "האמנציפציה בצרפת", "en": "Emancipation in France" },
+    "dating": { "acad": { "start": 1791 } },
+    "importance": 3, "kind": "political",
+    "summary": { "he": "צרפת המהפכנית מעניקה ליהודים שוויון זכויות אזרחי מלא — הראשונה באירופה.", "en": "Revolutionary France grants Jews full civil equality — the first European country to do so." },
+    "wiki": { "he": "אמנציפציה ליהודים", "en": "Jewish emancipation" },
+    "places": ["paris"]
+  },
+  {
+    "id": "pogroms-1881",
+    "title": { "he": "סופות בנגב והגירה המונית", "en": "1881 pogroms and mass emigration" },
+    "dating": { "acad": { "start": 1881, "end": 1914 } },
+    "importance": 4, "kind": "migration",
+    "summary": { "he": "גל פוגרומים ברוסיה (\"סופות בנגב\") ותקנות מאי מניעים הגירה של יותר משני מיליון יהודים, רובם לארצות הברית.", "en": "Pogroms in Russia and the May Laws drive over two million Jews to emigrate, most to the United States." },
+    "wiki": { "he": "סופות בנגב", "en": "Pogroms in the Russian Empire" },
+    "places": ["odessa", "kyiv", "new-york"]
+  },
+  {
+    "id": "first-aliyah",
+    "title": { "he": "העלייה הראשונה", "en": "First Aliyah" },
+    "dating": { "acad": { "start": 1882, "end": 1903 } },
+    "importance": 4, "kind": "zionism",
+    "summary": { "he": "חובבי ציון ועולי ביל\"ו מקימים מושבות ראשונות — ראשון לציון, זכרון יעקב, ראש פינה — בתמיכת הברון רוטשילד.", "en": "Hovevei Zion and Bilu pioneers found the first colonies — Rishon LeZion, Zikhron Ya'akov, Rosh Pinna — with Baron Rothschild's support." },
+    "wiki": { "he": "העלייה הראשונה", "en": "First Aliyah" },
+    "places": ["rishon-lezion"]
+  },
+  {
+    "id": "dreyfus",
+    "title": { "he": "פרשת דרייפוס", "en": "Dreyfus affair" },
+    "dating": { "acad": { "start": 1894, "end": 1906 } },
+    "importance": 3, "kind": "political",
+    "summary": { "he": "קצין יהודי בצבא צרפת מורשע על לא עוול בכפו בבגידה. האנטישמיות שהתגלתה במשפט השפיעה על הרצל.", "en": "A Jewish French army officer is falsely convicted of treason; the antisemitism exposed by the affair influenced Herzl." },
+    "wiki": { "he": "פרשת דרייפוס", "en": "Dreyfus affair" },
+    "places": ["paris"]
+  },
+  {
+    "id": "zionist-congress",
+    "title": { "he": "הקונגרס הציוני הראשון", "en": "First Zionist Congress" },
+    "dating": { "acad": { "start": 1897 } },
+    "importance": 5, "kind": "zionism",
+    "summary": { "he": "בזל, ביוזמת בנימין זאב הרצל: נוסדת ההסתדרות הציונית ומאומצת \"תוכנית בזל\" להקמת בית לאומי לעם היהודי בארץ ישראל.", "en": "Convened in Basel by Theodor Herzl; the Zionist Organization is founded and the Basel Program for a Jewish national home is adopted." },
+    "wiki": { "he": "הקונגרס הציוני הראשון", "en": "First Zionist Congress" },
+    "places": ["basel"]
+  },
+  {
+    "id": "kishinev",
+    "title": { "he": "פרעות קישינב", "en": "Kishinev pogrom" },
+    "dating": { "acad": { "start": 1903 } },
+    "importance": 3, "kind": "catastrophe",
+    "summary": { "he": "פוגרום אכזרי בבירת בסרביה, שזעזע את העולם היהודי והוליד את \"בעיר ההרגה\" של ביאליק ואת ההגנה העצמית.", "en": "A brutal pogrom in Bessarabia's capital that shook the Jewish world, inspiring Bialik's 'In the City of Slaughter' and self-defense groups." },
+    "wiki": { "he": "פרעות קישינב", "en": "Kishinev pogrom" },
+    "places": ["kishinev"]
+  },
+  {
+    "id": "second-aliyah",
+    "title": { "he": "העלייה השנייה", "en": "Second Aliyah" },
+    "dating": { "acad": { "start": 1904, "end": 1914 } },
+    "importance": 3, "kind": "zionism",
+    "summary": { "he": "חלוצים מרוסיה מקימים את דגניה (הקבוצה הראשונה), את תל אביב ואת \"השומר\", ומחיים את השפה העברית.", "en": "Pioneers from Russia found Degania (the first kibbutz), Tel Aviv and Hashomer, and revive the Hebrew language." },
+    "wiki": { "he": "העלייה השנייה", "en": "Second Aliyah" },
+    "places": ["tel-aviv", "degania"]
+  },
+  {
+    "id": "balfour",
+    "title": { "he": "הצהרת בלפור", "en": "Balfour Declaration" },
+    "dating": { "acad": { "start": 1917 } },
+    "importance": 4, "kind": "zionism",
+    "summary": { "he": "ממשלת בריטניה מצהירה על תמיכתה ב\"הקמת בית לאומי לעם היהודי בארץ ישראל\". ההצהרה שולבה בכתב המנדט.", "en": "Britain declares support for 'the establishment in Palestine of a national home for the Jewish people', later written into the Mandate." },
+    "wiki": { "he": "הצהרת בלפור", "en": "Balfour Declaration" },
+    "places": ["london", "jerusalem"]
+  },
+  {
+    "id": "riots-1929",
+    "title": { "he": "מאורעות תרפ\"ט", "en": "1929 riots" },
+    "dating": { "acad": { "start": 1929 } },
+    "importance": 2, "kind": "catastrophe",
+    "summary": { "he": "פרעות ערביות ביישוב היהודי; בחברון ובצפת נטבחים עשרות יהודים והקהילה העתיקה בחברון חדלה להתקיים.", "en": "Arab riots against the Jewish community; scores of Jews are massacred in Hebron and Safed and Hebron's ancient community ends." },
+    "wiki": { "he": "מאורעות תרפ\"ט", "en": "1929 Palestine riots" },
+    "places": ["hebron", "safed"]
+  },
+  {
+    "id": "nazis",
+    "title": { "he": "עליית הנאצים לשלטון", "en": "Nazis come to power" },
+    "dating": { "acad": { "start": 1933 } },
+    "importance": 3, "kind": "political",
+    "summary": { "he": "היטלר מתמנה לקנצלר גרמניה. חוקי נירנברג (1935) וליל הבדולח (1938) מנשלים את יהודי גרמניה מזכויותיהם.", "en": "Hitler becomes Chancellor of Germany. The Nuremberg Laws (1935) and Kristallnacht (1938) strip German Jews of their rights." },
+    "wiki": { "he": "עליית הנאצים לשלטון", "en": "Adolf Hitler's rise to power" },
+    "places": ["berlin"]
+  },
+  {
+    "id": "holocaust",
+    "title": { "he": "השואה", "en": "The Holocaust" },
+    "dating": { "acad": { "start": 1939, "end": 1945 } },
+    "importance": 5, "kind": "catastrophe",
+    "summary": { "he": "גרמניה הנאצית ושותפיה רוצחים כשישה מיליון יהודים — כשליש מהעם היהודי — בגטאות, בירי המוני ובמחנות ההשמדה.", "en": "Nazi Germany and its collaborators murder about six million Jews — a third of the Jewish people — in ghettos, mass shootings and death camps." },
+    "wiki": { "he": "השואה", "en": "The Holocaust" },
+    "places": ["auschwitz", "warsaw"]
+  },
+  {
+    "id": "warsaw-uprising",
+    "title": { "he": "מרד גטו ורשה", "en": "Warsaw Ghetto Uprising" },
+    "dating": { "acad": { "start": 1943 } },
+    "importance": 2, "kind": "war",
+    "summary": { "he": "לוחמי האי\"ל והאצ\"י בהנהגת מרדכי אנילביץ' מורדים בגרמנים — המרד העירוני הגדול הראשון באירופה הכבושה.", "en": "Jewish fighters led by Mordechai Anielewicz rise against the Germans — the first major urban revolt in occupied Europe." },
+    "wiki": { "he": "מרד גטו ורשה", "en": "Warsaw Ghetto Uprising" },
+    "places": ["warsaw"]
+  },
+  {
+    "id": "partition",
+    "title": { "he": "החלטת החלוקה", "en": "UN Partition Plan" },
+    "dating": { "acad": { "start": 1947 } },
+    "importance": 3, "kind": "zionism",
+    "summary": { "he": "ב-29 בנובמבר מחליטה העצרת הכללית של האו\"ם על חלוקת ארץ ישראל המנדטורית למדינה יהודית ולמדינה ערבית.", "en": "On 29 November the UN General Assembly votes to partition Mandatory Palestine into Jewish and Arab states." },
+    "wiki": { "he": "תוכנית החלוקה", "en": "United Nations Partition Plan for Palestine" },
+    "places": ["new-york"]
+  },
+  {
+    "id": "israel-independence",
+    "title": { "he": "הקמת מדינת ישראל", "en": "Establishment of the State of Israel" },
+    "dating": { "acad": { "start": 1948 } },
+    "importance": 5, "kind": "zionism",
+    "summary": { "he": "ב-ה' באייר תש\"ח (14 במאי 1948) מכריז דוד בן-גוריון על הקמת מדינת ישראל. מלחמת העצמאות נמשכה עד 1949.", "en": "On 5 Iyar 5708 (14 May 1948) David Ben-Gurion declares the State of Israel; the War of Independence lasts until 1949." },
+    "wiki": { "he": "הכרזת העצמאות של מדינת ישראל", "en": "Israeli Declaration of Independence" },
+    "places": ["tel-aviv"]
+  },
+  {
+    "id": "mass-aliyah",
+    "title": { "he": "העלייה ההמונית", "en": "Mass immigration" },
+    "dating": { "acad": { "start": 1948, "end": 1951 } },
+    "importance": 3, "kind": "migration",
+    "summary": { "he": "תוך שלוש שנים מכפילה המדינה את אוכלוסייתה: ניצולי שואה ועולים מארצות האסלאם, כולל מבצע \"על כנפי נשרים\" מתימן ומבצע עזרא ונחמיה מעיראק.", "en": "Israel doubles its population in three years: Holocaust survivors and Jews from Muslim lands, including airlifts from Yemen and Iraq." },
+    "wiki": { "he": "העלייה ההמונית", "en": "1948–1951 immigration to Israel" },
+    "places": ["sanaa", "baghdad", "tel-aviv"]
+  },
+  {
+    "id": "eichmann",
+    "title": { "he": "משפט אייכמן", "en": "Eichmann trial" },
+    "dating": { "acad": { "start": 1961 } },
+    "importance": 2, "kind": "political",
+    "summary": { "he": "אדולף אייכמן, ממארגני \"הפתרון הסופי\", נשפט בירושלים. המשפט העלה את זיכרון השואה לתודעה הציבורית.", "en": "Adolf Eichmann, an organizer of the 'Final Solution', is tried in Jerusalem, bringing Holocaust memory to public consciousness." },
+    "wiki": { "he": "משפט אייכמן", "en": "Eichmann trial" },
+    "places": ["jerusalem"]
+  },
+  {
+    "id": "six-day-war",
+    "title": { "he": "מלחמת ששת הימים", "en": "Six-Day War" },
+    "dating": { "acad": { "start": 1967 } },
+    "importance": 4, "kind": "war",
+    "summary": { "he": "ישראל מנצחת את מצרים, ירדן וסוריה ומשתלטת על סיני, רצועת עזה, יהודה ושומרון ורמת הגולן. ירושלים מאוחדת.", "en": "Israel defeats Egypt, Jordan and Syria, taking Sinai, Gaza, the West Bank and the Golan Heights; Jerusalem is reunified." },
+    "wiki": { "he": "מלחמת ששת הימים", "en": "Six-Day War" },
+    "places": ["jerusalem"]
+  },
+  {
+    "id": "yom-kippur-war",
+    "title": { "he": "מלחמת יום הכיפורים", "en": "Yom Kippur War" },
+    "dating": { "acad": { "start": 1973 } },
+    "importance": 3, "kind": "war",
+    "summary": { "he": "מצרים וסוריה פותחות במתקפת פתע ביום הכיפורים. אחרי ימים קשים ישראל הודפת את התוקפים.", "en": "Egypt and Syria launch a surprise attack on Yom Kippur; after costly early days Israel repels the attack." },
+    "wiki": { "he": "מלחמת יום הכיפורים", "en": "Yom Kippur War" }
+  },
+  {
+    "id": "egypt-peace",
+    "title": { "he": "הסכם השלום עם מצרים", "en": "Peace with Egypt" },
+    "dating": { "acad": { "start": 1979 } },
+    "importance": 2, "kind": "political",
+    "summary": { "he": "בעקבות ביקור סאדאת בירושלים והסכמי קמפ דייוויד נחתם הסכם שלום בין ישראל למצרים — הראשון עם מדינה ערבית.", "en": "Following Sadat's visit to Jerusalem and the Camp David Accords, Israel and Egypt sign the first peace treaty with an Arab state." },
+    "wiki": { "he": "הסכם השלום בין ישראל למצרים", "en": "Egypt–Israel peace treaty" }
+  },
+  {
+    "id": "ethiopia",
+    "title": { "he": "עליית יהודי אתיופיה", "en": "Ethiopian aliyah" },
+    "dating": { "acad": { "start": 1984, "end": 1991 } },
+    "importance": 2, "kind": "migration",
+    "summary": { "he": "מבצע משה (1984) ומבצע שלמה (1991) מעלים לישראל עשרות אלפי יהודים מאתיופיה.", "en": "Operations Moses (1984) and Solomon (1991) bring tens of thousands of Ethiopian Jews to Israel." },
+    "wiki": { "he": "מבצע שלמה", "en": "Operation Solomon" },
+    "places": ["gondar"]
+  },
+  {
+    "id": "fsu-aliyah",
+    "title": { "he": "העלייה מברית המועצות", "en": "Aliyah from the former USSR" },
+    "dating": { "acad": { "start": 1989, "end": 2000 } },
+    "importance": 3, "kind": "migration",
+    "summary": { "he": "עם פתיחת שערי ברית המועצות ופירוקה עולים לישראל כמיליון יהודים ובני משפחותיהם.", "en": "As the Soviet Union opens and collapses, about a million Jews and their families immigrate to Israel." },
+    "wiki": { "he": "העלייה מברית המועצות לשעבר בשנות ה-90", "en": "1990s post-Soviet aliyah" },
+    "places": ["moscow"]
+  },
+  {
+    "id": "october-7",
+    "title": { "he": "טבח 7 באוקטובר", "en": "October 7 massacre" },
+    "dating": { "acad": { "start": 2023 } },
+    "importance": 4, "kind": "catastrophe",
+    "summary": { "he": "ארגון חמאס פושע ביישובי עוטף עזה ורוצח כ-1,200 בני אדם, ביום הקטלני ביותר ליהודים מאז השואה. מאות נחטפו לעזה, ובעקבות זאת פרצה מלחמת חרבות ברזל.", "en": "Hamas invades communities near Gaza and kills about 1,200 people, the deadliest day for Jews since the Holocaust. Hundreds are taken hostage and the Swords of Iron war begins." },
+    "wiki": { "he": "טבח שבעה באוקטובר", "en": "October 7 attacks" }
+  }
+]
