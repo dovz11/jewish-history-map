@@ -1,11 +1,12 @@
 import type { Dating, ItemRef, WikiRef } from '../data/types';
 import { L, lang, t } from '../i18n';
 import {
-  datingsDiffer, eraById, eventById, events, getWikiCache, isTradOnly, KIND_COLORS, KIND_LABELS, mainSpan, nearestPopPoint,
-  popIsrael, popTotal, POP_FROM, POP_TO, population, POWER_COLORS, rulerById, rulers, wikiUrl,
+  CATEGORY_COLORS, CATEGORY_LABELS, datingsDiffer, eraById, eventById, events, getWikiCache, isTradOnly, KIND_COLORS, KIND_LABELS,
+  mainSpan, nearestPopPoint, people, personById, personYear, popIsrael, popTotal, POP_FROM, POP_TO, population, POWER_COLORS,
+  rabbinicById, rabbinicEraAt, rulerById, rulers, wikiUrl,
 } from '../lib/data';
 import { formatAM, formatMillions, formatSpan, formatYear } from '../lib/dates';
-import { focusItem, stepEvent, switchView } from '../lib/focus';
+import { focusItem, stepEvent, stepPerson, switchView } from '../lib/focus';
 import { placeById } from '../lib/places';
 import { DIR } from '../lib/timeScale';
 import { useStore } from '../store';
@@ -101,6 +102,57 @@ function PanelBody({ item }: { item: ItemRef }) {
       </>
     );
   }
+  if (item.type === 'person') {
+    const p = personById.get(item.id);
+    if (!p) return <p>{t('notFound')}</p>;
+    const idx = people.indexOf(p);
+    return (
+      <>
+        <span className="badge" style={{ background: CATEGORY_COLORS[p.category] }}>{CATEGORY_LABELS[p.category][lang]}</span>
+        <h2>{L(p.name)}</h2>
+        <div className="dating">
+          <div className="date-row">
+            <span className="date-label">{t('lifespan')}</span>
+            <span className="date-value">{formatSpan(p.dating.acad!)}</span>
+            <span className="date-am">{formatAM(p.dating.acad!)}</span>
+          </div>
+        </div>
+        <p className="summary">{L(p.summary)}</p>
+        <ViewSwitch places={p.places} />
+        <WikiBlock wiki={p.wiki} />
+        <Context year={personYear(p)} />
+        <div className="nav-row">
+          <button disabled={idx <= 0} onClick={() => stepPerson(-1)}>{ARROW_PAST()} {t('prevPerson')}</button>
+          <button disabled={idx >= people.length - 1} onClick={() => stepPerson(1)}>{t('nextPerson')} {ARROW_FUTURE()}</button>
+        </div>
+      </>
+    );
+  }
+  if (item.type === 'rabbinic') {
+    const r = rabbinicById.get(item.id);
+    if (!r) return <p>{t('notFound')}</p>;
+    const s = mainSpan(r.dating, mode);
+    const who = people.filter((p) => { const y = personYear(p); return y >= s.start && y < (s.end ?? s.start); });
+    return (
+      <>
+        <span className="badge" style={{ background: '#7a6a4a' }}>{t('rabbinicEra')}</span>
+        <h2>{L(r.title)}</h2>
+        <DatingBlock dating={r.dating} />
+        <p className="summary">{L(r.summary)}</p>
+        <WikiBlock wiki={r.wiki} />
+        {who.length > 0 && (
+          <section>
+            <h3>{t('peopleInEra')}</h3>
+            <ul className="links">
+              {who.map((p) => (
+                <li key={p.id}><button className="link" onClick={() => focusItem({ type: 'person', id: p.id })}>{L(p.name)}</button> <small>{formatSpan(p.dating.acad!)}</small></li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </>
+    );
+  }
   // population point
   const p = population.find((x) => x.year === item.year) ?? nearestPopPoint(item.year);
   const idx = population.indexOf(p);
@@ -191,7 +243,8 @@ function Context({ year, hidePop = false }: { year: number; hidePop?: boolean })
     return (r.row ?? 0) === 0 && year >= s.start && year < (s.end ?? s.start + 1);
   });
   const showPop = !hidePop && year >= POP_FROM && year <= POP_TO;
-  if (!ruler && !showPop) return null;
+  const rabbinic = rabbinicEraAt(year, mode);
+  if (!ruler && !showPop && !rabbinic) return null;
   const approx = t('approxShort');
   return (
     <section className="context">
@@ -200,6 +253,12 @@ function Context({ year, hidePop = false }: { year: number; hidePop?: boolean })
         <p>
           {t('rulerThen')}:{' '}
           <button className="link" onClick={() => focusItem({ type: 'ruler', id: ruler.id })}>{L(ruler.title)}</button>
+        </p>
+      )}
+      {rabbinic && (
+        <p>
+          {t('rabbinicThen')}:{' '}
+          <button className="link" onClick={() => focusItem({ type: 'rabbinic', id: rabbinic.id })}>{L(rabbinic.title)}</button>
         </p>
       )}
       {showPop && (

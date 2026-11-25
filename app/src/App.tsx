@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import type { DateMode, ItemRef } from './data/types';
-import { eraById, eventById, rulerById } from './lib/data';
+import { eraById, eventById, personById, rabbinicById, rulerById } from './lib/data';
 import { focusItem, stepEvent } from './lib/focus';
 import { useStore } from './store';
 import { lang, t } from './i18n';
@@ -30,9 +30,12 @@ function parseHash(): { ref: ItemRef | null; mode: DateMode | null; globe: boole
   const mode = m === 'acad' || m === 'trad' || m === 'both' ? m : null;
   let ref: ItemRef | null = null;
   const ev = p.get('event'), ru = p.get('ruler'), er = p.get('era'), pop = p.get('pop');
+  const pe = p.get('person'), rb = p.get('rabbinic');
   if (ev && eventById.has(ev)) ref = { type: 'event', id: ev };
   else if (ru && rulerById.has(ru)) ref = { type: 'ruler', id: ru };
   else if (er && eraById.has(er)) ref = { type: 'era', id: er };
+  else if (pe && personById.has(pe)) ref = { type: 'person', id: pe };
+  else if (rb && rabbinicById.has(rb)) ref = { type: 'rabbinic', id: rb };
   else if (pop && !isNaN(+pop)) ref = { type: 'pop', year: +pop };
   return { ref, mode, globe: p.get('view') === 'globe' };
 }

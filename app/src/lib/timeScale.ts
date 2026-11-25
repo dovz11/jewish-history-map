@@ -66,7 +66,10 @@ export const LANES = {
   sovereigntyRow1: 4.6,
   river: -3,
   history: -12,
-  eraLabels: -26,
+  /** rabbinic-era arches, with the personalities standing beneath them */
+  rabbinic: -20,
+  people: -20,
+  eraLabels: -30,
 } as const;
 
 /** Nice tick years for the time axis, denser where the scale is expanded. */

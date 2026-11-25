@@ -267,15 +267,6 @@
     "places": ["mainz", "worms", "speyer"]
   },
   {
-    "id": "rambam",
-    "title": { "he": "הרמב\"ם", "en": "Maimonides" },
-    "dating": { "acad": { "start": 1138, "end": 1204 } },
-    "importance": 3, "kind": "cultural",
-    "summary": { "he": "רבי משה בן מימון, מגדולי הפוסקים וההוגים, מחבר \"משנה תורה\" ו\"מורה נבוכים\". נולד בקורדובה ופעל בפוסטאט שבמצרים.", "en": "Rabbi Moses ben Maimon, a towering legal scholar and philosopher, author of the Mishneh Torah and the Guide for the Perplexed." },
-    "wiki": { "he": "הרמב\"ם", "en": "Maimonides" },
-    "places": ["cordoba", "fustat"]
-  },
-  {
     "id": "expulsion-england",
     "title": { "he": "גירוש אנגליה", "en": "Expulsion from England" },
     "dating": { "acad": { "start": 1290 } },

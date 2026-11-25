@@ -18,6 +18,8 @@ from scratch or taken from Wikipedia. Nothing is copied from the poster.
 | **Demography** (דמוגרפיה) | A 3D "river". Its width and height show the world Jewish population. The gold strip is the share living in the Land of Israel, and the pale band is the range of scholarly estimates. |
 | **Sovereignty** (שלטון) | Blocks showing who ruled the Land of Israel. Tall blocks with a gold stripe mark Jewish sovereignty or self-rule. |
 | **Eras** (תקופות) | Tinted floor sections with large titles, such as the First Temple period and the Middle Ages. |
+| **Rabbinic eras** (תקופות ההלכה) | An arcade of arches behind the events, from the Men of the Great Assembly and the Zugot through the Tannaim, Amoraim, Savoraim, Geonim and Rishonim to the Acharonim. |
+| **People** (אישים) | 53 figures, from Hillel to Elie Wiesel, standing beneath the arch of their period, with their lifespan as a bar on the ground. They include sages, rabbis, thinkers, poets, mystics, leaders and writers, among them women and Sephardi, Mizrahi and Yemenite figures. On the globe each person appears where they lived in the chosen year. |
 
 **Globe view (🌍).** A parchment-style globe drawn from Natural Earth outlines shows the world
 in a chosen year:
@@ -73,6 +75,8 @@ npm install
 npm run dev        # http://localhost:5173
 npm run build      # static site in app/dist
 npm run enrich     # validate he+en Wikipedia titles, refresh src/data/wiki-cache.{he,en}.json
+npm run review-sheet  # regenerate docs/content-review.md (checklist for reviewers)
+npm run og-image   # rebuild the link-preview image public/og.jpg from assets-src/og-screenshot.jpg
 ```
 
 Built with Vite, React 19, TypeScript, three.js through
@@ -99,7 +103,9 @@ app/
 
 ### Adding or editing content
 
-1. Edit `app/src/data/events.json`, `rulers.json`, `population.json` or `eras.json`.
+1. Edit `app/src/data/events.json`, `rulers.json`, `population.json`, `eras.json`,
+   `rabbinic-eras.json` or `people.json`. For people, `places` are in life order, and the optional
+   `placeFrom` gives the year each place begins.
    - The schema is in `app/src/data/types.ts`.
    - Years are negative for BCE.
    - `dating.acad` is `null` for items known only from tradition.
@@ -130,4 +136,5 @@ The build is fully static. It uses a relative base, so it works from any folder 
 ## Roadmap
 
 
-- More lanes: rabbinic eras, personalities, Jewish literature, world history.
+- More lanes: Jewish literature, world history.
+- Expert content review: see [docs/content-review.md](docs/content-review.md) and the content-correction issue template.

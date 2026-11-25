@@ -14,7 +14,9 @@ const data = path.join(root, '..', 'src', 'data');
 const outDir = path.join(root, '..', '..', 'docs');
 const load = async (f) => JSON.parse(await readFile(path.join(data, f), 'utf8'));
 
-const [events, rulers, population, eras] = await Promise.all(['events.json', 'rulers.json', 'population.json', 'eras.json'].map(load));
+const [events, rulers, population, eras, people, rabbinic] = await Promise.all(
+  ['events.json', 'rulers.json', 'population.json', 'eras.json', 'people.json', 'rabbinic-eras.json'].map(load),
+);
 const REPO = 'https://github.com/dovz11/jewish-history-map';
 const SITE = 'https://dovz11.github.io/jewish-history-map/';
 
@@ -44,6 +46,8 @@ let md = `<div dir="rtl">
 - **דמוגרפיה לפני 1800**: הערכות גסות מאוד. האם הטווחים (min–max) סבירים? האם המקורות מצוטטים נכון?
 - **אירועים מהזמן האחרון** (1967, 1973, 7 באוקטובר): האם הניסוח עובדתי ומאוזן?
 - **בחירת האירועים**: אילו אירועים חסרים? לדוגמה גניזת קהיר, הכוזרים, ליל הבדולח, הבריגדה היהודית, מבצע אנטבה. אילו כדאי להוריד?
+- **אישים**: האם הבחירה מאוזנת בין תקופות, קהילות ותחומים? האם שנות החיים, המקומות והמעברים בין המקומות נכונים?
+- **תקופות ההלכה**: גבולות התקופות (למשל סוף הגאונים ב-1038 ותחילת האחרונים בשולחן ערוך) מקובלים, אבל לא מוחלטים.
 - **ייצוג**: האם יש ייצוג הולם לתולדות יהדות ספרד והמזרח, לנשים ולתפוצות אחרי 1948?
 - **השלטון בארץ ישראל**: גבולות התקופות והחפיפות (למשל הצלבנים, האיובים והממלוכים בשנים 1187–1291).
 
@@ -64,10 +68,21 @@ for (const p of population) {
   md += `| ☐ | ${yr(p.year)} | ${p.total} | ${p.min !== undefined ? `${p.min}–${p.max}` : ''} | ${p.israel ?? ''} | ${cell(p.note?.he)}${p.source ? ` <small>(${cell(p.source)})</small>` : ''} |\n`;
 }
 
+md += `\n## תקופות ההלכה (${rabbinic.length})\n\n| ✓ | תקופה | מחקרי | מסורתי | תקציר | קישורים |\n|---|---|---|---|---|---|\n`;
+for (const r of rabbinic) {
+  md += `| ☐ | **${cell(r.title.he)}** | ${span(r.dating.acad)} | ${r.dating.trad ? span(r.dating.trad) : ''} | ${cell(r.summary.he)} | ${wiki(r.wiki)} · [באתר](${SITE}#rabbinic=${r.id}) |\n`;
+}
+
+md += `\n## אישים (${people.length})\n\n| ✓ | אישיות | שנות חיים | מקומות | תקציר | קישורים |\n|---|---|---|---|---|---|\n`;
+for (const p of people.slice().sort((a, b) => a.dating.acad.start - b.dating.acad.start)) {
+  const places = (p.places ?? []).map((pl, i) => pl + (p.placeFrom ? ` (${yr(p.placeFrom[i])})` : '')).join(' → ');
+  md += `| ☐ | **${cell(p.name.he)}** | ${span(p.dating.acad)} | ${places} | ${cell(p.summary.he)} | ${wiki(p.wiki)} · [באתר](${SITE}#person=${p.id}) |\n`;
+}
+
 md += `\n## תקופות (${eras.length})\n\n| ✓ | תקופה | מחקרי | מסורתי | קישור |\n|---|---|---|---|---|\n`;
 for (const e of eras) md += `| ☐ | **${cell(e.title.he)}** | ${span(e.dating.acad)} | ${e.dating.trad ? span(e.dating.trad) : ''} | ${wiki(e.wiki)} |\n`;
 
 md += `\n</div>\n`;
 await mkdir(outDir, { recursive: true });
 await writeFile(path.join(outDir, 'content-review.md'), md);
-console.log(`docs/content-review.md: ${events.length} events, ${rulers.length} rulers, ${population.length} population points, ${eras.length} eras`);
+console.log(`docs/content-review.md: ${events.length} events, ${rulers.length} rulers, ${population.length} population points, ${eras.length} eras, ${rabbinic.length} rabbinic eras, ${people.length} people`);

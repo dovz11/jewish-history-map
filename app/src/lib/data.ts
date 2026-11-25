@@ -2,7 +2,9 @@ import eventsJson from '../data/events.json';
 import rulersJson from '../data/rulers.json';
 import erasJson from '../data/eras.json';
 import populationJson from '../data/population.json';
-import type { DateMode, Dating, Era, HistoryEvent, ItemRef, PopulationPoint, Ruler, Span, WikiSummary } from '../data/types';
+import peopleJson from '../data/people.json';
+import rabbinicJson from '../data/rabbinic-eras.json';
+import type { DateMode, Dating, Era, HistoryEvent, ItemRef, Person, PersonCategory, PopulationPoint, RabbinicEra, Ruler, Span, WikiSummary } from '../data/types';
 import { yearToU } from './timeScale';
 
 export const events = (eventsJson as HistoryEvent[]).slice().sort((a, b) => primaryStart(a.dating) - primaryStart(b.dating));
@@ -19,7 +21,12 @@ export function loadWikiCache(lang: 'he' | 'en'): Promise<Record<string, WikiSum
 }
 export const getWikiCache = (lang: 'he' | 'en') => wikiCaches[lang];
 
+export const people = (peopleJson as Person[]).slice().sort((a, b) => a.dating.acad!.start - b.dating.acad!.start);
+export const rabbinicEras = rabbinicJson as RabbinicEra[];
+
 export const eventById = new Map(events.map((e) => [e.id, e]));
+export const personById = new Map(people.map((p) => [p.id, p]));
+export const rabbinicById = new Map(rabbinicEras.map((r) => [r.id, r]));
 export const rulerById = new Map(rulers.map((r) => [r.id, r]));
 export const eraById = new Map(eras.map((e) => [e.id, e]));
 
@@ -155,4 +162,38 @@ export const POWER_COLORS: Record<string, string> = {
   crusader: '#b0453a',
   ottoman: '#a33a5a',
   british: '#5a5f73',
+};
+
+/** Year a person is placed at on the timeline: the middle of their life. */
+export const personYear = (p: Person) => {
+  const s = p.dating.acad!;
+  return (s.start + (s.end ?? s.start)) / 2;
+};
+
+/** The rabbinic era that contains a year (under the given dating mode). */
+export function rabbinicEraAt(year: number, mode: DateMode) {
+  return rabbinicEras.find((r) => {
+    const s = mainSpan(r.dating, mode);
+    return year >= s.start && year < (s.end ?? s.start);
+  });
+}
+
+export const CATEGORY_COLORS: Record<PersonCategory, string> = {
+  sage: '#5b7f4a',
+  rabbi: '#6a4c93',
+  thinker: '#2f6f8f',
+  poet: '#b0582f',
+  mystic: '#8a5a9e',
+  leader: '#1f5fa8',
+  writer: '#8a6d3b',
+};
+
+export const CATEGORY_LABELS: Record<PersonCategory, { he: string; en: string }> = {
+  sage: { he: 'חכם', en: 'Sage' },
+  rabbi: { he: 'רב ופוסק', en: 'Rabbi & halakhist' },
+  thinker: { he: 'הוגה', en: 'Thinker' },
+  poet: { he: 'משורר', en: 'Poet' },
+  mystic: { he: 'מקובל', en: 'Mystic' },
+  leader: { he: 'מנהיג ועסקן', en: 'Leader' },
+  writer: { he: 'סופר והיסטוריון', en: 'Writer & historian' },
 };

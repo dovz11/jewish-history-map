@@ -10,6 +10,8 @@ import { HistoryLane } from './HistoryLane';
 import { LaneLabels } from './LaneLabels';
 import { SovereigntyLane } from './SovereigntyLane';
 import { TimeAxis } from './TimeAxis';
+import { RabbinicArches } from './RabbinicArches';
+import { PeopleLane } from './PeopleLane';
 
 export function Scene() {
   const lanes = useStore((s) => s.lanes);
@@ -37,6 +39,8 @@ export function Scene() {
         {lanes.sovereignty && <SovereigntyLane />}
         {lanes.demography && <DemographyRiver />}
         {lanes.history && <HistoryLane />}
+        {lanes.rabbinic && <RabbinicArches />}
+        {lanes.people && <PeopleLane />}
       </Suspense>
       <CameraRig />
     </Canvas>

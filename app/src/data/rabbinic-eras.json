@@ -1,0 +1,59 @@
+[
+  {
+    "id": "great-assembly", "color": "#b9a27a",
+    "title": { "he": "אנשי כנסת הגדולה", "en": "Men of the Great Assembly" },
+    "dating": { "acad": { "start": -450, "end": -200, "approx": true }, "trad": { "start": -353, "end": -319 },
+      "note": { "he": "לפי המסורת: מימי עזרא ועד שמעון הצדיק, \"משיירי כנסת הגדולה\". במחקר אין הסכמה על אופיו של המוסד ועל זמנו.", "en": "By tradition: from Ezra to Simeon the Just, \"of the last of the Great Assembly\". Scholars disagree about the institution's nature and dates." } },
+    "summary": { "he": "המוסד שלפי המסורת קיבל את התורה מהנביאים: חתם ספרים מן המקרא, תיקן ברכות ותפילות וקבע את \"סייג לתורה\".", "en": "The body that, by tradition, received the Torah from the prophets: it closed books of the Bible, instituted blessings and prayers, and made \"a fence around the Torah\"." },
+    "wiki": { "he": "כנסת הגדולה", "en": "Great Assembly" }
+  },
+  {
+    "id": "zugot", "color": "#a3b6c9",
+    "title": { "he": "הזוגות", "en": "The Zugot (Pairs)" },
+    "dating": { "acad": { "start": -170, "end": 10, "approx": true } },
+    "summary": { "he": "חמישה זוגות של מנהיגים, נשיא ואב בית דין, מיוסי בן יועזר ויוסי בן יוחנן ועד הלל ושמאי.", "en": "Five pairs of leaders, a Nasi and a head of the court, from Yose ben Yoezer and Yose ben Yohanan to Hillel and Shammai." },
+    "wiki": { "he": "תקופת הזוגות", "en": "Zugot" }
+  },
+  {
+    "id": "tannaim", "color": "#8fb39a",
+    "title": { "he": "התנאים", "en": "Tannaim" },
+    "dating": { "acad": { "start": 10, "end": 220, "approx": true } },
+    "summary": { "he": "חכמי המשנה, מבית הלל ובית שמאי ועד רבי יהודה הנשיא. ביניהם רבן יוחנן בן זכאי, רבי עקיבא ורבי מאיר.", "en": "The sages of the Mishnah, from the schools of Hillel and Shammai to Rabbi Judah the Prince, including Rabban Yohanan ben Zakkai, Rabbi Akiva and Rabbi Meir." },
+    "wiki": { "he": "תנאים", "en": "Tannaim" }
+  },
+  {
+    "id": "amoraim", "color": "#b39ac9",
+    "title": { "he": "האמוראים", "en": "Amoraim" },
+    "dating": { "acad": { "start": 220, "end": 500, "approx": true } },
+    "summary": { "he": "חכמי התלמוד בארץ ישראל ובבבל, מרב ושמואל ועד רבינא ורב אשי, שפירשו את המשנה ופיתחו אותה.", "en": "The sages of the Talmud in the Land of Israel and Babylonia, from Rav and Shmuel to Ravina and Rav Ashi, who interpreted and expanded the Mishnah." },
+    "wiki": { "he": "אמוראים", "en": "Amoraim" }
+  },
+  {
+    "id": "savoraim", "color": "#c9a3a3",
+    "title": { "he": "הסבוראים", "en": "Savoraim" },
+    "dating": { "acad": { "start": 500, "end": 589, "approx": true } },
+    "summary": { "he": "חכמי בבל שאחרי חתימת התלמוד, שהשלימו את עריכתו והוסיפו לו קטעי הסבר.", "en": "The Babylonian sages after the close of the Talmud, who completed its editing and added explanatory passages." },
+    "wiki": { "he": "סבוראים", "en": "Savoraim" }
+  },
+  {
+    "id": "geonim", "color": "#c9b78f",
+    "title": { "he": "הגאונים", "en": "Geonim" },
+    "dating": { "acad": { "start": 589, "end": 1038 } },
+    "summary": { "he": "ראשי ישיבות סורא ופומבדיתא, שהנהיגו את העולם היהודי באמצעות שאלות ותשובות. ביניהם רב סעדיה גאון ורב האי גאון.", "en": "The heads of the academies of Sura and Pumbedita, who led the Jewish world through responsa, including Saadia Gaon and Hai Gaon." },
+    "wiki": { "he": "גאונים", "en": "Geonim" }
+  },
+  {
+    "id": "rishonim", "color": "#9fc0c9",
+    "title": { "he": "הראשונים", "en": "Rishonim" },
+    "dating": { "acad": { "start": 1038, "end": 1563 } },
+    "summary": { "he": "גדולי הפרשנים והפוסקים של ימי הביניים באשכנז, בספרד ובצפון אפריקה, ובהם רש\"י, הרמב\"ם, הרמב\"ן והרא\"ש. התקופה מסתיימת בשולחן ערוך.", "en": "The great medieval commentators and codifiers in Ashkenaz, Spain and North Africa, among them Rashi, Maimonides, Nahmanides and the Rosh. The period ends with the Shulchan Aruch." },
+    "wiki": { "he": "ראשונים", "en": "Rishonim" }
+  },
+  {
+    "id": "acharonim", "color": "#c9a0b7",
+    "title": { "he": "האחרונים", "en": "Acharonim" },
+    "dating": { "acad": { "start": 1563, "end": 2026 } },
+    "summary": { "he": "פוסקי ההלכה מהשולחן ערוך ועד ימינו, ובהם הרמ\"א, המהר\"ל, הגאון מווילנה, החפץ חיים והרב עובדיה יוסף.", "en": "Halakhic authorities from the Shulchan Aruch to the present, among them the Rema, the Maharal, the Vilna Gaon, the Chofetz Chaim and Rabbi Ovadia Yosef." },
+    "wiki": { "he": "אחרונים", "en": "Acharonim" }
+  }
+]

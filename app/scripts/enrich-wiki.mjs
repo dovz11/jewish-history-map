@@ -13,7 +13,7 @@ import path from 'node:path';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.join(root, '..', 'src', 'data');
-const FILES = ['events.json', 'rulers.json', 'eras.json', 'places.json'];
+const FILES = ['events.json', 'rulers.json', 'eras.json', 'places.json', 'rabbinic-eras.json', 'people.json'];
 
 const UA = 'JewishHistoryMap3D/0.1 (educational, non-commercial)';
 

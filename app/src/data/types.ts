@@ -118,7 +118,9 @@ export type ItemRef =
   | { type: 'event'; id: string }
   | { type: 'ruler'; id: string }
   | { type: 'era'; id: string }
-  | { type: 'pop'; year: number };
+  | { type: 'pop'; year: number }
+  | { type: 'person'; id: string }
+  | { type: 'rabbinic'; id: string };
 
 /** A center of Jewish life, shown on the globe while active. */
 export interface Center {
@@ -129,4 +131,31 @@ export interface Center {
   to: number;
   /** 1..3 relative size */
   weight: 1 | 2 | 3;
+}
+
+/** A period of rabbinic tradition (Tannaim, Amoraim, Geonim…), drawn as an arch. */
+export interface RabbinicEra {
+  id: string;
+  title: Localized;
+  dating: Dating;
+  summary: Localized;
+  wiki: WikiRef;
+  color: string;
+}
+
+export type PersonCategory = 'sage' | 'rabbi' | 'thinker' | 'poet' | 'mystic' | 'leader' | 'writer';
+
+/** A historical personality; `dating` spans birth to death. */
+export interface Person {
+  id: string;
+  name: Localized;
+  dating: Dating;
+  category: PersonCategory;
+  importance: 1 | 2 | 3 | 4 | 5;
+  summary: Localized;
+  wiki: WikiRef;
+  /** places in life order */
+  places?: string[];
+  /** year each place begins (same length as places); omitted = spread evenly over the lifespan */
+  placeFrom?: number[];
 }

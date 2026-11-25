@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { DateMode, ItemRef } from '../data/types';
 import { L, lang, t, type StringKey } from '../i18n';
-import { eras, events, mainSpan, rulers } from '../lib/data';
+import { eras, events, mainSpan, people, rabbinicEras, rulers } from '../lib/data';
 import { formatSpan } from '../lib/dates';
 import { focusItem, switchView } from '../lib/focus';
 import { type LaneKey, useStore } from '../store';
@@ -17,6 +17,8 @@ const LANES: { key: LaneKey; label: StringKey }[] = [
   { key: 'demography', label: 'laneDemography' },
   { key: 'sovereignty', label: 'laneSovereignty' },
   { key: 'eras', label: 'laneEras' },
+  { key: 'rabbinic', label: 'laneRabbinic' },
+  { key: 'people', label: 'lanePeople' },
 ];
 
 export function Toolbar() {
@@ -69,6 +71,8 @@ function Search() {
     () => [
       ...events.map((e) => ({ ref: { type: 'event', id: e.id } as ItemRef, label: L(e.title), alt: `${e.title.he} ${e.title.en ?? ''}`, sub: formatSpan(mainSpan(e.dating, mode)) })),
       ...rulers.map((r) => ({ ref: { type: 'ruler', id: r.id } as ItemRef, label: L(r.title), alt: `${r.title.he} ${r.title.en ?? ''}`, sub: `${t('laneSovereignty')} · ${formatSpan(mainSpan(r.dating, mode))}` })),
+      ...people.map((p) => ({ ref: { type: 'person', id: p.id } as ItemRef, label: L(p.name), alt: `${p.name.he} ${p.name.en ?? ''}`, sub: `${t('lanePeople')} · ${formatSpan(p.dating.acad!)}` })),
+      ...rabbinicEras.map((r) => ({ ref: { type: 'rabbinic', id: r.id } as ItemRef, label: L(r.title), alt: `${r.title.he} ${r.title.en ?? ''}`, sub: `${t('rabbinicEra')} · ${formatSpan(mainSpan(r.dating, mode))}` })),
       ...eras.map((r) => ({ ref: { type: 'era', id: r.id } as ItemRef, label: L(r.title), alt: `${r.title.he} ${r.title.en ?? ''}`, sub: t('era') })),
     ],
     [mode],

@@ -11,6 +11,7 @@ export function LaneLabels() {
   const lanes = useStore((s) => s.lanes);
   const mode = useStore((s) => s.mode);
   const items: { z: number; text: string; show: boolean; color: string }[] = [
+    { z: LANES.people + 3.6, text: t('laneTitlePeople'), show: lanes.people || lanes.rabbinic, color: COLORS.ink },
     { z: LANES.history + 1.5, text: t('laneTitleHistory'), show: lanes.history, color: COLORS.ink },
     { z: LANES.river + 5.5, text: t('laneTitlePop'), show: lanes.demography, color: COLORS.river },
     { z: LANES.sovereignty + 2.2, text: t('laneTitleRule'), show: lanes.sovereignty, color: COLORS.ink },

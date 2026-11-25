@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import type { DateMode, ItemRef, Lang } from './data/types';
 import { applyLang, lang as initialLang } from './i18n';
 
-export type LaneKey = 'history' | 'demography' | 'sovereignty' | 'eras';
+export type LaneKey = 'history' | 'demography' | 'sovereignty' | 'eras' | 'rabbinic' | 'people';
 export type ViewKind = 'timeline' | 'globe';
 
 export interface FlyRequest {
@@ -54,7 +54,7 @@ let nonce = 0;
 
 export const useStore = create<State>((set) => ({
   mode: 'both',
-  lanes: { history: true, demography: true, sovereignty: true, eras: true },
+  lanes: { history: true, demography: true, sovereignty: true, eras: true, rabbinic: true, people: true },
   selected: null,
   hoverText: null,
   viewX: 0,

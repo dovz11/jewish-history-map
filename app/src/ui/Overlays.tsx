@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { L, lang, t } from '../i18n';
-import { eras, events, mainSpan, rulers, KIND_COLORS, KIND_LABELS, POWER_COLORS } from '../lib/data';
+import { CATEGORY_COLORS, CATEGORY_LABELS, eras, events, mainSpan, people, rabbinicEras, rulers, KIND_COLORS, KIND_LABELS, POWER_COLORS } from '../lib/data';
 import { formatSpan } from '../lib/dates';
 import { focusItem } from '../lib/focus';
 import { useStore } from '../store';
@@ -53,6 +53,31 @@ export function ListView({ standalone = false }: { standalone?: boolean }) {
             </section>
           );
         })}
+        <section>
+          <h3>{t('laneRabbinic')}</h3>
+          <ul>
+            {rabbinicEras.map((r) => (
+              <li key={r.id}>
+                <span className="dot" style={{ background: r.color }} />
+                <button className="link" onClick={go(() => focusItem({ type: 'rabbinic', id: r.id }))}>{L(r.title)}</button>
+                <small> {formatSpan(mainSpan(r.dating, mode))}</small>
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section>
+          <h3>{t('peopleSection')}</h3>
+          <ul>
+            {people.map((p) => (
+              <li key={p.id}>
+                <span className="dot" style={{ background: CATEGORY_COLORS[p.category] }} title={CATEGORY_LABELS[p.category][lang]} />
+                <button className="link" onClick={go(() => focusItem({ type: 'person', id: p.id }))}>{L(p.name)}</button>
+                <small> {formatSpan(p.dating.acad!)}</small>
+                {standalone && <p>{L(p.summary)}</p>}
+              </li>
+            ))}
+          </ul>
+        </section>
         <section>
           <h3>{t('laneTitleRule')}</h3>
           <ul>
@@ -109,6 +134,8 @@ function HelpHe() {
         <li><b>דמוגרפיה</b>: „נהר” שרוחבו וגובהו הם מספר היהודים בעולם. החלק הזהוב הוא היהודים בארץ ישראל, והרצועה הבהירה סביבו היא טווח ההערכות.</li>
         <li><b>שלטון</b>: מי שלט בארץ ישראל בכל תקופה. גושים גבוהים עם פס זהוב מסמנים ריבונות או שלטון עצמי יהודי.</li>
         <li><b>תקופות</b>: רקע צבעוני לתקופות הגדולות.</li>
+        <li><b>תקופות ההלכה</b>: קשתות מאחורי האירועים, מאנשי כנסת הגדולה, דרך התנאים, האמוראים, הגאונים והראשונים, ועד האחרונים.</li>
+        <li><b>אישים</b>: דמויות שעומדות מתחת לקשת התקופה שלהן, ופס על הקרקע מראה את שנות חייהן. בגלובוס הן מופיעות במקום שבו חיו באותה שנה.</li>
       </ul>
       <h3>הגלובוס</h3>
       <p>
@@ -151,6 +178,8 @@ function HelpEn() {
         <li><b>Demography</b>: a “river” whose width and height show the world Jewish population. The gold part is Jews in the Land of Israel, and the pale band around it is the range of estimates.</li>
         <li><b>Rule</b>: who ruled the Land of Israel in each period. Tall blocks with a gold stripe mark Jewish sovereignty or self-rule.</li>
         <li><b>Eras</b>: colored ground for the great periods.</li>
+        <li><b>Rabbinic eras</b>: arches behind the events, from the Great Assembly through the Tannaim, Amoraim, Geonim and Rishonim to the Acharonim.</li>
+        <li><b>People</b>: figures standing beneath the arch of their period, with a bar on the ground for their lifespan. On the globe they appear where they lived in that year.</li>
       </ul>
       <h3>The globe</h3>
       <p>

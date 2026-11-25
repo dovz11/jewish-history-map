@@ -1,7 +1,8 @@
 import type { ItemRef } from '../data/types';
 import { useStore } from '../store';
-import { eraById, eventById, mainSpan, navOrder, rulerById } from './data';
+import { eraById, eventById, mainSpan, navOrder, people, personById, personYear, rabbinicById, rulerById } from './data';
 import { LANES, xToYear, yearToX } from './timeScale';
+import { personPlaceAt } from './places';
 
 /** Select an item and fly the camera to it. */
 export function focusItem(ref: ItemRef) {
@@ -30,6 +31,18 @@ export function focusItem(ref: ItemRef) {
     const s = mainSpan(era.dating, mode);
     const x0 = yearToX(s.start), x1 = yearToX(s.end!);
     st.flyTo((x0 + x1) / 2, { z: -6, dist: Math.min(230, Math.max(50, Math.abs(x1 - x0))) });
+  } else if (ref.type === 'person') {
+    const p = personById.get(ref.id);
+    if (!p) return;
+    if (!st.lanes.people) st.toggleLane('people');
+    st.flyTo(yearToX(personYear(p)), { z: LANES.people + 3, dist: 44 });
+  } else if (ref.type === 'rabbinic') {
+    const r = rabbinicById.get(ref.id);
+    if (!r) return;
+    if (!st.lanes.rabbinic) st.toggleLane('rabbinic');
+    const s = mainSpan(r.dating, mode);
+    const x0 = yearToX(s.start), x1 = yearToX(s.end ?? s.start);
+    st.flyTo((x0 + x1) / 2, { z: LANES.rabbinic + 4, dist: Math.min(170, Math.max(40, Math.abs(x1 - x0) * 1.3)) });
   } else {
     if (!st.lanes.demography) st.toggleLane('demography');
     st.flyTo(yearToX(ref.year), { z: LANES.river, dist: 30 });
@@ -74,6 +87,15 @@ function focusOnGlobe(ref: ItemRef) {
   } else if (ref.type === 'era') {
     const era = eraById.get(ref.id);
     if (era) st.setGlobeYear(mainSpan(era.dating, mode).start);
+  } else if (ref.type === 'person') {
+    const p = personById.get(ref.id);
+    if (!p) return;
+    const y = Math.round(personYear(p));
+    st.setGlobeYear(y);
+    if (p.places?.length) st.focusPlace(personPlaceAt(p, y));
+  } else if (ref.type === 'rabbinic') {
+    const r = rabbinicById.get(ref.id);
+    if (r) st.setGlobeYear(mainSpan(r.dating, mode).start);
   } else {
     st.setGlobeYear(ref.year);
   }
@@ -90,4 +112,12 @@ export function switchView(view: 'timeline' | 'globe') {
   }
   st.setViewKind(view);
   if (st.selected) setTimeout(() => focusItem(st.selected!), 50);
+}
+
+/** Step to the chronologically next / previous person. */
+export function stepPerson(delta: 1 | -1) {
+  const sel = useStore.getState().selected;
+  const i = sel?.type === 'person' ? people.findIndex((p) => p.id === sel.id) : -1;
+  const next = people[Math.max(0, Math.min(people.length - 1, i === -1 ? 0 : i + delta))];
+  focusItem({ type: 'person', id: next.id });
 }

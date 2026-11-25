@@ -74,5 +74,12 @@
   { "id": "los-angeles", "name": { "he": "לוס אנג'לס", "en": "Los Angeles" }, "lat": 34.05, "lon": -118.24 },
   { "id": "montreal", "name": { "he": "מונטריאול", "en": "Montreal" }, "lat": 45.50, "lon": -73.57 },
   { "id": "casablanca", "name": { "he": "קזבלנקה", "en": "Casablanca" }, "lat": 33.57, "lon": -7.59 },
-  { "id": "tbilisi", "name": { "he": "טביליסי", "en": "Tbilisi" }, "lat": 41.72, "lon": 44.78 }
+  { "id": "tbilisi", "name": { "he": "טביליסי", "en": "Tbilisi" }, "lat": 41.72, "lon": 44.78 },
+  { "id": "troyes", "name": { "he": "טרואה", "en": "Troyes" }, "lat": 48.30, "lon": 4.08 },
+  { "id": "girona", "name": { "he": "גירונה", "en": "Girona" }, "lat": 41.98, "lon": 2.82 },
+  { "id": "prague", "name": { "he": "פראג", "en": "Prague" }, "lat": 50.09, "lon": 14.42 },
+  { "id": "hamburg", "name": { "he": "המבורג", "en": "Hamburg" }, "lat": 53.55, "lon": 9.99 },
+  { "id": "vienna", "name": { "he": "וינה", "en": "Vienna" }, "lat": 48.21, "lon": 16.37 },
+  { "id": "rissani", "name": { "he": "ריסאני (תאפילאלת)", "en": "Rissani (Tafilalt)" }, "lat": 31.28, "lon": -4.26 },
+  { "id": "netivot", "name": { "he": "נתיבות", "en": "Netivot" }, "lat": 31.42, "lon": 34.59 }
 ]

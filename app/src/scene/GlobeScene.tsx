@@ -5,11 +5,11 @@ import { Canvas, useFrame, useThree, type ThreeEvent } from '@react-three/fiber'
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
-import type { Center, HistoryEvent, Migration } from '../data/types';
-import { KIND_COLORS, mainSpan } from '../lib/data';
+import type { Center, HistoryEvent, Migration, Person } from '../data/types';
+import { CATEGORY_COLORS, KIND_COLORS, mainSpan } from '../lib/data';
 import { formatSpan } from '../lib/dates';
 import {
-  activeCenters, activeEvents, activeMigrations, arcPoints, GLOBE_R, latLonToVec3, placeById, placeVec,
+  activeCenters, activeEvents, activeMigrations, activePeople, personPlaceAt, arcPoints, GLOBE_R, latLonToVec3, placeById, placeVec,
 } from '../lib/globe';
 import { sameRef, useStore } from '../store';
 import { COLORS, FONT_BOLD, FONT_REGULAR } from './constants';
@@ -26,6 +26,7 @@ export function GlobeScene() {
       <Earth />
       <Centers />
       <EventPins />
+      <PeoplePins />
       <Migrations />
       <GlobeCamera />
     </Canvas>
@@ -234,6 +235,49 @@ const EventPin = memo(function EventPin({ event, place, primary }: { event: Hist
               {formatSpan(mainSpan(event.dating, mode))}
             </Text>
           </group>
+        </Billboard>
+      </group>
+    </group>
+  );
+});
+
+function PeoplePins() {
+  const year = useStore((s) => s.globeYear);
+  return <group>{activePeople(year).map((p) => <PersonPin key={p.id} person={p} place={personPlaceAt(p, year)} />)}</group>;
+}
+
+const PersonPin = memo(function PersonPin({ person, place }: { person: Person; place: string }) {
+  const selected = useStore((s) => sameRef(s.selected, { type: 'person', id: person.id }));
+  const pos = useMemo(() => placeVec(place, GLOBE_R + 0.05)!, [place]);
+  // nudge sideways so a person doesn't sit exactly on a center or event pin
+  const off = useMemo(() => pos.clone().add(new THREE.Vector3(0.25, -0.25, 0.1)).setLength(GLOBE_R + 0.05), [pos]);
+  const groupRef = useFacing(off);
+  const labelRef = useRef<THREE.Group>(null);
+  const color = CATEGORY_COLORS[person.category];
+  useFrame(({ camera }) => {
+    if (labelRef.current) labelRef.current.visible = selected || camera.position.length() < 22 || person.importance >= 4;
+  });
+  const onClick = (e: ThreeEvent<MouseEvent>) => {
+    e.stopPropagation();
+    useStore.getState().select({ type: 'person', id: person.id });
+    useStore.getState().focusPlace(place);
+  };
+  return (
+    <group ref={groupRef}>
+      <mesh
+        position={off}
+        onClick={onClick}
+        onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = 'pointer'; useStore.getState().setHover(`${L(person.name)} · ${formatSpan(person.dating.acad!)}`); }}
+        onPointerOut={() => { document.body.style.cursor = ''; useStore.getState().setHover(null); }}
+      >
+        <sphereGeometry args={[selected ? 0.16 : 0.11, 16, 12]} />
+        <meshStandardMaterial color={selected ? COLORS.selected : color} emissive={color} emissiveIntensity={0.35} />
+      </mesh>
+      <group ref={labelRef}>
+        <Billboard position={off.clone().multiplyScalar(1.015)}>
+          <Text font={FONT_REGULAR} fontSize={0.2} color={color} outlineWidth={0.025} outlineColor="#fffaf0" anchorX="center" anchorY="bottom" position={[0, 0.14, 0]} direction="auto" raycast={() => null}>
+            {L(person.name)}
+          </Text>
         </Billboard>
       </group>
     </group>

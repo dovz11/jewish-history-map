@@ -1,8 +1,8 @@
 import placesJson from '../data/places.json';
 import centersJson from '../data/centers.json';
 import migrationsJson from '../data/migrations.json';
-import type { Center, DateMode, HistoryEvent, Migration, Place } from '../data/types';
-import { events, mainSpan } from './data';
+import type { Center, DateMode, HistoryEvent, Migration, Person, Place } from '../data/types';
+import { events, mainSpan, people } from './data';
 
 /** Places, centers and migrations for the globe (no three.js here, so the UI can import it cheaply). */
 export const places = placesJson as Place[];
@@ -40,4 +40,25 @@ export function globeEventOrder(mode: DateMode) {
     .filter((e) => e.places?.length)
     .map((e) => ({ e, y: mainSpan(e.dating, mode).start }))
     .sort((a, b) => a.y - b.y);
+}
+
+/** People alive in a given year (with a known place). */
+export function activePeople(y: number) {
+  return people.filter((p) => p.places?.length && y >= p.dating.acad!.start && y <= (p.dating.acad!.end ?? p.dating.acad!.start));
+}
+
+/**
+ * Where a person was in a given year: by the explicit move years when given, otherwise
+ * by the year's position within the lifespan (places are listed in life order).
+ */
+export function personPlaceAt(p: Person, y: number): string {
+  const places = p.places!;
+  if (p.placeFrom) {
+    let i = 0;
+    while (i + 1 < places.length && y >= p.placeFrom[i + 1]) i++;
+    return places[i];
+  }
+  const s = p.dating.acad!, end = s.end ?? s.start;
+  const f = end > s.start ? (y - s.start) / (end - s.start) : 0;
+  return places[Math.max(0, Math.min(places.length - 1, Math.floor(f * places.length)))];
 }
