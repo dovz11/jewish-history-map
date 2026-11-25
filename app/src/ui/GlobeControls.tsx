@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { formatYear, gematria, toAnnoMundi } from '../lib/dates';
-import { activeCenters, globeEventOrder } from '../lib/globe';
+import { activeCenters, globeEventOrder } from '../lib/places';
 import { U_MAX, uToYear, yearToU, YEAR_MAX } from '../lib/timeScale';
 import { useStore } from '../store';
 

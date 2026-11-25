@@ -5,7 +5,7 @@ import {
 } from '../lib/data';
 import { formatAM, formatMillions, formatSpan, formatYear } from '../lib/dates';
 import { focusItem, stepEvent, switchView } from '../lib/focus';
-import { placeById } from '../lib/globe';
+import { placeById } from '../lib/places';
 import { useStore } from '../store';
 import { useWikiSummary } from './useWiki';
 
