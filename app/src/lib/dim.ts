@@ -10,10 +10,10 @@
  */
 export type Dim = '2d' | '3d';
 
-export let FLAT = false;
+export let FLAT = true;
 
 /** Animated 0 (2D) … 1 (3D); `value` eases towards `target` (see useLiftDriver in Poster.tsx). */
-export const lift = { value: 1, target: 1 };
+export const lift = { value: 0, target: 0 };
 
 /** Camera distance from its target, published every frame (used for level of detail). */
 export const view = { dist: 100 };
@@ -27,7 +27,8 @@ export function setFlat(flat: boolean, animate = true) {
 export function initialDim(): Dim {
   const fromHash = new URLSearchParams(location.hash.slice(1)).get('dim');
   if (fromHash === '2d' || fromHash === '3d') return fromHash;
-  return localStorage.getItem('jhm-dim') === '2d' ? '2d' : '3d';
+  // 2D (the flat poster) is the default; a visitor's own choice is remembered
+  return localStorage.getItem('jhm-dim') === '3d' ? '3d' : '2d';
 }
 
 /** Coarse pointer (phone / tablet): enables touch-only conveniences. */

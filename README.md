@@ -150,15 +150,29 @@ The build is fully static. It uses a relative base, so it works from any folder 
 - **Netlify, Cloudflare Pages or any static host:** build command `npm run build` (in `app/`),
   output folder `app/dist`.
 
-## Sources and licenses
+## License, sources and disclaimer
 
-- Summaries were written for this project.
-- Excerpts and images come from Wikipedia and Wikimedia Commons, under CC BY-SA and the
-  licenses of the individual files. The panel credits each excerpt.
+**Free to use.** The code, the summaries and the data compiled for this project are released under
+[MIT No Attribution](LICENSE): anyone may copy, change, publish and use them for any purpose,
+including commercially, without asking and without giving credit.
+
+**No warranty.** Everything is provided "as is", without warranty of any kind. The historical
+content may contain mistakes and is not an authoritative source.
+
+**Material by others keeps its own license** (details in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)):
+- Wikipedia excerpts (`app/src/data/wiki-cache.*.json` and the details panel) are under
+  CC BY-SA 4.0. The panel names the article and the license under each excerpt.
+- Images are loaded live from Wikimedia Commons, each under its own license; none are stored here.
+- Heebo font © The Heebo Project Authors, SIL Open Font License 1.1 (`app/public/fonts/OFL.txt`).
+- Coastlines: Natural Earth (public domain).
 - Population figures are rounded estimates from Broshi & Finkelstein, Baron, Ruppin,
   DellaPergola and JPPI. Ancient and medieval numbers are very uncertain, and the map shows
   that uncertainty as a range.
-- Heebo font © The Heebo Project Authors, SIL Open Font License 1.1 (`app/public/fonts/OFL.txt`).
+
+The summaries were written for this project. The general idea and the visual style of the 2D
+poster were inspired by the "ציר זמן יהודי" poster on odyeda.com; no text, data or graphics were
+copied from it, and the project is not affiliated with it.
 
 ## Roadmap
 

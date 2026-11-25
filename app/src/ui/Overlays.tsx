@@ -153,9 +153,17 @@ function HelpHe() {
         במצב <b>שניהם</b>, האירוע עומד במקומו לפי המחקר, וקשת מקווקוות מובילה למקומו לפי המסורת. אירועים שידועים רק מהמסורת מסומנים בגוון חום.
         נתוני הדמוגרפיה מבוססים על המחקר בלבד, ולכן אינם משתנים בין שיטות התיארוך.
       </p>
+      <h3>שימוש חופשי, בלי אחריות</h3>
+      <p>
+        מותר להעתיק, לשנות ולהשתמש בקוד, בתקצירים ובנתונים של האתר לכל מטרה, גם בלי לציין מקור (רישיון MIT No Attribution).
+        האתר והמידע שבו ניתנים „כמות שהם” (AS IS), בלי אחריות מכל סוג. ייתכנו בהם טעויות בתאריכים, במספרים ובתיאורים,
+        ואין להסתמך עליהם כמקור מוסמך.
+      </p>
       <p className="muted">
-        התקצירים נכתבו לאתר זה. קטעי הטקסט והתמונות שבחלון הפרטים לקוחים מוויקיפדיה ומוויקישיתוף, ברישיונות CC BY-SA.
-        קווי החוף: Natural Earth (נחלת הכלל). השראה: הפוסטר „ציר זמן יהודי” באתר odyeda.com.
+        חומרים של אחרים נשארים ברישיון שלהם: קטעי הטקסט מוויקיפדיה ברישיון CC BY-SA 4.0 (שם הערך מצוין מתחת לכל קטע),
+        התמונות נטענות מוויקישיתוף ולכל אחת מהן רישיון משלה, הגופן Heebo ברישיון SIL OFL 1.1, וקווי החוף מ-Natural Earth (נחלת הכלל).
+        הרעיון של ציר זמן בצורת פוסטר קיבל השראה מהפוסטר „ציר זמן יהודי” באתר odyeda.com, אבל שום טקסט, נתון או גרפיקה לא הועתקו ממנו,
+        ואין קשר בין האתרים. <LicenseLinks />
       </p>
     </>
   );
@@ -201,10 +209,30 @@ function HelpEn() {
         In <b>Both</b> mode an item stands at its academic date, and a dashed arc leads to its traditional date. Items known only from tradition are shown in brown.
         Population figures come from scholarship only, so they don't change between dating systems.
       </p>
-      <p className="muted">
-        Summaries were written for this site. Excerpts and images in the details panel come from Wikipedia and Wikimedia Commons under CC BY-SA.
-        Coastlines: Natural Earth (public domain). Inspired by the “Jewish Timeline” poster on odyeda.com.
+      <h3>Free to use, no warranty</h3>
+      <p>
+        You may copy, change and use this site's code, summaries and data for any purpose, without even giving credit (MIT No Attribution license).
+        The site and its information are provided “as is”, without warranty of any kind. They may contain mistakes in dates, numbers and descriptions,
+        and should not be relied on as an authoritative source.
       </p>
+      <p className="muted">
+        Material by others keeps its own license: the Wikipedia excerpts are under CC BY-SA 4.0 (the article is named under each excerpt),
+        the images load from Wikimedia Commons and each has its own license, the Heebo font is under the SIL OFL 1.1, and the coastlines come from Natural Earth (public domain).
+        The idea of a poster-style timeline was inspired by the “Jewish Timeline” poster on odyeda.com, but no text, data or graphics were copied from it,
+        and the sites are not affiliated. <LicenseLinks />
+      </p>
+    </>
+  );
+}
+
+const REPO = 'https://github.com/dovz11/jewish-history-map/blob/main/';
+
+function LicenseLinks() {
+  return (
+    <>
+      <a href={`${REPO}LICENSE`} target="_blank" rel="noreferrer">{t('licenseLink')}</a>
+      {' · '}
+      <a href={`${REPO}THIRD_PARTY_NOTICES.md`} target="_blank" rel="noreferrer">{t('noticesLink')}</a>
     </>
   );
 }

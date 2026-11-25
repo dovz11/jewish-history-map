@@ -45,7 +45,7 @@ function parseHash(): { ref: ItemRef | null; mode: DateMode | null; globe: boole
 function writeHash(ref: ItemRef | null, mode: DateMode, globe: boolean) {
   const p = new URLSearchParams();
   if (globe) p.set('view', 'globe');
-  if (useStore.getState().dim === '2d') p.set('dim', '2d');
+  if (useStore.getState().dim === '3d') p.set('dim', '3d');
   if (lang !== 'he') p.set('lang', lang);
   if (ref?.type === 'pop') p.set('pop', String(ref.year));
   else if (ref) p.set(ref.type, ref.id);
