@@ -1,0 +1,36 @@
+name: תיקון תוכן · Content correction
+description: טעות בתאריך, בתקציר, בקישור או בבחירת האירועים · A wrong date, summary, link or choice of events
+labels: [content]
+body:
+  - type: input
+    id: item
+    attributes:
+      label: הפריט · Item
+      description: שם האירוע, השלטון או התקופה (או הקישור „באתר” מגיליון הבדיקה) · Name of the event/ruler/era, or its link
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: סוג הבעיה · Problem type
+      options:
+        - תאריך מחקרי · Academic date
+        - תאריך מסורתי · Traditional date
+        - תקציר · Summary
+        - קישור לוויקיפדיה · Wikipedia link
+        - דמוגרפיה · Population figure
+        - אירוע חסר / מיותר · Missing / unnecessary event
+        - אחר · Other
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: התיקון המוצע · Suggested correction
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: מקור · Source
+      description: ספר, מאמר או ערך שמבסס את התיקון · A book, article or entry supporting the correction

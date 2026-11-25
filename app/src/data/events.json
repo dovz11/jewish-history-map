@@ -135,7 +135,7 @@
   {
     "id": "alexander",
     "title": { "he": "אלכסנדר מוקדון כובש את הארץ", "en": "Alexander the Great conquers the land" },
-    "dating": { "acad": { "start": -332 }, "trad": { "start": -313 }, "note": { "he": "מכאן ואילך התיארוך המסורתי והמחקרי מתלכדים כמעט לחלוטין (מניין השטרות, 312 לפנה\"ס).", "en": "From here on the traditional and academic datings almost coincide (the Seleucid era, 312 BCE)." } },
+    "dating": { "acad": { "start": -332 }, "trad": { "start": -319 }, "note": { "he": "לפי המסורת שלטון יוון בארץ החל בשנת 3442 לבריאה (319 לפנה\"ס), שש שנים לפני תחילת מניין השטרות (312 לפנה\"ס). מכאן ואילך התיארוך המסורתי והמחקרי מתלכדים כמעט לחלוטין.", "en": "By tradition Greek rule began in 3442 AM (319 BCE), six years before the Seleucid era (312 BCE). From here on the traditional and academic datings almost coincide." } },
     "importance": 3, "kind": "political",
     "summary": { "he": "תחילת התקופה ההלניסטית: הארץ עוברת לשלטון יווני, ובהמשך לבית תלמי ולבית סלאוקוס.", "en": "The Hellenistic period begins: the land passes to Greek rule, later to the Ptolemies and Seleucids." },
     "wiki": { "he": "אלכסנדר מוקדון", "en": "Alexander the Great" },
@@ -334,7 +334,7 @@
     "title": { "he": "צפת והשולחן ערוך", "en": "Safed and the Shulchan Aruch" },
     "dating": { "acad": { "start": 1565 } },
     "importance": 3, "kind": "religious",
-    "summary": { "he": "צפת הופכת למרכז של הלכה וקבלה: רבי יוסף קארו מדפיס את \"שולחן ערוך\", והאר\"י מפתח את תורת הקבלה.", "en": "Safed becomes a center of law and mysticism: Joseph Karo publishes the Shulchan Aruch and the Ari develops Lurianic Kabbalah." },
+    "summary": { "he": "צפת הופכת למרכז של הלכה וקבלה: רבי יוסף קארו כותב את \"שולחן ערוך\" (נדפס בוונציה ב-1565), והאר\"י מפתח את תורת הקבלה.", "en": "Safed becomes a center of law and mysticism: Joseph Karo writes the Shulchan Aruch (printed in Venice, 1565) and the Ari develops Lurianic Kabbalah." },
     "wiki": { "he": "שולחן ערוך", "en": "Shulchan Aruch" },
     "places": ["safed"]
   },

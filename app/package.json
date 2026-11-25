@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "enrich": "node scripts/enrich-wiki.mjs"
+    "enrich": "node scripts/enrich-wiki.mjs",
+    "review-sheet": "node scripts/review-sheet.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

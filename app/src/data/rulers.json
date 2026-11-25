@@ -51,14 +51,14 @@
   {
     "id": "persia", "power": "persia",
     "title": { "he": "פרס", "en": "Persian Empire" },
-    "dating": { "acad": { "start": -539, "end": -332 }, "trad": { "start": -371, "end": -313 }, "note": { "he": "במסורת התקופה הפרסית נמשכת כ-34 שנה בלבד לאחר בניין הבית השני; במחקר היא נמשכת למעלה ממאתיים שנה.", "en": "In tradition the Persian period lasts only about 34 years after the Second Temple was built; in scholarship it lasts more than two centuries." } },
+    "dating": { "acad": { "start": -539, "end": -332 }, "trad": { "start": -371, "end": -319 }, "note": { "he": "במסורת התקופה הפרסית נמשכת כ-34 שנה בלבד לאחר בניין הבית השני; במחקר היא נמשכת למעלה ממאתיים שנה.", "en": "In tradition the Persian period lasts only about 34 years after the Second Temple was built; in scholarship it lasts more than two centuries." } },
     "summary": { "he": "פחוות יהוד באימפריה האחמנית: תקופת שיבת ציון והבית השני.", "en": "The province of Yehud in the Achaemenid Empire: the Return to Zion and the Second Temple." },
     "wiki": { "he": "האימפריה האחמנית", "en": "Achaemenid Empire" }
   },
   {
     "id": "ptolemies", "power": "greek",
     "title": { "he": "יוון ובית תלמי", "en": "Macedon and Ptolemies" },
-    "dating": { "acad": { "start": -332, "end": -200 }, "trad": { "start": -313, "end": -200 } },
+    "dating": { "acad": { "start": -332, "end": -200 }, "trad": { "start": -319, "end": -200 } },
     "summary": { "he": "אחרי כיבושי אלכסנדר שלטו בארץ התלמיים, יורשיו במצרים.", "en": "After Alexander, the land is ruled by his Ptolemaic successors in Egypt." },
     "wiki": { "he": "הממלכה התלמית", "en": "Ptolemaic Kingdom" }
   },
@@ -121,12 +121,19 @@
   {
     "id": "crusaders", "power": "crusader",
     "title": { "he": "הצלבנים", "en": "Crusader Kingdom" },
-    "dating": { "acad": { "start": 1099, "end": 1291 } },
-    "summary": { "he": "ממלכת ירושלים הצלבנית. ירושלים נכבשה מידיה בידי צלאח א-דין ב-1187, ועכו, מעוזה האחרון, נפלה ב-1291.", "en": "The Crusader Kingdom of Jerusalem; Saladin took Jerusalem in 1187 and Acre, the last stronghold, fell in 1291." },
+    "dating": { "acad": { "start": 1099, "end": 1187 } },
+    "summary": { "he": "ממלכת ירושלים הצלבנית, עד שצלאח א-דין הביס את הצלבנים בקרני חיטין וכבש את ירושלים ב-1187.", "en": "The Crusader Kingdom of Jerusalem, until Saladin defeated the Crusaders at Hattin and took Jerusalem in 1187." },
     "wiki": { "he": "ממלכת ירושלים", "en": "Kingdom of Jerusalem" }
   },
   {
-    "id": "ayyubids", "power": "arab", "row": 1,
+    "id": "crusaders-acre", "power": "crusader", "row": 1,
+    "title": { "he": "ממלכת עכו הצלבנית", "en": "Crusader kingdom of Acre" },
+    "dating": { "acad": { "start": 1191, "end": 1291 } },
+    "summary": { "he": "אחרי מסע הצלב השלישי החזיקו הצלבנים ברצועת החוף ובירתם עכו (ובירושלים שוב בשנים 1229–1244), עד נפילת עכו בידי הממלוכים ב-1291.", "en": "After the Third Crusade the Crusaders held the coast with Acre as capital (and Jerusalem again in 1229–1244), until Acre fell to the Mamluks in 1291." },
+    "wiki": { "he": "המצור על עכו (1291)", "en": "Siege of Acre (1291)" }
+  },
+  {
+    "id": "ayyubids", "power": "arab",
     "title": { "he": "האיובים", "en": "Ayyubids" },
     "dating": { "acad": { "start": 1187, "end": 1260 } },
     "summary": { "he": "שושלת צלאח א-דין, שכבשה את ירושלים מידי הצלבנים.", "en": "Saladin's dynasty, which took Jerusalem from the Crusaders." },
@@ -135,8 +142,8 @@
   {
     "id": "mamluks", "power": "arab",
     "title": { "he": "הממלוכים", "en": "Mamluk Sultanate" },
-    "dating": { "acad": { "start": 1291, "end": 1516 } },
-    "summary": { "he": "הסולטנות הממלוכית ממצרים, שגירשה את הצלבנים ועצרה את המונגולים בעין ג'אלות (1260).", "en": "The Mamluk Sultanate of Egypt, which expelled the Crusaders and stopped the Mongols at Ain Jalut (1260)." },
+    "dating": { "acad": { "start": 1260, "end": 1516 } },
+    "summary": { "he": "הסולטנות הממלוכית ממצרים, שעצרה את המונגולים בעין ג'אלות (1260) וגירשה את הצלבנים האחרונים (1291).", "en": "The Mamluk Sultanate of Egypt, which stopped the Mongols at Ain Jalut (1260) and expelled the last Crusaders (1291)." },
     "wiki": { "he": "הסולטנות הממלוכית", "en": "Mamluk Sultanate" }
   },
   {
