@@ -7,9 +7,15 @@ import { useSyncExternalStore } from 'react';
  */
 export const canFullscreen = () => typeof document !== 'undefined' && !!document.fullscreenEnabled;
 
-/** Running as an installed app (already without browser bars). */
+/**
+ * Running as an installed app (already without browser bars).
+ * Chrome also reports display-mode "fullscreen" while the page itself is in full screen through
+ * the Fullscreen API, so that case doesn't count: the exit button must stay available then.
+ */
 export const isStandalone = () =>
-  typeof matchMedia !== 'undefined' && (matchMedia('(display-mode: fullscreen)').matches || matchMedia('(display-mode: standalone)').matches);
+  typeof matchMedia !== 'undefined' &&
+  !document.fullscreenElement &&
+  (matchMedia('(display-mode: fullscreen)').matches || matchMedia('(display-mode: standalone)').matches);
 
 export const isIOS = () => typeof navigator !== 'undefined' && /iPhone|iPad|iPod/.test(navigator.userAgent);
 
