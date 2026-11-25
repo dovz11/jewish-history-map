@@ -118,3 +118,14 @@ export type ItemRef =
   | { type: 'ruler'; id: string }
   | { type: 'era'; id: string }
   | { type: 'pop'; year: number };
+
+/** A center of Jewish life, shown on the globe while active. */
+export interface Center {
+  id: string;
+  place: string;
+  title: Localized;
+  from: number;
+  to: number;
+  /** 1..3 relative size */
+  weight: 1 | 2 | 3;
+}

@@ -15,6 +15,8 @@ export function Minimap() {
   const mode = useStore((s) => s.mode);
   const viewX = useStore((s) => s.viewX);
   const halfW = useStore((s) => s.viewHalfWidth);
+  const view = useStore((s) => s.view);
+  const globeYear = useStore((s) => s.globeYear);
   const svgRef = useRef<SVGSVGElement>(null);
   const dragging = useRef(false);
 
@@ -29,7 +31,11 @@ export function Minimap() {
     const svg = svgRef.current!;
     const r = svg.getBoundingClientRect();
     const u = U_MAX - ((clientX - r.left) / r.width) * U_MAX;
-    useStore.getState().flyTo(DIR * u, { dist: 60 });
+    const st = useStore.getState();
+    if (st.view === 'globe') {
+      st.setPlaying(false);
+      st.setGlobeYear(Math.round(uToYear(u)));
+    } else st.flyTo(DIR * u, { dist: 60 });
   };
 
   const vu = viewX / DIR;
@@ -53,7 +59,11 @@ export function Minimap() {
           const x = sx(yearToU(mainSpan(e.dating, mode).start));
           return <rect key={e.id} x={x - 0.4} y={4} width={0.8} height={4 + e.importance * 2.4} fill={KIND_COLORS[e.kind]} />;
         })}
-        <rect className="viewport" x={sx(vu + halfW)} y={1} width={Math.max(2, halfW * 2)} height={H - 2} rx={2} />
+        {view === 'globe' ? (
+          <rect className="needle" x={sx(yearToU(globeYear)) - 1.2} y={0} width={2.4} height={H} />
+        ) : (
+          <rect className="viewport" x={sx(vu + halfW)} y={1} width={Math.max(2, halfW * 2)} height={H - 2} rx={2} />
+        )}
       </svg>
       <div className="minimap-labels">
         {LABELS.map((y) => (

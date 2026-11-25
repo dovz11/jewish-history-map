@@ -1,13 +1,17 @@
 import type { ItemRef } from '../data/types';
 import { useStore } from '../store';
 import { eraById, eventById, mainSpan, navOrder, rulerById } from './data';
-import { LANES, yearToX } from './timeScale';
+import { LANES, xToYear, yearToX } from './timeScale';
 
 /** Select an item and fly the camera to it. */
 export function focusItem(ref: ItemRef) {
   const st = useStore.getState();
   const mode = st.mode;
   st.select(ref);
+  if (st.view === 'globe') {
+    focusOnGlobe(ref);
+    return;
+  }
   if (ref.type === 'event') {
     const e = eventById.get(ref.id);
     if (!e) return;
@@ -51,4 +55,39 @@ export function stepEvent(delta: 1 | -1) {
   }
   const next = order[Math.max(0, Math.min(order.length - 1, i + delta))];
   focusItem(next);
+}
+
+/** On the globe: move the year to the item and turn towards its place. */
+function focusOnGlobe(ref: ItemRef) {
+  const st = useStore.getState();
+  const mode = st.mode;
+  st.setPlaying(false);
+  if (ref.type === 'event') {
+    const e = eventById.get(ref.id);
+    if (!e) return;
+    st.setGlobeYear(mainSpan(e.dating, mode).start);
+    if (e.places?.length) st.focusPlace(e.places[0]);
+  } else if (ref.type === 'ruler') {
+    const r = rulerById.get(ref.id);
+    if (r) st.setGlobeYear(mainSpan(r.dating, mode).start);
+    st.focusPlace('jerusalem');
+  } else if (ref.type === 'era') {
+    const era = eraById.get(ref.id);
+    if (era) st.setGlobeYear(mainSpan(era.dating, mode).start);
+  } else {
+    st.setGlobeYear(ref.year);
+  }
+}
+
+/** Switch between the timeline and the globe, keeping the selected item in view. */
+export function switchView(view: 'timeline' | 'globe') {
+  const st = useStore.getState();
+  if (view === st.view) return;
+  if (view === 'globe' && !st.selected) {
+    // carry the timeline position over as the globe year
+    const y = Math.round(xToYear(st.viewX));
+    st.setGlobeYear(Math.max(-1900, y));
+  }
+  st.setViewKind(view);
+  if (st.selected) setTimeout(() => focusItem(st.selected!), 50);
 }

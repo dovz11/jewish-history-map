@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import type { DateMode, ItemRef } from '../data/types';
 import { eras, events, mainSpan, rulers } from '../lib/data';
 import { formatSpan } from '../lib/dates';
-import { focusItem } from '../lib/focus';
+import { focusItem, switchView } from '../lib/focus';
 import { type LaneKey, useStore } from '../store';
 
 const MODES: { key: DateMode; label: string; title: string }[] = [
@@ -21,6 +21,7 @@ const LANES: { key: LaneKey; label: string }[] = [
 export function Toolbar() {
   const mode = useStore((s) => s.mode);
   const lanes = useStore((s) => s.lanes);
+  const view = useStore((s) => s.view);
   const st = useStore.getState();
   return (
     <header className="toolbar">
@@ -28,6 +29,10 @@ export function Toolbar() {
         ציר הזמן היהודי <span className="sub">בתלת־ממד</span>
       </h1>
       <Search />
+      <div className="seg view-seg" role="radiogroup" aria-label="תצוגה">
+        <button role="radio" aria-checked={view === 'timeline'} className={view === 'timeline' ? 'on' : ''} onClick={() => switchView('timeline')} title="ציר הזמן התלת־ממדי">ציר זמן</button>
+        <button role="radio" aria-checked={view === 'globe'} className={view === 'globe' ? 'on' : ''} onClick={() => switchView('globe')} title="מפת העולם: קהילות ונדידות לאורך הזמן">🌍 גלובוס</button>
+      </div>
       <div className="seg" role="radiogroup" aria-label="שיטת תיארוך">
         {MODES.map((m) => (
           <button key={m.key} role="radio" aria-checked={mode === m.key} className={mode === m.key ? 'on' : ''} title={m.title} onClick={() => st.setMode(m.key)}>
@@ -35,7 +40,7 @@ export function Toolbar() {
           </button>
         ))}
       </div>
-      <div className="lanes" aria-label="שכבות">
+      <div className="lanes" aria-label="שכבות" hidden={view === 'globe'}>
         {LANES.map((l) => (
           <label key={l.key} className={lanes[l.key] ? 'on' : ''}>
             <input type="checkbox" checked={lanes[l.key]} onChange={() => st.toggleLane(l.key)} />

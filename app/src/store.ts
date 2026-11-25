@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { DateMode, ItemRef } from './data/types';
 
 export type LaneKey = 'history' | 'demography' | 'sovereignty' | 'eras';
+export type ViewKind = 'timeline' | 'globe';
 
 export interface FlyRequest {
   /** scene x to center on */
@@ -24,6 +25,12 @@ interface State {
   fly: FlyRequest | null;
   listOpen: boolean;
   helpOpen: boolean;
+  view: ViewKind;
+  /** the year shown on the globe */
+  globeYear: number;
+  /** place the globe should turn towards */
+  globeFocus: { place: string; nonce: number } | null;
+  playing: boolean;
 
   setMode(m: DateMode): void;
   toggleLane(l: LaneKey): void;
@@ -33,6 +40,10 @@ interface State {
   flyTo(x: number, opts?: { z?: number; dist?: number }): void;
   setListOpen(v: boolean): void;
   setHelpOpen(v: boolean): void;
+  setViewKind(v: ViewKind): void;
+  setGlobeYear(y: number): void;
+  focusPlace(place: string): void;
+  setPlaying(v: boolean): void;
 }
 
 let nonce = 0;
@@ -47,6 +58,10 @@ export const useStore = create<State>((set) => ({
   fly: null,
   listOpen: false,
   helpOpen: false,
+  view: 'timeline',
+  globeYear: -586,
+  globeFocus: null,
+  playing: false,
 
   setMode: (mode) => set({ mode }),
   toggleLane: (l) => set((s) => ({ lanes: { ...s.lanes, [l]: !s.lanes[l] } })),
@@ -56,6 +71,10 @@ export const useStore = create<State>((set) => ({
   flyTo: (x, opts) => set({ fly: { x, ...opts, nonce: ++nonce } }),
   setListOpen: (listOpen) => set({ listOpen }),
   setHelpOpen: (helpOpen) => set({ helpOpen }),
+  setViewKind: (view) => set({ view, playing: false }),
+  setGlobeYear: (globeYear) => set({ globeYear }),
+  focusPlace: (place) => set({ globeFocus: { place, nonce: ++nonce } }),
+  setPlaying: (playing) => set({ playing }),
 }));
 
 export const sameRef = (a: ItemRef | null, b: ItemRef | null) =>

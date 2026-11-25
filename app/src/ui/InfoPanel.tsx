@@ -4,7 +4,8 @@ import {
   popIsrael, popTotal, POP_FROM, POP_TO, population, POWER_COLORS, rulerById, rulers, wikiCache, wikiUrl,
 } from '../lib/data';
 import { formatAM, formatMillions, formatSpan, formatYear } from '../lib/dates';
-import { focusItem, stepEvent } from '../lib/focus';
+import { focusItem, stepEvent, switchView } from '../lib/focus';
+import { placeById } from '../lib/globe';
 import { useStore } from '../store';
 import { useWikiSummary } from './useWiki';
 
@@ -31,6 +32,7 @@ function PanelBody({ item }: { item: ItemRef }) {
         <h2>{e.title.he}</h2>
         <DatingBlock dating={e.dating} />
         <p className="summary">{e.summary.he}</p>
+        <ViewSwitch places={e.places} />
         <WikiBlock wiki={e.wiki} />
         <Context year={year} />
         <div className="nav-row">
@@ -198,5 +200,29 @@ function Context({ year, hidePop = false }: { year: number; hidePop?: boolean })
         </p>
       )}
     </section>
+  );
+}
+
+/** Jump between the timeline and the globe for the same item; lists the item's places. */
+function ViewSwitch({ places }: { places?: string[] }) {
+  const view = useStore((s) => s.view);
+  if (!places?.length && view === 'timeline') return null;
+  return (
+    <div className="view-switch">
+      {view === 'timeline' ? (
+        <button onClick={() => switchView('globe')}>🌍 הצגה על הגלובוס</button>
+      ) : (
+        <button onClick={() => switchView('timeline')}>↔ הצגה בציר הזמן</button>
+      )}
+      {places?.length ? (
+        <span className="places">
+          {places.map((p) => (
+            <button key={p} className="chip" onClick={() => { if (useStore.getState().view !== 'globe') switchView('globe'); setTimeout(() => useStore.getState().focusPlace(p), 80); }}>
+              📍 {placeById.get(p)?.name.he ?? p}
+            </button>
+          ))}
+        </span>
+      ) : null}
+    </div>
   );
 }

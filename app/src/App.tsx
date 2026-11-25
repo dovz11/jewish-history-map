@@ -7,8 +7,10 @@ import { InfoPanel } from './ui/InfoPanel';
 import { Minimap } from './ui/Minimap';
 import { Help, ListView, Tooltip } from './ui/Overlays';
 import { Toolbar } from './ui/Toolbar';
+import { GlobeControls } from './ui/GlobeControls';
 
 const Scene = lazy(() => import('./scene/Scene').then((m) => ({ default: m.Scene })));
+const GlobeScene = lazy(() => import('./scene/GlobeScene').then((m) => ({ default: m.GlobeScene })));
 
 function hasWebGL() {
   try {
@@ -20,7 +22,7 @@ function hasWebGL() {
 }
 
 /** Parse "#event=expulsion-spain&mode=acad" */
-function parseHash(): { ref: ItemRef | null; mode: DateMode | null } {
+function parseHash(): { ref: ItemRef | null; mode: DateMode | null; globe: boolean } {
   const p = new URLSearchParams(location.hash.slice(1));
   const m = p.get('mode');
   const mode = m === 'acad' || m === 'trad' || m === 'both' ? m : null;
@@ -30,11 +32,12 @@ function parseHash(): { ref: ItemRef | null; mode: DateMode | null } {
   else if (ru && rulerById.has(ru)) ref = { type: 'ruler', id: ru };
   else if (er && eraById.has(er)) ref = { type: 'era', id: er };
   else if (pop && !isNaN(+pop)) ref = { type: 'pop', year: +pop };
-  return { ref, mode };
+  return { ref, mode, globe: p.get('view') === 'globe' };
 }
 
-function writeHash(ref: ItemRef | null, mode: DateMode) {
+function writeHash(ref: ItemRef | null, mode: DateMode, globe: boolean) {
   const p = new URLSearchParams();
+  if (globe) p.set('view', 'globe');
   if (ref?.type === 'pop') p.set('pop', String(ref.year));
   else if (ref) p.set(ref.type, ref.id);
   if (mode !== 'both') p.set('mode', mode);
@@ -44,15 +47,17 @@ function writeHash(ref: ItemRef | null, mode: DateMode) {
 
 export default function App() {
   const [webgl] = useState(hasWebGL);
+  const view = useStore((s) => s.view);
 
   // deep link in, then keep the hash in sync
   useEffect(() => {
-    const { ref, mode } = parseHash();
+    const { ref, mode, globe } = parseHash();
     if (mode) useStore.getState().setMode(mode);
+    if (globe) useStore.getState().setViewKind('globe');
     if (ref) setTimeout(() => focusItem(ref), 300);
     else if (!localStorage.getItem('jhm-help-seen')) useStore.getState().setHelpOpen(true);
     const unsub = useStore.subscribe((s, prev) => {
-      if (s.selected !== prev.selected || s.mode !== prev.mode) writeHash(s.selected, s.mode);
+      if (s.selected !== prev.selected || s.mode !== prev.mode || s.view !== prev.view) writeHash(s.selected, s.mode, s.view === 'globe');
       // the selected item moves when the dating system changes: follow it
       if (s.mode !== prev.mode && s.selected) focusItem(s.selected);
     });
@@ -95,16 +100,16 @@ export default function App() {
   }
 
   return (
-    <div className="app">
+    <div className={`app view-${view}`}>
       <div className="canvas-wrap">
-        <Suspense fallback={<div className="loading">טוען את ציר הזמן…</div>}>
-          <Scene />
+        <Suspense fallback={<div className="loading">טוען…</div>}>
+          {view === 'globe' ? <GlobeScene /> : <Scene />}
         </Suspense>
       </div>
       <Toolbar />
       <InfoPanel />
       <Minimap />
-      <Legend />
+      {view === 'globe' ? <GlobeControls /> : <Legend />}
       <Tooltip />
       <ListView />
       <Help />

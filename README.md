@@ -16,6 +16,19 @@ from scratch or taken from Wikipedia. Nothing is copied from the poster.
 | **Sovereignty** (שלטון) | Blocks showing who ruled the Land of Israel. Tall blocks with a gold stripe mark Jewish sovereignty or self-rule. |
 | **Eras** (תקופות) | Tinted floor sections with large titles, such as the First Temple period and the Middle Ages. |
 
+**Globe view (🌍).** A parchment-style globe drawn from Natural Earth outlines shows the world
+in a chosen year:
+- **gold pulsing dots** for the centers of Jewish life active then, such as Babylonia,
+  Alexandria, Sepharad, Ashkenaz, Poland, New York and Israel;
+- **pins** for events and the places they happened;
+- **animated red arcs** for exiles and migrations, such as the Babylonian exile, the
+  expulsion from Spain and the mass aliyah.
+
+▶ plays through time and the arrows jump between events. The minimap and slider set the
+year. The info panel switches between the timeline and the globe and lists the event's places.
+Places, centers and migrations are in `src/data/places.json`, `centers.json` and
+`migrations.json`.
+
 **Dual dating.** Each item has an academic date, a traditional date (Seder Olam and the
 Hebrew calendar), or both. A toggle switches between **מחקרי** (academic), **מסורתי**
 (traditional) and **שניהם** (both). In "both" mode an item stands at its academic date, and a
@@ -68,11 +81,13 @@ right-to-left text correctly.
 ```
 app/
   scripts/enrich-wiki.mjs    Wikipedia validation + cache builder
+  public/geo/land.json       Natural Earth 1:110m land outlines (public domain)
   src/data/                  the dataset (JSON) + types.ts (the data model)
   src/lib/timeScale.ts       year <-> position mapping (piecewise, RTL), lane positions
   src/lib/data.ts            loading, dating logic, population interpolation, colors
   src/lib/dates.ts           year formatting, Hebrew calendar year, gematria
-  src/scene/                 3D: camera, lanes, axis, eras
+  src/scene/                 3D: camera, lanes, axis, eras, GlobeScene
+  src/lib/globe.ts           globe projection, what is active in a given year
   src/ui/                    toolbar, info panel, minimap, list, help
 .github/workflows/deploy.yml GitHub Pages deployment
 ```
@@ -108,6 +123,6 @@ The build is fully static. It uses a relative base, so it works from any folder 
 
 ## Roadmap
 
-- Globe view: communities and migration arcs on a 3D globe, linked to the timeline.
+
 - English interface.
 - More lanes: rabbinic eras, personalities, Jewish literature, world history.
