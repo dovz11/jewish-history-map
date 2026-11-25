@@ -7,7 +7,8 @@ import { useStore } from '../store';
 import { DIR, U_MAX, yearToX } from '../lib/timeScale';
 import { FLAT, view } from '../lib/dim';
 import { boardPoint, boardZAtHeight, POSTER_Z } from '../lib/poster';
-import { attachGestures } from '../lib/touch';
+import { attachGestures, lastMultiTapAt } from '../lib/touch';
+import { useTour } from '../lib/tour';
 
 const ACTION = CameraControlsImpl.ACTION;
 
@@ -52,6 +53,12 @@ export function CameraRig() {
   const last = useRef({ x: Infinity, w: Infinity, heading: Infinity });
   const hasPanel = useStore((s) => s.selected !== null);
   const dim = useStore((s) => s.dim);
+  /** momentum after a pan (see below) */
+  const glide = useRef({
+    pointers: 0, spoiled: false, downAt: 0,
+    samples: [] as { t: number; x: number; z: number }[],
+    v: null as { x: number; z: number } | null,
+  });
 
   // keep the focused item visible beside the info panel (desktop: panel on the side)
   useEffect(() => {
@@ -138,6 +145,7 @@ export function CameraRig() {
   useEffect(() => {
     const c = ref.current;
     if (!c || !fly) return;
+    glide.current.v = null;
     const z = fly.z ?? homeZ();
     const y = fly.y ?? (FLAT ? 0 : 2);
     const dist = (fly.dist ?? 45) * (FLAT ? 1.15 : 1) * nearer();
@@ -149,6 +157,7 @@ export function CameraRig() {
   useEffect(() => {
     const c = ref.current;
     if (!c || !camCmd) return;
+    glide.current.v = null;
     if (camCmd.kind === 'north') {
       const t = c.getTarget(new THREE.Vector3());
       const p = t.clone().addScaledVector(viewDir(), c.distance);
@@ -222,6 +231,73 @@ export function CameraRig() {
       },
     });
   }, [gl, camera]);
+
+  // Momentum: a one-finger (or left-button) pan keeps gliding after release and slows down,
+  // as in Google Earth. The camera controls have no inertia of their own, so the drag's speed
+  // is measured from where it was heading over its last moments.
+  useEffect(() => {
+    const el = gl.domElement;
+    const g = glide.current;
+    const down = (e: PointerEvent) => {
+      if (g.pointers === 0) { g.spoiled = false; g.samples.length = 0; g.downAt = performance.now(); }
+      g.pointers++;
+      g.v = null;
+      // a second finger (pinch / twist), or a rotating mouse button, is not a pan
+      if (g.pointers > 1 || (e.pointerType === 'mouse' && e.button !== 0)) g.spoiled = true;
+    };
+    const up = () => {
+      if (g.pointers === 0) return;
+      g.pointers = Math.max(0, g.pointers - 1);
+      if (g.pointers > 0) return;
+      const now = performance.now();
+      const c = ref.current;
+      // double tap + drag zooms; it moves the view too, but should not fling it
+      if (!c || g.spoiled || lastMultiTapAt >= g.downAt) return;
+      const recent = g.samples.filter((p) => now - p.t < 110);
+      // held still before lifting: no glide
+      if (recent.length < 2 || now - recent[recent.length - 1].t > 70) return;
+      const a = recent[0], b = recent[recent.length - 1];
+      const dt = (b.t - a.t) / 1000;
+      if (dt < 0.02) return;
+      let vx = (b.x - a.x) / dt, vz = (b.z - a.z) / dt;
+      const speed = Math.hypot(vx, vz);
+      const max = c.distance * 7;
+      if (speed < c.distance * 0.15) return;
+      if (speed > max) { vx *= max / speed; vz *= max / speed; }
+      g.v = { x: vx, z: vz };
+    };
+    el.addEventListener('pointerdown', down);
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', up);
+    return () => {
+      el.removeEventListener('pointerdown', down);
+      window.removeEventListener('pointerup', up);
+      window.removeEventListener('pointercancel', up);
+    };
+  }, [gl]);
+
+  useFrame((_, delta) => {
+    const c = ref.current;
+    const g = glide.current;
+    if (!c) return;
+    const tour = useTour.getState();
+    if (tour.active && !tour.paused) { g.v = null; return; }
+    const t = c.getTarget(new THREE.Vector3(), true);
+    if (g.pointers === 1 && !g.spoiled) {
+      // where the drag is heading (the end value, ahead of the smoothed camera)
+      const now = performance.now();
+      g.samples.push({ t: now, x: t.x, z: t.z });
+      while (g.samples.length && now - g.samples[0].t > 160) g.samples.shift();
+    }
+    if (!g.v) return;
+    const dt = Math.min(delta, 0.05);
+    c.moveTo(t.x + g.v.x * dt, t.y, t.z + g.v.z * dt, true);
+    // slows to a stop in about a second
+    const k = Math.exp(-dt / 0.33);
+    g.v.x *= k;
+    g.v.z *= k;
+    if (Math.hypot(g.v.x, g.v.z) < c.distance * 0.04) g.v = null;
+  });
 
   // publish the visible window for the minimap, and the heading for the compass
   useFrame(({ scene }) => {
