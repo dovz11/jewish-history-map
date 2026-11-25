@@ -1,5 +1,7 @@
 # ציר הזמן היהודי בתלת־ממד · 3D Jewish History Timeline
 
+**▶ Live site: https://dovz11.github.io/jewish-history-map/** · [English](https://dovz11.github.io/jewish-history-map/#lang=en)
+
 An interactive 3D timeline of Jewish history that runs in the browser. You can fly through
 history as a landscape, or watch it unfold on a globe. The interface is in **Hebrew** and
 **English**, switched with the language button. In Hebrew time flows right to left, as Hebrew is
