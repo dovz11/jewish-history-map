@@ -8,7 +8,7 @@ import { useStore } from '../store';
  * UMAMI_ID is the "Website ID" from the Umami dashboard (Settings → Websites). It is public by
  * design (it appears in every page that uses it). Leave it empty to turn statistics off.
  */
-const UMAMI_ID = '';
+const UMAMI_ID = '19fb6905-8da5-4b3c-a737-6aa7ada644b5';
 const LIVE_HOST = 'dovz11.github.io';
 /** Whether visits are counted (the Help window mentions it only then). */
 export const analyticsOn = !!UMAMI_ID;
