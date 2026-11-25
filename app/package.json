@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "jewish-history-map-3d",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "enrich": "node scripts/enrich-wiki.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

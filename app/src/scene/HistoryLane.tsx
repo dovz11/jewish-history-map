@@ -42,6 +42,9 @@ const EventMarker = memo(function EventMarker({ event, mode, level }: { event: H
   const scale = 0.75 + event.importance * 0.1;
   const color = tradOnly ? COLORS.trad : KIND_COLORS[event.kind];
 
+  const endX = span.end !== undefined ? yearToX(span.end) : null;
+  const ghostX = ghost ? yearToX(ghost.start) : null;
+
   const selected = useStore((s) => sameRef(s.selected, { type: 'event', id: event.id }));
   const [hover, setHover] = useState(false);
   const cardRef = useRef<THREE.Group>(null);
@@ -83,8 +86,6 @@ const EventMarker = memo(function EventMarker({ event, mode, level }: { event: H
     document.body.style.cursor = '';
   };
 
-  const endX = span.end !== undefined ? yearToX(span.end) : null;
-  const ghostX = ghost ? yearToX(ghost.start) : null;
 
   return (
     <group>

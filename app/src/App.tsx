@@ -35,7 +35,8 @@ function parseHash(): { ref: ItemRef | null; mode: DateMode | null } {
 
 function writeHash(ref: ItemRef | null, mode: DateMode) {
   const p = new URLSearchParams();
-  if (ref) ref.type === 'pop' ? p.set('pop', String(ref.year)) : p.set(ref.type, ref.id);
+  if (ref?.type === 'pop') p.set('pop', String(ref.year));
+  else if (ref) p.set(ref.type, ref.id);
   if (mode !== 'both') p.set('mode', mode);
   const h = p.toString();
   history.replaceState(null, '', h ? `#${h}` : location.pathname + location.search);
@@ -52,6 +53,8 @@ export default function App() {
     else if (!localStorage.getItem('jhm-help-seen')) useStore.getState().setHelpOpen(true);
     const unsub = useStore.subscribe((s, prev) => {
       if (s.selected !== prev.selected || s.mode !== prev.mode) writeHash(s.selected, s.mode);
+      // the selected item moves when the dating system changes: follow it
+      if (s.mode !== prev.mode && s.selected) focusItem(s.selected);
     });
     const onHash = () => {
       const { ref } = parseHash();

@@ -9,7 +9,8 @@ import { DIR, U_MAX, yearToX } from '../lib/timeScale';
 const ACTION = CameraControlsImpl.ACTION;
 
 /** Default viewing offset: camera stands in front of (and above) its target. */
-const VIEW_DIR = new THREE.Vector3(0, 0.62, 1).normalize();
+// looking slightly from the past side (right), so later times recede into the distance
+const VIEW_DIR = new THREE.Vector3(0.38, 0.62, 1).normalize();
 
 export function CameraRig() {
   const ref = useRef<CameraControlsImpl>(null);
@@ -23,14 +24,20 @@ export function CameraRig() {
     const c = ref.current;
     if (!c) return;
     const wide = window.innerWidth > 760;
-    if (!hasPanel || !wide) {
+    if (!hasPanel) {
       c.setFocalOffset(0, 0, 0, true);
       return;
     }
     const cam = camera as THREE.PerspectiveCamera;
     // use the distance the camera is flying to, not the one it is leaving
     const dist = fly?.dist ?? c.distance;
-    const halfW = Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)) * dist * cam.aspect;
+    const halfH = Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)) * dist;
+    if (!wide) {
+      // narrow screens: the panel is a bottom sheet, so lift the item into the upper half
+      c.setFocalOffset(0, -halfH * 0.5, 0, true);
+      return;
+    }
+    const halfW = halfH * cam.aspect;
     const frac = Math.min(440, window.innerWidth * 0.4) / window.innerWidth;
     // positive focal offset moves the camera right, so the target appears further left
     c.setFocalOffset(halfW * frac, 0, 0, true);
@@ -47,11 +54,12 @@ export function CameraRig() {
     c.verticalDragToForward = true;
     const hasDeepLink = location.hash.length > 1;
     if (!hasDeepLink) {
-      const cx = yearToX(-1000);
-      c.setLookAt(cx, 260, 330, cx, 0, -4, false);
-      const tx = yearToX(-1900);
+      const sx = yearToX(-2600);
+      const p0 = new THREE.Vector3(sx, 2, -4).addScaledVector(VIEW_DIR, 190);
+      c.setLookAt(p0.x, p0.y, p0.z, sx, 2, -4, false);
+      const tx = yearToX(-1450);
       const t = setTimeout(() => {
-        const p = new THREE.Vector3(tx, 2, -2).addScaledVector(VIEW_DIR, 70);
+        const p = new THREE.Vector3(tx, 2, -2).addScaledVector(VIEW_DIR, 80);
         c.setLookAt(p.x, p.y, p.z, tx, 2, -2, true);
       }, 1400);
       return () => clearTimeout(t);
@@ -68,9 +76,14 @@ export function CameraRig() {
   }, [fly]);
 
   // publish the visible window for the minimap
-  useFrame(() => {
+  useFrame(({ scene }) => {
     const c = ref.current;
     if (!c) return;
+    // fog follows the zoom level, so both close-ups and overviews keep depth cues
+    if (scene.fog instanceof THREE.Fog) {
+      scene.fog.near = c.distance * 1.6 + 40;
+      scene.fog.far = c.distance * 5 + 200;
+    }
     const target = c.getTarget(new THREE.Vector3());
     const dist = camera.position.distanceTo(target);
     const fov = (camera as THREE.PerspectiveCamera).fov ?? 50;

@@ -2,30 +2,30 @@ import { useEffect, useState } from 'react';
 import type { WikiSummary } from '../data/types';
 import { wikiCache, wikiUrl } from '../lib/data';
 
+/** Summaries fetched at runtime for titles missing from the build-time cache. */
 const live = new Map<string, WikiSummary | null>();
 
 /** Wikipedia summary: build-time cache first, otherwise the live REST API. */
 export function useWikiSummary(title: string | undefined): WikiSummary | null {
+  const [, rerender] = useState(0);
   const cached = title ? wikiCache[title] : undefined;
-  const [data, setData] = useState<WikiSummary | null>(cached ?? (title ? live.get(title) ?? null : null));
+  const needsFetch = !!title && !cached && !live.has(title);
 
   useEffect(() => {
-    if (!title) return setData(null);
-    if (wikiCache[title]) return setData(wikiCache[title]);
-    if (live.has(title)) return setData(live.get(title)!);
+    if (!needsFetch || !title) return;
     let cancelled = false;
     fetch(`https://he.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/ /g, '_'))}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => {
-        const s: WikiSummary | null = j
+        live.set(title, j
           ? { title: j.title, extract: j.extract ?? '', thumbnail: j.thumbnail?.source, url: j.content_urls?.desktop?.page ?? wikiUrl('he', title), wikidata: j.wikibase_item }
-          : null;
-        live.set(title, s);
-        if (!cancelled) setData(s);
+          : null);
       })
-      .catch(() => !cancelled && setData(null));
+      .catch(() => live.set(title, null))
+      .finally(() => !cancelled && rerender((n) => n + 1));
     return () => { cancelled = true; };
-  }, [title]);
+  }, [title, needsFetch]);
 
-  return data;
+  if (!title) return null;
+  return cached ?? live.get(title) ?? null;
 }

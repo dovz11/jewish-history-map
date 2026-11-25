@@ -112,7 +112,10 @@ function PanelBody({ item }: { item: ItemRef }) {
       <p className="muted">
         ההערכות לעת העתיקה ולימי הביניים הן גסות מאוד, והחוקרים חלוקים בהן. הנתונים מהמאה ה-19 ואילך מבוססים על מפקדים ועל הערכות דמוגרפיות (רופין, דלה־פרגולה).
       </p>
-      <a className="wiki-link" href={wikiUrl('he', 'דמוגרפיה של העם היהודי')} target="_blank" rel="noreferrer">דמוגרפיה של העם היהודי בוויקיפדיה ↗</a>
+      <div className="wiki-links">
+        <a className="wiki-link" href={wikiUrl('he', 'יהודים')} target="_blank" rel="noreferrer">הערך „יהודים” בוויקיפדיה ↗</a>
+        <a className="wiki-link en" href={wikiUrl('en', 'Historical Jewish population')} target="_blank" rel="noreferrer" lang="en" dir="ltr">Historical Jewish population ↗</a>
+      </div>
       <Context year={p.year} hidePop />
       <div className="nav-row">
         <button disabled={idx <= 0} onClick={() => focusItem({ type: 'pop', year: population[idx - 1].year })}>→ נקודה קודמת</button>
