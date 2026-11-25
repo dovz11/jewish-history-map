@@ -4,8 +4,9 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import CameraControlsImpl from 'camera-controls';
 import { useStore } from '../store';
-import { DIR, LANES, U_MAX, yearToX } from '../lib/timeScale';
-import { FLAT } from '../lib/dim';
+import { DIR, U_MAX, yearToX } from '../lib/timeScale';
+import { FLAT, view } from '../lib/dim';
+import { boardPoint, boardZAtHeight, POSTER_Z } from '../lib/poster';
 import { attachGestures } from '../lib/touch';
 
 const ACTION = CameraControlsImpl.ACTION;
@@ -15,10 +16,23 @@ const ACTION = CameraControlsImpl.ACTION;
  * 3D: in front of and above the target, looking slightly from the past side, so later times recede into the distance.
  * 2D: straight down (a hair towards the viewer keeps "up" on screen pointing back along the lanes).
  */
-const viewDir = () => (FLAT ? new THREE.Vector3(0, 1, 0.001).normalize() : new THREE.Vector3(-0.38 * DIR, 0.62, 1).normalize());
+const viewDir = () => (FLAT ? new THREE.Vector3(0, 1, 0.001).normalize() : new THREE.Vector3(-0.22 * DIR, 0.72, 1).normalize());
 const defaultAzimuth = () => Math.atan2(viewDir().x, viewDir().z);
 
 const MAX_DIST = 900;
+
+/** Polar-angle limits: 2D is locked looking straight down and unrotated, like a paper map. */
+function applyLimits(c: CameraControlsImpl) {
+  const polar = Math.acos(viewDir().y);
+  c.minPolarAngle = FLAT ? polar : 0.15;
+  c.maxPolarAngle = FLAT ? polar : 1.42;
+  c.minAzimuthAngle = FLAT ? 0 : -Infinity;
+  c.maxAzimuthAngle = FLAT ? 0 : Infinity;
+}
+
+/** Default point to look at: the middle of the flat sheet (2D), or between the standing board and the rows (3D). */
+const homeY = () => (FLAT ? 0 : 7);
+const homeZ = () => (FLAT ? -6 : POSTER_Z.popBase + 5);
 
 /**
  * Short screens (a phone held sideways) show the same width of time from nearer, so labels stay
@@ -26,8 +40,8 @@ const MAX_DIST = 900;
  */
 const nearer = () => THREE.MathUtils.clamp(window.innerHeight / 700, 0.72, 1);
 
-/** Where the camera was when the canvas last unmounted (2D <-> 3D switch keeps the place in time). */
-let lastView: { x: number; z: number; dist: number } | null = null;
+/** Where the camera was when the canvas last unmounted (coming back from the globe keeps the place in time). */
+let lastView: { x: number; y: number; z: number; dist: number } | null = null;
 
 export function CameraRig() {
   const ref = useRef<CameraControlsImpl>(null);
@@ -37,6 +51,7 @@ export function CameraRig() {
   const gl = useThree((s) => s.gl);
   const last = useRef({ x: Infinity, w: Infinity, heading: Infinity });
   const hasPanel = useStore((s) => s.selected !== null);
+  const dim = useStore((s) => s.dim);
 
   // keep the focused item visible beside the info panel (desktop: panel on the side)
   useEffect(() => {
@@ -61,52 +76,73 @@ export function CameraRig() {
     const frac = Math.min(440, window.innerWidth * 0.4) / window.innerWidth;
     // the panel sits on the reading-start side (right in Hebrew, left in English): push the target the other way
     c.setFocalOffset(-DIR * halfW * frac, 0, 0, true);
-  }, [hasPanel, fly, camera]);
+  }, [hasPanel, fly, camera, dim]);
 
   // initial framing: resume after a 2D/3D switch, or an overview of the whole corridor and a gentle move to the start
   useEffect(() => {
     const c = ref.current;
     if (!c) return;
     const minX = Math.min(0, DIR * U_MAX) - 20, maxX = Math.max(0, DIR * U_MAX) + 20;
-    c.setBoundary(new THREE.Box3(new THREE.Vector3(minX, -2, LANES.eraLabels - 12), new THREE.Vector3(maxX, 40, FLAT ? 48 : 30)));
+    c.setBoundary(new THREE.Box3(new THREE.Vector3(minX, -2, POSTER_Z.boardTop - 30), new THREE.Vector3(maxX, 60, 48)));
     c.boundaryEnclosesCamera = false;
+    applyLimits(c);
     const resume = lastView;
     if (resume) {
-      const p = new THREE.Vector3(resume.x, 2, resume.z).addScaledVector(viewDir(), resume.dist);
-      c.setLookAt(p.x, p.y, p.z, resume.x, 2, resume.z, false);
+      const p = new THREE.Vector3(resume.x, resume.y, resume.z).addScaledVector(viewDir(), resume.dist);
+      c.setLookAt(p.x, p.y, p.z, resume.x, resume.y, resume.z, false);
       return;
     }
     const hasDeepLink = location.hash.length > 1 && /event|ruler|era|pop|person|rabbinic/.test(location.hash);
     if (!hasDeepLink) {
-      // 2D: aim at the middle of the poster's rows
-      const z0 = FLAT ? -6 : -4, z1 = FLAT ? -6 : -2;
       const sx = yearToX(-2600);
-      const p0 = new THREE.Vector3(sx, 2, z0).addScaledVector(viewDir(), 190);
-      c.setLookAt(p0.x, p0.y, p0.z, sx, 2, z0, false);
+      const p0 = new THREE.Vector3(sx, homeY(), homeZ()).addScaledVector(viewDir(), 190);
+      c.setLookAt(p0.x, p0.y, p0.z, sx, homeY(), homeZ(), false);
       const tx = yearToX(-1450);
       const t = setTimeout(() => {
-        const p = new THREE.Vector3(tx, 2, z1).addScaledVector(viewDir(), (FLAT ? 95 : 80) * nearer());
-        c.setLookAt(p.x, p.y, p.z, tx, 2, z1, true);
+        const p = new THREE.Vector3(tx, homeY(), homeZ()).addScaledVector(viewDir(), (FLAT ? 95 : 85) * nearer());
+        c.setLookAt(p.x, p.y, p.z, tx, homeY(), homeZ(), true);
       }, 1400);
       return () => clearTimeout(t);
     }
   }, []);
+
+  // 2D <-> 3D: tilt the camera while the poster folds up or down, keeping the same place in view
+  const firstDim = useRef(true);
+  useEffect(() => {
+    const c = ref.current;
+    if (!c) return;
+    if (firstDim.current) { firstDim.current = false; return; }
+    c.minPolarAngle = 0; c.maxPolarAngle = 1.42; c.minAzimuthAngle = -Infinity; c.maxAzimuthAngle = Infinity;
+    const t = c.getTarget(new THREE.Vector3());
+    // a point on the board moves between "far back on the floor" (2D) and "up on the standing board" (3D)
+    if (FLAT) {
+      if (t.y > 2.5) t.z = boardZAtHeight(t.y);
+      t.y = 0;
+    } else if (t.z < POSTER_Z.popBase) {
+      const b = boardPoint(t.z);
+      t.y = b.y;
+      t.z = b.z;
+    } else t.y = 2;
+    const p = t.clone().addScaledVector(viewDir(), c.distance);
+    c.setLookAt(p.x, p.y, p.z, t.x, t.y, t.z, true).then(() => applyLimits(c));
+  }, [dim]);
 
   // remember the view for the next mount
   useEffect(() => () => {
     const c = ref.current;
     if (!c) return;
     const t = c.getTarget(new THREE.Vector3());
-    lastView = { x: t.x, z: t.z, dist: c.distance };
+    lastView = { x: t.x, y: t.y, z: t.z, dist: c.distance };
   }, []);
 
   useEffect(() => {
     const c = ref.current;
     if (!c || !fly) return;
-    const z = fly.z ?? -2;
+    const z = fly.z ?? homeZ();
+    const y = fly.y ?? (FLAT ? 0 : 2);
     const dist = (fly.dist ?? 45) * (FLAT ? 1.15 : 1) * nearer();
-    const p = new THREE.Vector3(fly.x, 2, z).addScaledVector(viewDir(), dist);
-    c.setLookAt(p.x, p.y, p.z, fly.x, 2, z, true);
+    const p = new THREE.Vector3(fly.x, y, z).addScaledVector(viewDir(), dist);
+    c.setLookAt(p.x, p.y, p.z, fly.x, y, z, true);
   }, [fly]);
 
   // compass and overview buttons
@@ -119,11 +155,11 @@ export function CameraRig() {
       c.setLookAt(p.x, p.y, p.z, t.x, t.y, t.z, true);
     } else {
       const cam = camera as THREE.PerspectiveCamera;
-      const cx = (DIR * U_MAX) / 2, cz = FLAT ? -4 : -6;
+      const cx = (DIR * U_MAX) / 2, cy = FLAT ? 0 : 12, cz = FLAT ? -4 : POSTER_Z.popBase + 6;
       const fit = (U_MAX / 2 + 10) / (Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)) * cam.aspect);
       const dist = Math.min(MAX_DIST, fit * (FLAT ? 1 : 0.8));
-      const p = new THREE.Vector3(cx, 2, cz).addScaledVector(viewDir(), dist);
-      c.setLookAt(p.x, p.y, p.z, cx, 2, cz, true);
+      const p = new THREE.Vector3(cx, cy, cz).addScaledVector(viewDir(), dist);
+      c.setLookAt(p.x, p.y, p.z, cx, cy, cz, true);
     }
   }, [camCmd, camera]);
 
@@ -174,7 +210,7 @@ export function CameraRig() {
         if (!FLAT) c.rotate(m.rotate, 0, false);
         pin(anchor, m.x, m.y);
       },
-      tilt: FLAT ? undefined : (dy) => { ref.current!.rotate(0, -dy * 0.006, false); },
+      tilt: (dy) => { if (!FLAT) ref.current!.rotate(0, -dy * 0.006, false); },
       doubleTap: (x, y) => zoomAbout(x, y, 2),
       twoFingerTap: (x, y) => zoomAbout(x, y, 0.5),
       quickZoom: (f, x, y, phase) => {
@@ -193,9 +229,11 @@ export function CameraRig() {
     if (!c) return;
     // fog follows the zoom level, so both close-ups and overviews keep depth cues
     if (scene.fog instanceof THREE.Fog) {
-      scene.fog.near = c.distance * (FLAT ? 3 : 1.6) + 40;
-      scene.fog.far = c.distance * (FLAT ? 8 : 5) + 200;
+      // 3D: a light haze gives depth; 2D: none (a map has no distance)
+      scene.fog.near = FLAT ? 1e5 : c.distance * 1.8 + 60;
+      scene.fog.far = FLAT ? 2e5 : c.distance * 6 + 300;
     }
+    view.dist = c.distance;
     const target = c.getTarget(new THREE.Vector3());
     const dist = camera.position.distanceTo(target);
     const fov = (camera as THREE.PerspectiveCamera).fov ?? 50;
@@ -231,18 +269,13 @@ export function CameraRig() {
     return () => window.removeEventListener('keydown', onKey);
   }, [camera]);
 
-  const polar = Math.acos(viewDir().y);
   return (
     <CameraControls
       ref={ref}
       makeDefault
       minDistance={6}
       maxDistance={MAX_DIST}
-      // 2D: locked straight down and unrotated, like a paper map
-      minPolarAngle={FLAT ? polar : 0.15}
-      maxPolarAngle={FLAT ? polar : 1.42}
-      minAzimuthAngle={FLAT ? 0 : -Infinity}
-      maxAzimuthAngle={FLAT ? 0 : Infinity}
+      // polar and azimuth limits are set imperatively (applyLimits), so a 2D/3D switch can animate
       dollyToCursor
       smoothTime={0.45}
       draggingSmoothTime={0.12}

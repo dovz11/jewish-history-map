@@ -1,10 +1,10 @@
 import type { ItemRef } from '../data/types';
 import { useStore } from '../store';
 import { eraById, eventById, mainSpan, navOrder, people, personById, personYear, rabbinicById, rulerById } from './data';
-import { LANES, xToYear, yearToX } from './timeScale';
+import { xToYear, yearToX } from './timeScale';
 import { personPlaceAt } from './places';
-import { FLAT, isTouch } from './dim';
-import { chartTopAt, POSTER_Z } from './poster';
+import { isTouch } from './dim';
+import { boardPoint, chartTopAt, eventAnchorZ, POSTER_Z } from './poster';
 import { lastMultiTapAt } from './touch';
 
 /** Select an item and fly the camera to it. */
@@ -21,36 +21,36 @@ export function focusItem(ref: ItemRef) {
     if (!e) return;
     if (!st.lanes.history) st.toggleLane('history');
     const y = mainSpan(e.dating, mode).start;
-    // 2D: the event's label sits just above the population chart
-    st.flyTo(yearToX(y), { z: FLAT ? chartTopAt(y) - 5 : LANES.history + 4, dist: 34 });
+    // the label sits on the board just above the population chart
+    st.flyTo(yearToX(y), { ...boardPoint((eventAnchorZ.get(e.id) ?? chartTopAt(y) - 3) - 1), dist: 34 });
   } else if (ref.type === 'ruler') {
     const r = rulerById.get(ref.id);
     if (!r) return;
     if (!st.lanes.sovereignty) st.toggleLane('sovereignty');
     const s = mainSpan(r.dating, mode);
     const x0 = yearToX(s.start), x1 = yearToX(s.end ?? s.start);
-    st.flyTo((x0 + x1) / 2, { z: LANES.sovereignty, dist: Math.min(140, Math.max(28, Math.abs(x1 - x0) * 1.1)) });
+    st.flyTo((x0 + x1) / 2, { z: POSTER_Z.rule, dist: Math.min(140, Math.max(28, Math.abs(x1 - x0) * 1.1)) });
   } else if (ref.type === 'era') {
     const era = eraById.get(ref.id);
     if (!era) return;
     const s = mainSpan(era.dating, mode);
     const x0 = yearToX(s.start), x1 = yearToX(s.end!);
-    st.flyTo((x0 + x1) / 2, { z: -6, dist: Math.min(230, Math.max(50, Math.abs(x1 - x0))) });
+    st.flyTo((x0 + x1) / 2, { z: POSTER_Z.rule, dist: Math.min(230, Math.max(50, Math.abs(x1 - x0))) });
   } else if (ref.type === 'person') {
     const p = personById.get(ref.id);
     if (!p) return;
     if (!st.lanes.people) st.toggleLane('people');
-    st.flyTo(yearToX(personYear(p)), { z: LANES.people + 3, dist: 44 });
+    st.flyTo(yearToX(personYear(p)), { z: POSTER_Z.peopleFrom + 4, dist: 44 });
   } else if (ref.type === 'rabbinic') {
     const r = rabbinicById.get(ref.id);
     if (!r) return;
     if (!st.lanes.rabbinic) st.toggleLane('rabbinic');
     const s = mainSpan(r.dating, mode);
     const x0 = yearToX(s.start), x1 = yearToX(s.end ?? s.start);
-    st.flyTo((x0 + x1) / 2, { z: LANES.rabbinic + 4, dist: Math.min(170, Math.max(40, Math.abs(x1 - x0) * 1.3)) });
+    st.flyTo((x0 + x1) / 2, { z: POSTER_Z.rabbinic, dist: Math.min(170, Math.max(40, Math.abs(x1 - x0) * 1.3)) });
   } else {
     if (!st.lanes.demography) st.toggleLane('demography');
-    st.flyTo(yearToX(ref.year), { z: FLAT ? (chartTopAt(ref.year) + POSTER_Z.popBase) / 2 : LANES.river, dist: 30 });
+    st.flyTo(yearToX(ref.year), { ...boardPoint((chartTopAt(ref.year) + POSTER_Z.popBase) / 2), dist: 30 });
   }
 }
 

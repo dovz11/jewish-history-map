@@ -1,14 +1,19 @@
 /**
- * The 2D view: the timeline drawn as a printed infographic poster, seen from straight above.
- * White sheet, thin black axis, flat colors. From the axis upwards:
- *   eras row · rabbinic-eras row · rule over the Land of Israel · population area chart
- *   · events (bullets with dotted leader lines, hugging the chart).
- * Below the axis: people (lifespan capsules).
- * Everything lies on the ground plane (y ≈ 0); "up" on screen is -z.
+ * The timeline as an infographic poster, for both 2D and 3D.
+ *
+ * The sheet (smaller z is higher on the sheet):
+ *   board (above the hinge at the chart's baseline): population area chart, and the events as
+ *     bullets and labels placed just above it with dotted leaders;
+ *   floor: rule over the Land of Israel, rabbinic eras, eras, the year axis, and below it the
+ *     people as lifespan capsules.
+ *
+ * 2D: everything lies flat, seen from straight above. 3D: like a pop-up book, the board swings up
+ * to stand behind the rows, the cells rise as tiles and the capsules as raised bars. The change is
+ * animated by `lift` (lib/dim.ts).
  */
-import { Line, Text } from '@react-three/drei';
+import { Edges, Line, Text } from '@react-three/drei';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
-import { memo, useMemo, useRef } from 'react';
+import { memo, useMemo, useRef, type ReactNode } from 'react';
 import * as THREE from 'three';
 import type { HistoryEvent, ItemRef, Person } from '../data/types';
 import { L, lang, t } from '../i18n';
@@ -17,40 +22,93 @@ import {
   popIsrael, popMax, popTotal, POP_FROM, POP_TO, rabbinicEras, rulers,
 } from '../lib/data';
 import { formatMillions, formatSpan, formatYear, formatYearShort, hebrewYear } from '../lib/dates';
+import { lift, view } from '../lib/dim';
 import { focusItem } from '../lib/focus';
+import { BOARD_TILT, chartTopAt, eventAnchorZ, POP_K, POSTER_Z } from '../lib/poster';
 import { DIR, tickYears, uToYear, xToYear, yearToU, yearToX, YEAR_MAX, YEAR_MIN } from '../lib/timeScale';
 import { sameRef, useStore } from '../store';
 import { FONT_BLACK, FONT_BOLD, FONT_REGULAR, POSTER } from './constants';
-import { chartTopAt, POP_K, POSTER_Z } from '../lib/poster';
 
-/* ---------- rows (z of their centers; smaller z is higher on screen) ---------- */
 const Z = POSTER_Z;
-const ROW_H = { era: 2.4, rabbinic: 2.2, trad: 1.8, rule1: 1.8, rule: 3 };
+/** depth (along z) of each row's cells, and how tall they rise in 3D */
+const ROW = {
+  era: { d: 2.4, h: 0.5 },
+  rabbinic: { d: 2.2, h: 0.7 },
+  trad: { d: 1.8, h: 0.15 },
+  rule1: { d: 1.8, h: 0.6 },
+  rule: { d: 3, h: 0.9 },
+  ruleJewish: { h: 1.8 },
+};
 const PERSON_STEP = 1.95;
 const PEOPLE_ROWS = 10;
-/** top and bottom of the sheet (for the era tints) */
-const SHEET_TOP = Z.popBase - POP_K * 17 - 18, SHEET_BOTTOM = Z.peopleFrom + PEOPLE_ROWS * PERSON_STEP + 2;
+const PERSON_RISE = 0.45;
+const SHEET_BOTTOM = Z.peopleFrom + PEOPLE_ROWS * PERSON_STEP + 2;
 const FLAT_ROT: [number, number, number] = [-Math.PI / 2, 0, 0];
+/** how far the chart stands out of the board, and the Land-of-Israel share out of the chart */
+const CHART_RELIEF = 0.6, ISRAEL_RELIEF = 0.35;
 
-/** Y layers (lifted slightly so nothing z-fights; parallax is negligible from above). */
-const Y = { tint: 0.01, cell: 0.04, area: 0.05, israel: 0.07, line: 0.1, mark: 0.12, text: 0.16 };
+/** Small heights above the sheet, so flat layers don't z-fight. */
+const Y = { tint: 0.01, cell: 0.04, line: 0.1, mark: 0.12, text: 0.16 };
 
-export function Poster2D() {
+export function Poster() {
   const lanes = useStore((s) => s.lanes);
+  useLiftDriver();
   return (
     <group>
-      <Paper />
-      {lanes.eras && <EraTints />}
+      <Floor />
+      {lanes.eras && <EraTints from={Z.popBase} to={SHEET_BOTTOM} />}
       <Axis />
       {lanes.eras && <EraRow />}
       {lanes.rabbinic && <RabbinicRow />}
       {lanes.sovereignty && <RuleRows />}
-      {lanes.demography && <PopulationChart />}
-      {lanes.history && <EventRows />}
       {lanes.people && <PeopleRows />}
-      <RowTitles />
+      <RowTitles part="floor" />
+      <Board>
+        <BoardSheet />
+        {lanes.eras && <EraTints from={Z.boardTop} to={Z.popBase} />}
+        {lanes.demography && <PopulationChart />}
+        {lanes.history && <EventRows />}
+        <RowTitles part="board" />
+      </Board>
     </group>
   );
+}
+
+/* ---------- 2D <-> 3D animation ---------- */
+
+function useLiftDriver() {
+  useFrame((_, dt) => {
+    const d = lift.target - lift.value;
+    lift.value = Math.abs(d) < 0.002 ? lift.target : lift.value + d * Math.min(1, dt * 3.2);
+  });
+}
+
+/** The upper half of the sheet, hinged at the chart's baseline: flat in 2D, standing in 3D. */
+function Board({ children }: { children: ReactNode }) {
+  const ref = useRef<THREE.Group>(null);
+  useFrame(() => {
+    if (ref.current) ref.current.rotation.x = lift.value * BOARD_TILT;
+  });
+  return (
+    <group ref={ref} position={[0, 0, Z.popBase]}>
+      <group position={[0, 0, -Z.popBase]}>{children}</group>
+    </group>
+  );
+}
+
+/**
+ * Something that rises `h` out of the floor in 3D: the solid is scaled in height, and the group
+ * holding its top-face labels follows the top.
+ */
+function useRise(h: number) {
+  const solid = useRef<THREE.Object3D>(null);
+  const top = useRef<THREE.Group>(null);
+  useFrame(() => {
+    const s = h * Math.max(lift.value, 0.03);
+    if (solid.current) solid.current.scale.y = s;
+    if (top.current) top.current.position.y = s;
+  });
+  return { solid, top };
 }
 
 /* ---------- shared bits ---------- */
@@ -58,12 +116,28 @@ export function Poster2D() {
 const x0All = yearToX(YEAR_MIN), x1All = yearToX(YEAR_MAX);
 const xMin = Math.min(x0All, x1All), xMax = Math.max(x0All, x1All);
 
-function Paper() {
+function Floor() {
   return (
-    <mesh rotation={FLAT_ROT} position={[(xMin + xMax) / 2, 0, -20]} raycast={() => null}>
+    <mesh rotation={FLAT_ROT} position={[(xMin + xMax) / 2, 0, 0]} raycast={() => null}>
       <planeGeometry args={[xMax - xMin + 400, 400]} />
       <meshBasicMaterial color={POSTER.paper} />
     </mesh>
+  );
+}
+
+/** The board's own sheet of paper (it must still be there when the board stands up). */
+function BoardSheet() {
+  const w = xMax - xMin + 6;
+  const top = Z.boardTop, bottom = Z.popBase;
+  const frame: [number, number, number][] = [[xMin - 3, Y.line, bottom], [xMin - 3, Y.line, top], [xMax + 3, Y.line, top], [xMax + 3, Y.line, bottom]];
+  return (
+    <group>
+      <mesh rotation={FLAT_ROT} position={[(xMin + xMax) / 2, -0.03, (top + bottom) / 2]} raycast={() => null}>
+        <planeGeometry args={[w, bottom - top]} />
+        <meshBasicMaterial color={POSTER.paper} side={THREE.DoubleSide} />
+      </mesh>
+      <Line points={frame} color={POSTER.grid} lineWidth={1} />
+    </group>
   );
 }
 
@@ -89,83 +163,91 @@ const hover = (text: string | null) => {
   document.body.style.cursor = text ? 'pointer' : '';
 };
 
-/** Show a group only while the camera is low enough (camera height ≈ zoom level in 2D). */
-function useLod(maxHeight: number, always = false) {
+/** Show a group only while the camera is close enough. */
+function useLod(maxDist: number, always = false) {
   const ref = useRef<THREE.Group>(null);
-  useFrame(({ camera }) => {
-    if (ref.current) ref.current.visible = always || camera.position.y < maxHeight;
+  useFrame(() => {
+    if (ref.current) ref.current.visible = always || view.dist < maxDist;
   });
   return ref;
 }
 
 interface CellProps {
-  x0: number; x1: number; z: number; h: number;
+  x0: number; x1: number; z: number; d: number; h: number;
   fill: string; label: string; sub?: string;
-  textColor?: string; bold?: boolean; selected?: boolean; dashed?: boolean;
+  textColor?: string; bold?: boolean; selected?: boolean; gold?: boolean;
   onClick?: () => void; tip?: string;
 }
 
-/** A bordered cell in one of the period rows. */
-const Cell = memo(function Cell({ x0, x1, z, h, fill, label, sub, textColor = POSTER.ink, bold, selected, dashed, onClick, tip }: CellProps) {
+/** A bordered cell in one of the period rows; a tile that rises out of the floor in 3D. */
+const Cell = memo(function Cell({ x0, x1, z, d, h, fill, label, sub, textColor = POSTER.ink, bold, selected, gold, onClick, tip }: CellProps) {
   const a = Math.min(x0, x1), b = Math.max(x0, x1);
   const w = Math.max(0.05, b - a);
   const cx = (a + b) / 2;
-  const fs = THREE.MathUtils.clamp((w - 0.3) / Math.max(2, label.length * 0.56), 0.3, h * 0.36);
+  const fs = THREE.MathUtils.clamp((w - 0.3) / Math.max(2, label.length * 0.56), 0.3, d * 0.36);
   const showLabel = w > 1.1;
-  const border: [number, number, number][] = [[a, Y.line, z - h / 2], [b, Y.line, z - h / 2], [b, Y.line, z + h / 2], [a, Y.line, z + h / 2], [a, Y.line, z - h / 2]];
+  const geo = useMemo(() => new THREE.BoxGeometry(Math.max(0.02, w - 0.04), 1, d).translate(0, 0.5, 0), [w, d]);
+  const { solid, top } = useRise(h);
   return (
     <group>
       <mesh
-        rotation={FLAT_ROT}
-        position={[cx, Y.cell, z]}
+        ref={solid}
+        geometry={geo}
+        position={[cx, 0, z]}
         onClick={onClick && ((e: ThreeEvent<MouseEvent>) => { e.stopPropagation(); onClick(); })}
         onPointerOver={tip ? (e) => { e.stopPropagation(); hover(tip); } : undefined}
         onPointerOut={tip ? () => hover(null) : undefined}
       >
-        <planeGeometry args={[w, h]} />
-        <meshBasicMaterial color={selected ? POSTER.highlight : fill} />
+        <meshStandardMaterial color={selected ? POSTER.highlight : fill} roughness={0.85} />
+        <Edges color={selected ? POSTER.selected : POSTER.rule} />
       </mesh>
-      <Line points={border} color={selected ? POSTER.selected : POSTER.rule} lineWidth={selected ? 2 : 1} dashed={dashed} dashSize={0.3} gapSize={0.2} />
-      {showLabel && (
-        <Text
-          font={bold ? FONT_BOLD : FONT_REGULAR}
-          fontSize={fs}
-          maxWidth={w - 0.2}
-          textAlign="center"
-          anchorX="center"
-          anchorY="middle"
-          rotation={FLAT_ROT}
-          position={[cx, Y.text, z - (sub && h > 2 ? fs * 0.35 : 0)]}
-          color={textColor}
-          direction="auto"
-          raycast={() => null}
-        >
-          {label}
-        </Text>
-      )}
-      {showLabel && sub && h > 2 && w > 4 && (
-        <Text font={FONT_REGULAR} fontSize={Math.min(0.5, fs * 0.58)} anchorX="center" anchorY="middle" rotation={FLAT_ROT} position={[cx, Y.text, z + fs * 0.55]} color={POSTER.inkSoft} direction="auto" raycast={() => null}>
-          {sub}
-        </Text>
-      )}
+      <group ref={top}>
+        {gold && (
+          <mesh rotation={FLAT_ROT} position={[cx, 0.02, z - d / 2 + 0.14]} raycast={() => null}>
+            <planeGeometry args={[w - 0.04, 0.28]} />
+            <meshBasicMaterial color="#e3b12f" />
+          </mesh>
+        )}
+        {showLabel && (
+          <Text
+            font={bold ? FONT_BOLD : FONT_REGULAR}
+            fontSize={fs}
+            maxWidth={w - 0.2}
+            textAlign="center"
+            anchorX="center"
+            anchorY="middle"
+            rotation={FLAT_ROT}
+            position={[cx, 0.04, z - (sub && d > 2 ? fs * 0.35 : 0)]}
+            color={textColor}
+            direction="auto"
+            raycast={() => null}
+          >
+            {label}
+          </Text>
+        )}
+        {showLabel && sub && d > 2 && w > 4 && (
+          <Text font={FONT_REGULAR} fontSize={Math.min(0.5, fs * 0.58)} anchorX="center" anchorY="middle" rotation={FLAT_ROT} position={[cx, 0.04, z + fs * 0.55]} color={POSTER.inkSoft} direction="auto" raycast={() => null}>
+            {sub}
+          </Text>
+        )}
+      </group>
     </group>
   );
 });
 
-/* ---------- eras: faint full-height tints and a labelled row above the axis ---------- */
+/* ---------- eras: faint tints across the sheet, and a row of cells above the axis ---------- */
 
-function EraTints() {
+function EraTints({ from, to }: { from: number; to: number }) {
   const mode = useStore((s) => s.mode);
-  const top = SHEET_TOP, bottom = SHEET_BOTTOM;
   return (
     <group>
       {eras.map((era) => {
         const s = mainSpan(era.dating, mode);
         const a = yearToX(s.start), b = yearToX(s.end!);
         return (
-          <mesh key={era.id} rotation={FLAT_ROT} position={[(a + b) / 2, Y.tint, (top + bottom) / 2]} raycast={() => null}>
-            <planeGeometry args={[Math.abs(b - a), bottom - top]} />
-            <meshBasicMaterial color={era.color} transparent opacity={0.2} depthWrite={false} />
+          <mesh key={era.id} rotation={FLAT_ROT} position={[(a + b) / 2, Y.tint, (from + to) / 2]} raycast={() => null}>
+            <planeGeometry args={[Math.abs(b - a), Math.abs(to - from)]} />
+            <meshBasicMaterial color={era.color} transparent opacity={0.2} depthWrite={false} side={THREE.DoubleSide} />
           </mesh>
         );
       })}
@@ -183,7 +265,7 @@ function EraRow() {
         return (
           <Cell
             key={era.id}
-            x0={yearToX(s.start)} x1={yearToX(s.end!)} z={Z.era} h={ROW_H.era}
+            x0={yearToX(s.start)} x1={yearToX(s.end!)} z={Z.era} d={ROW.era.d} h={ROW.era.h}
             fill={era.color} label={L(era.title)} bold
             selected={sameRef(selected, { type: 'era', id: era.id })}
             onClick={() => focusItem({ type: 'era', id: era.id })}
@@ -205,7 +287,7 @@ function RabbinicRow() {
         return (
           <Cell
             key={r.id}
-            x0={yearToX(s.start)} x1={yearToX(s.end ?? s.start)} z={Z.rabbinic} h={ROW_H.rabbinic}
+            x0={yearToX(s.start)} x1={yearToX(s.end ?? s.start)} z={Z.rabbinic} d={ROW.rabbinic.d} h={ROW.rabbinic.h}
             fill="#ffffff" label={L(r.title)}
             selected={sameRef(selected, { type: 'rabbinic', id: r.id })}
             onClick={() => focusItem({ type: 'rabbinic', id: r.id })}
@@ -219,8 +301,6 @@ function RabbinicRow() {
 
 /* ---------- rule over the Land of Israel ---------- */
 
-const pastel = (hex: string) => '#' + new THREE.Color(hex).lerp(new THREE.Color('#ffffff'), 0.6).getHexString();
-
 function RuleRows() {
   const mode = useStore((s) => s.mode);
   const selected = useStore((s) => s.selected);
@@ -232,9 +312,12 @@ function RuleRows() {
         return (
           <Cell
             key={r.id}
-            x0={yearToX(s.start)} x1={yearToX(s.end ?? s.start + 1)} z={row1 ? Z.rule1 : Z.rule} h={row1 ? ROW_H.rule1 : ROW_H.rule}
-            fill={POSTER.power[r.power] ?? pastel('#888888')} label={L(r.title)} sub={formatSpan(s)}
-            bold={r.jewish}
+            x0={yearToX(s.start)} x1={yearToX(s.end ?? s.start + 1)}
+            z={row1 ? Z.rule1 : Z.rule} d={row1 ? ROW.rule1.d : ROW.rule.d}
+            // Jewish sovereignty or self-rule stands taller, with a gold edge
+            h={r.jewish ? ROW.ruleJewish.h : row1 ? ROW.rule1.h : ROW.rule.h}
+            fill={POSTER.power[r.power] ?? '#d8d8d8'} label={L(r.title)} sub={formatSpan(s)}
+            bold={r.jewish} gold={r.jewish}
             selected={sameRef(selected, { type: 'ruler', id: r.id })}
             onClick={() => focusItem({ type: 'ruler', id: r.id })}
             tip={`${L(r.title)} · ${formatSpan(s)}`}
@@ -245,36 +328,45 @@ function RuleRows() {
         rulers.filter((r) => datingsDiffer(r.dating)).map((r) => (
           <Cell
             key={r.id + '-t'}
-            x0={yearToX(r.dating.trad!.start)} x1={yearToX(r.dating.trad!.end ?? r.dating.trad!.start + 1)} z={Z.trad} h={ROW_H.trad}
-            fill="#f7efe2" label={L(r.title)} textColor={POSTER.trad} dashed
+            x0={yearToX(r.dating.trad!.start)} x1={yearToX(r.dating.trad!.end ?? r.dating.trad!.start + 1)} z={Z.trad} d={ROW.trad.d} h={ROW.trad.h}
+            fill="#f7efe2" label={L(r.title)} textColor={POSTER.trad}
             tip={`${t('tradDatingPrefix')} · ${L(r.title)} · ${formatSpan(r.dating.trad!)}`}
           />
         ))}
-      {/* a gold edge marks Jewish sovereignty or self-rule, as in the 3D view */}
-      {rulers.filter((r) => r.jewish).map((r) => {
-        const s = mainSpan(r.dating, mode);
-        const a = yearToX(s.start), b = yearToX(s.end ?? s.start + 1);
-        return (
-          <mesh key={r.id + '-j'} rotation={FLAT_ROT} position={[(a + b) / 2, Y.mark, Z.rule - ROW_H.rule / 2 + 0.14]} raycast={() => null}>
-            <planeGeometry args={[Math.abs(b - a), 0.28]} />
-            <meshBasicMaterial color="#e3b12f" />
-          </mesh>
-        );
-      })}
     </group>
   );
 }
 
-/* ---------- population: an area chart standing on its baseline ---------- */
+/* ---------- population: an area chart on the board, standing out of it in 3D ---------- */
 
-function areaGeometry(fn: (year: number) => number, step = 0.5) {
+/** Area between the baseline and fn(year), at height y above the board. */
+function areaGeometry(fn: (year: number) => number, y: number, step = 0.5) {
   const u0 = yearToU(POP_FROM), u1 = yearToU(POP_TO);
   const pos: number[] = [];
   const idx: number[] = [];
   let n = 0;
   for (let u = u0; ; u = Math.min(u1, u + step)) {
     const x = DIR * u;
-    pos.push(x, 0, Z.popBase, x, 0, Z.popBase - POP_K * Math.max(0, fn(uToYear(u))));
+    pos.push(x, y, Z.popBase, x, y, Z.popBase - POP_K * Math.max(0, fn(uToYear(u))));
+    if (n > 0) { const a = 2 * (n - 1); idx.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+    n++;
+    if (u >= u1) break;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setIndex(idx);
+  return g;
+}
+
+/** The chart's top edge as a wall from y0 to y1: its relief, seen when the board stands. */
+function edgeGeometry(fn: (year: number) => number, y0: number, y1: number, step = 0.5) {
+  const u0 = yearToU(POP_FROM), u1 = yearToU(POP_TO);
+  const pos: number[] = [];
+  const idx: number[] = [];
+  let n = 0;
+  for (let u = u0; ; u = Math.min(u1, u + step)) {
+    const x = DIR * u, z = Z.popBase - POP_K * Math.max(0, fn(uToYear(u)));
+    pos.push(x, y0, z, x, y1, z);
     if (n > 0) { const a = 2 * (n - 1); idx.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
     n++;
     if (u >= u1) break;
@@ -290,7 +382,16 @@ const POP_LABEL_FS = 0.85;
 const popLabel = (m: number) => '~' + formatMillions(m);
 
 function PopulationChart() {
-  const { world, israel, range } = useMemo(() => ({ world: areaGeometry(popTotal), israel: areaGeometry(popIsrael, 0.4), range: areaGeometry(popMax, 1) }), []);
+  const geo = useMemo(() => {
+    const yW = CHART_RELIEF, yI = CHART_RELIEF + ISRAEL_RELIEF;
+    return {
+      range: areaGeometry(popMax, 0.05, 1),
+      world: areaGeometry(popTotal, yW),
+      worldEdge: edgeGeometry(popTotal, 0, yW),
+      israel: areaGeometry(popIsrael, yI, 0.4),
+      israelEdge: edgeGeometry(popIsrael, yW, yI, 0.4),
+    };
+  }, []);
   const xa = yearToX(POP_FROM), xb = yearToX(POP_TO);
   const onMove = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
@@ -321,19 +422,25 @@ function PopulationChart() {
           </group>
         );
       })}
-      <mesh geometry={range} position={[0, Y.area - 0.01, 0]} raycast={() => null}>
+      <mesh geometry={geo.range} raycast={() => null}>
         <meshBasicMaterial color={POSTER.worldRange} side={THREE.DoubleSide} />
       </mesh>
-      <mesh geometry={world} position={[0, Y.area, 0]} onPointerMove={onMove} onPointerOut={() => hover(null)} onClick={onClick}>
+      <mesh geometry={geo.world} onPointerMove={onMove} onPointerOut={() => hover(null)} onClick={onClick}>
         <meshBasicMaterial color={POSTER.world} side={THREE.DoubleSide} />
       </mesh>
-      <mesh geometry={israel} position={[0, Y.israel, 0]} raycast={() => null}>
+      <mesh geometry={geo.worldEdge} raycast={() => null}>
+        <meshBasicMaterial color="#c97a12" side={THREE.DoubleSide} />
+      </mesh>
+      <mesh geometry={geo.israel} raycast={() => null}>
         <meshBasicMaterial color={POSTER.israel} side={THREE.DoubleSide} />
       </mesh>
-      <Line points={[[xa, Y.line, Z.popBase], [xb, Y.line, Z.popBase]]} color={POSTER.rule} lineWidth={1} />
+      <mesh geometry={geo.israelEdge} raycast={() => null}>
+        <meshBasicMaterial color="#1d4fa3" side={THREE.DoubleSide} />
+      </mesh>
+      <Line points={[[xa, CHART_RELIEF + ISRAEL_RELIEF + 0.02, Z.popBase], [xb, CHART_RELIEF + ISRAEL_RELIEF + 0.02, Z.popBase]]} color={POSTER.rule} lineWidth={1.5} />
       <group ref={labelsRef}>
         {population.filter((p) => POP_LABEL_YEARS.has(p.year)).map((p) => (
-          <Text key={p.year} font={FONT_BOLD} fontSize={POP_LABEL_FS} color="#a35a06" outlineWidth={0.05} outlineColor={POSTER.paper} anchorX="center" anchorY="bottom" rotation={FLAT_ROT} position={[yearToX(p.year), Y.text, Z.popBase - POP_K * p.total - 0.25]} direction="auto" raycast={() => null}>
+          <Text key={p.year} font={FONT_BOLD} fontSize={POP_LABEL_FS} color="#a35a06" outlineWidth={0.05} outlineColor={POSTER.paper} anchorX="center" anchorY="bottom" rotation={FLAT_ROT} position={[yearToX(p.year), CHART_RELIEF + 0.1, Z.popBase - POP_K * p.total - 0.25]} direction="auto" raycast={() => null}>
             {popLabel(p.total)}
           </Text>
         ))}
@@ -342,7 +449,7 @@ function PopulationChart() {
   );
 }
 
-/* ---------- events: bullet, title and date, with a dotted leader down to the chart's baseline ---------- */
+/* ---------- events: bullet, title and date just above the chart, with a dotted leader down to it ---------- */
 
 const EVENT_FS = 1.0;
 const DATE_FS = 0.6;
@@ -394,6 +501,7 @@ function placeEvents(mode: ReturnType<typeof useStore.getState>['mode']) {
     }
     placed.push({ a, b, top: z - up, bottom: z + down });
     out.set(e, z);
+    eventAnchorZ.set(e.id, z);
   }
   return out;
 }
@@ -407,9 +515,9 @@ function EventRows() {
 const EventMark = memo(function EventMark({ event, z }: { event: HistoryEvent; z: number }) {
   const mode = useStore((s) => s.mode);
   const selected = useStore((s) => sameRef(s.selected, { type: 'event', id: event.id }));
-  const x = yearToX(mainSpan(event.dating, mode).start);
-  const fs = EVENT_FS * (event.importance >= 4 ? 1.15 : 1);
   const year = mainSpan(event.dating, mode).start;
+  const x = yearToX(year);
+  const fs = EVENT_FS * (event.importance >= 4 ? 1.15 : 1);
   // the dotted leader drops to the top of the population chart (or to its baseline outside the data)
   const leaderEnd = chartTopAt(year);
   const color = isTradOnly(event.dating) ? POSTER.trad : POSTER.kind[event.kind];
@@ -424,10 +532,10 @@ const EventMark = memo(function EventMark({ event, z }: { event: HistoryEvent; z
   const w = Math.min(Math.max(textW(L(event.title), fs), 2.4), 14);
   return (
     <group>
-      {/* the bullet always shows, so the overview still reads as a dense timeline */}
-      <mesh rotation={FLAT_ROT} position={[x, Y.mark, z + 1.05]} {...handlers}>
-        <circleGeometry args={[selected ? 0.45 : 0.32, 20]} />
-        <meshBasicMaterial color={selected ? POSTER.selected : color} />
+      {/* a bead pinned to the board: a dot from above, a knob standing out of the board in 3D */}
+      <mesh position={[x, 0.3, z + 1.05]} {...handlers}>
+        <sphereGeometry args={[selected ? 0.45 : 0.32, 18, 12]} />
+        <meshStandardMaterial color={selected ? POSTER.selected : color} roughness={0.45} emissive={selected ? POSTER.selected : color} emissiveIntensity={0.35} />
       </mesh>
       <group ref={ref}>
         <Line points={[[x, Y.line, z + 1.4], [x, Y.line, leaderEnd]]} color={selected ? POSTER.selected : POSTER.leader} lineWidth={1} dashed dashSize={0.25} gapSize={0.22} />
@@ -462,7 +570,7 @@ const EventMark = memo(function EventMark({ event, z }: { event: HistoryEvent; z
   );
 });
 
-/* ---------- people: lifespan capsules with names ---------- */
+/* ---------- people: lifespan capsules below the axis, raised bars in 3D ---------- */
 
 const PERSON_FS = 0.78;
 const PERSON_LOD: Record<number, number> = { 1: 90, 2: 140, 3: 210, 4: 340, 5: 10000 };
@@ -480,15 +588,16 @@ function PeopleRows() {
   return <group>{people.map((p) => <Capsule key={p.id} person={p} row={rows.get(p) ?? 0} />)}</group>;
 }
 
-function capsuleShape(w: number, h: number) {
-  const r = Math.min(h / 2, w / 2);
+/** A rounded bar w long and d deep, rising one unit (scaled to its height by useRise). */
+function capsuleGeometry(w: number, d: number) {
+  const r = Math.min(d / 2, w / 2);
   const s = new THREE.Shape();
-  s.moveTo(-w / 2 + r, -h / 2);
-  s.lineTo(w / 2 - r, -h / 2);
+  s.moveTo(-w / 2 + r, -d / 2);
+  s.lineTo(w / 2 - r, -d / 2);
   s.absarc(w / 2 - r, 0, r, -Math.PI / 2, Math.PI / 2, false);
-  s.lineTo(-w / 2 + r, h / 2);
+  s.lineTo(-w / 2 + r, d / 2);
   s.absarc(-w / 2 + r, 0, r, Math.PI / 2, (3 * Math.PI) / 2, false);
-  return new THREE.ShapeGeometry(s, 8);
+  return new THREE.ExtrudeGeometry(s, { depth: 1, bevelEnabled: false, curveSegments: 8 }).rotateX(-Math.PI / 2);
 }
 
 const Capsule = memo(function Capsule({ person, row }: { person: Person; row: number }) {
@@ -498,9 +607,10 @@ const Capsule = memo(function Capsule({ person, row }: { person: Person; row: nu
   const w = Math.max(0.5, Math.abs(b - a));
   const cx = (a + b) / 2;
   const z = Z.peopleFrom + row * PERSON_STEP;
-  const geo = useMemo(() => capsuleShape(w, selected ? 0.75 : 0.56), [w, selected]);
+  const geo = useMemo(() => capsuleGeometry(w, selected ? 0.75 : 0.56), [w, selected]);
   const color = POSTER.category[person.category];
   const ref = useLod(PERSON_LOD[person.importance], selected);
+  const { solid, top } = useRise(PERSON_RISE);
   const tip = `${L(person.name)} · ${formatSpan(s)} · ${CATEGORY_LABELS[person.category][lang]}`;
   const handlers = {
     onClick: (e: ThreeEvent<MouseEvent>) => { e.stopPropagation(); focusItem({ type: 'person', id: person.id }); },
@@ -509,19 +619,21 @@ const Capsule = memo(function Capsule({ person, row }: { person: Person; row: nu
   };
   return (
     <group>
-      <mesh geometry={geo} rotation={FLAT_ROT} position={[cx, Y.mark, z]} {...handlers}>
-        <meshBasicMaterial color={selected ? POSTER.selected : color} />
+      <mesh ref={solid} geometry={geo} position={[cx, 0, z]} {...handlers}>
+        <meshStandardMaterial color={selected ? POSTER.selected : color} roughness={0.5} />
       </mesh>
-      <group ref={ref}>
-        {selected && (
-          <mesh rotation={FLAT_ROT} position={[cx, Y.cell, z - 0.85]}>
-            <planeGeometry args={[textW(L(person.name), PERSON_FS) + 0.8, 1.2]} />
-            <meshBasicMaterial color={POSTER.highlight} />
-          </mesh>
-        )}
-        <Text font={person.importance >= 4 ? FONT_BOLD : FONT_REGULAR} fontSize={PERSON_FS} anchorX="center" anchorY="bottom" rotation={FLAT_ROT} position={[cx, Y.text, z - 0.38]} color={POSTER.ink} outlineWidth={0.05} outlineColor={POSTER.paper} direction="auto" {...handlers}>
-          {L(person.name)}
-        </Text>
+      <group ref={top}>
+        <group ref={ref}>
+          {selected && (
+            <mesh rotation={FLAT_ROT} position={[cx, Y.cell, z - 0.85]}>
+              <planeGeometry args={[textW(L(person.name), PERSON_FS) + 0.8, 1.2]} />
+              <meshBasicMaterial color={POSTER.highlight} />
+            </mesh>
+          )}
+          <Text font={person.importance >= 4 ? FONT_BOLD : FONT_REGULAR} fontSize={PERSON_FS} anchorX="center" anchorY="bottom" rotation={FLAT_ROT} position={[cx, Y.text, z - 0.38]} color={POSTER.ink} outlineWidth={0.05} outlineColor={POSTER.paper} direction="auto" {...handlers}>
+            {L(person.name)}
+          </Text>
+        </group>
       </group>
     </group>
   );
@@ -565,13 +677,13 @@ function Axis() {
 
 /* ---------- row titles at both ends of the sheet, poster style ---------- */
 
-function RowTitles() {
+function RowTitles({ part }: { part: 'board' | 'floor' }) {
   const lanes = useStore((s) => s.lanes);
   const mode = useStore((s) => s.mode);
-  const rows: { z: number; text: string; show: boolean }[] = [
+  const rows: { z: number; text: string; show: boolean; board?: boolean }[] = [
+    { z: Z.popBase - 9, text: t('laneTitleHistory'), show: lanes.history, board: true },
+    { z: Z.popBase - 3, text: t('laneTitlePop'), show: lanes.demography, board: true },
     { z: Z.peopleFrom + 1, text: t('lanePeople'), show: lanes.people },
-    { z: Z.popBase - 9, text: t('laneTitleHistory'), show: lanes.history },
-    { z: Z.popBase - 3, text: t('laneTitlePop'), show: lanes.demography },
     { z: Z.rule, text: t('laneTitleRule'), show: lanes.sovereignty },
     { z: Z.trad, text: t('tradDatingPrefix'), show: lanes.sovereignty && mode === 'both' },
     { z: Z.rabbinic, text: t('laneRabbinic'), show: lanes.rabbinic },
@@ -586,8 +698,8 @@ function RowTitles() {
   return (
     <group>
       {ends.flatMap((end, i) =>
-        rows.filter((r) => r.show).map((r) => (
-          <Text key={`${i}-${r.text}`} font={FONT_BLACK} fontSize={1.1} color={POSTER.ink} anchorX={end.anchor} anchorY="middle" rotation={FLAT_ROT} position={[end.x, Y.text, r.z]} direction="auto" raycast={() => null}>
+        rows.filter((r) => r.show && !!r.board === (part === 'board')).map((r) => (
+          <Text key={i + r.text} font={FONT_BLACK} fontSize={1.1} color={POSTER.ink} anchorX={end.anchor} anchorY="middle" rotation={FLAT_ROT} position={[end.x, part === 'board' ? 1 : Y.text, r.z]} direction="auto" raycast={() => null}>
             {r.text}
           </Text>
         )),

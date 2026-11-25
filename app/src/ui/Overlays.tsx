@@ -134,12 +134,12 @@ function HelpHe() {
       </ul>
       <h3>השכבות</h3>
       <ul>
-        <li><b>אירועים</b>: עמודים עם כרטיסים. ככל שהאירוע חשוב יותר, הכרטיס גדול יותר.</li>
-        <li><b>דמוגרפיה</b>: „נהר” שרוחבו וגובהו הם מספר היהודים בעולם. החלק הזהוב הוא היהודים בארץ ישראל, והרצועה הבהירה סביבו היא טווח ההערכות.</li>
-        <li><b>שלטון</b>: מי שלט בארץ ישראל בכל תקופה. גושים גבוהים עם פס זהוב מסמנים ריבונות או שלטון עצמי יהודי.</li>
-        <li><b>תקופות</b>: רקע צבעוני לתקופות הגדולות.</li>
-        <li><b>תקופות ההלכה</b>: קשתות מאחורי האירועים, מאנשי כנסת הגדולה, דרך התנאים, האמוראים, הגאונים והראשונים, ועד האחרונים.</li>
-        <li><b>אישים</b>: דמויות שעומדות מתחת לקשת התקופה שלהן, ופס על הקרקע מראה את שנות חייהן. בגלובוס הן מופיעות במקום שבו חיו באותה שנה.</li>
+        <li>הציר בנוי כמו פוסטר. בתלת־ממד חציו העליון מתרומם ועומד כמו לוח, והשורות שלפניו עולות מהרצפה.</li>
+        <li><b>דמוגרפיה</b>: גרף שטח של מספר היהודים בעולם (כתום). החלק הכחול הוא היהודים בארץ ישראל, והרצועה הבהירה היא טווח ההערכות.</li>
+        <li><b>אירועים</b>: נקודה צבעונית, שם ותאריך, ממש מעל הגרף. קו מקווקו מוביל לגרף. אירועים חשובים מודגשים.</li>
+        <li><b>שלטון</b>: מי שלט בארץ ישראל בכל תקופה. ריבונות או שלטון עצמי יהודי גבוהים יותר ומסומנים בפס זהוב.</li>
+        <li><b>תקופות ההלכה</b> ו<b>תקופות</b>: שורות של תאים מעל ציר השנים, ורקע צבעוני עדין לכל תקופה.</li>
+        <li><b>אישים</b>: מתחת לציר השנים, פס צבעוני לשנות החיים של כל אחד. בגלובוס הם מופיעים במקום שבו חיו באותה שנה.</li>
       </ul>
       <h3>הגלובוס</h3>
       <p>
@@ -182,12 +182,12 @@ function HelpEn() {
       </ul>
       <h3>The layers</h3>
       <ul>
-        <li><b>Events</b>: posts with cards. More important events have bigger cards.</li>
-        <li><b>Demography</b>: a “river” whose width and height show the world Jewish population. The gold part is Jews in the Land of Israel, and the pale band around it is the range of estimates.</li>
-        <li><b>Rule</b>: who ruled the Land of Israel in each period. Tall blocks with a gold stripe mark Jewish sovereignty or self-rule.</li>
-        <li><b>Eras</b>: colored ground for the great periods.</li>
-        <li><b>Rabbinic eras</b>: arches behind the events, from the Great Assembly through the Tannaim, Amoraim, Geonim and Rishonim to the Acharonim.</li>
-        <li><b>People</b>: figures standing beneath the arch of their period, with a bar on the ground for their lifespan. On the globe they appear where they lived in that year.</li>
+        <li>The timeline is laid out like a poster. In 3D its upper half stands up like a board, and the rows in front rise from the floor.</li>
+        <li><b>Demography</b>: an area chart of the world Jewish population (orange). The blue part is Jews in the Land of Israel, and the pale band is the range of estimates.</li>
+        <li><b>Events</b>: a colored dot, name and date just above the chart, with a dotted line down to it. Important events are in bold.</li>
+        <li><b>Rule</b>: who ruled the Land of Israel in each period. Jewish sovereignty or self-rule stands taller, with a gold stripe.</li>
+        <li><b>Rabbinic eras</b> and <b>Eras</b>: rows of cells above the year axis, and a light tint for each period.</li>
+        <li><b>People</b>: below the year axis, a colored bar for each lifespan. On the globe they appear where they lived in that year.</li>
       </ul>
       <h3>The globe</h3>
       <p>

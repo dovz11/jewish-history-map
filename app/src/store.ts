@@ -4,7 +4,7 @@ import { applyLang, lang as initialLang } from './i18n';
 import { type Dim, initialDim, setFlat } from './lib/dim';
 
 const startDim = initialDim();
-setFlat(startDim === '2d');
+setFlat(startDim === '2d', false);
 
 export type LaneKey = 'history' | 'demography' | 'sovereignty' | 'eras' | 'rabbinic' | 'people';
 export type ViewKind = 'timeline' | 'globe';
@@ -14,6 +14,8 @@ export interface FlyRequest {
   x: number;
   /** scene z to look at */
   z?: number;
+  /** height to look at (3D: up on the standing poster board) */
+  y?: number;
   /** camera distance */
   dist?: number;
   nonce: number;
@@ -48,7 +50,7 @@ interface State {
   select(ref: ItemRef | null): void;
   setHover(t: string | null): void;
   setView(x: number, halfWidth: number): void;
-  flyTo(x: number, opts?: { z?: number; dist?: number }): void;
+  flyTo(x: number, opts?: { y?: number; z?: number; dist?: number }): void;
   setListOpen(v: boolean): void;
   setHelpOpen(v: boolean): void;
   setViewKind(v: ViewKind): void;

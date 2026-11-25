@@ -12,14 +12,18 @@ from scratch or taken from Wikipedia. Nothing is copied from the poster.
 
 ## What's on the map
 
+The timeline is laid out as an infographic poster. In 3D its upper half (the population chart and
+the events) stands up like a board leaning back on an easel, and the rows in front of it rise
+from the floor as tiles. In 2D the same poster lies flat and is seen from straight above.
+
 | Lane | What it shows |
 |---|---|
-| **Events** (אירועים) | Markers with cards, from Creation to the present. Bigger cards mean more important events. A bar on the ground shows how long an event lasted. |
-| **Demography** (דמוגרפיה) | A 3D "river". Its width and height show the world Jewish population. The gold strip is the share living in the Land of Israel, and the pale band is the range of scholarly estimates. |
-| **Sovereignty** (שלטון) | Blocks showing who ruled the Land of Israel. Tall blocks with a gold stripe mark Jewish sovereignty or self-rule. |
-| **Eras** (תקופות) | Tinted floor sections with large titles, such as the First Temple period and the Middle Ages. |
-| **Rabbinic eras** (תקופות ההלכה) | An arcade of arches behind the events, from the Men of the Great Assembly and the Zugot through the Tannaim, Amoraim, Savoraim, Geonim and Rishonim to the Acharonim. |
-| **People** (אישים) | 53 figures, from Hillel to Elie Wiesel, standing beneath the arch of their period, with their lifespan as a bar on the ground. They include sages, rabbis, thinkers, poets, mystics, leaders and writers, among them women and Sephardi, Mizrahi and Yemenite figures. On the globe each person appears where they lived in the chosen year. |
+| **Demography** (דמוגרפיה) | An area chart of the world Jewish population (orange), with the Land of Israel share in blue and the range of scholarly estimates as a pale band. In 3D the chart stands out of the board in relief. |
+| **Events** (אירועים) | A colored dot (by type of event), name and date, placed just above the chart with a dotted leader line down to it. Important events are in bold. |
+| **Sovereignty** (שלטון) | Pastel cells for who ruled the Land of Israel. Jewish sovereignty or self-rule stands taller, with a gold edge. |
+| **Rabbinic eras** (תקופות ההלכה) | A row of cells from the Men of the Great Assembly and the Zugot through the Tannaim, Amoraim, Savoraim, Geonim and Rishonim to the Acharonim. |
+| **Eras** (תקופות) | A row of colored cells above the year axis, plus a light tint across the sheet for each period. |
+| **People** (אישים) | 53 figures, from Hillel to Elie Wiesel, as colored lifespan bars below the year axis. They include sages, rabbis, thinkers, poets, mystics, leaders and writers, among them women and Sephardi, Mizrahi and Yemenite figures. On the globe each person appears where they lived in the chosen year. |
 
 **Globe view (🌍).** A parchment-style globe drawn from Natural Earth outlines shows the world
 in a chosen year:
@@ -59,17 +63,11 @@ Era years and Hebrew years (in Hebrew numerals).
 | Jump anywhere in time | Click or drag on the minimap at the bottom | Same |
 | Find an item | Search box | Same |
 
-**2D and 3D.** The 2D view is drawn as a printed infographic poster seen from above,
-inspired by the layout of the odyeda.com poster (the content is our own):
-- a white sheet with a thin black year axis and flat colors;
-- above the axis, rows of bordered cells for the eras, the rabbinic eras and who ruled the Land
-  of Israel (in pastel colors, with a gold edge for Jewish rule);
-- a stacked area chart of the world Jewish population, with the Land of Israel share in blue;
-- events as bullets and labels placed just above the chart, with dotted leader lines down to it;
-- people below the axis as colored lifespan capsules.
-
-The globe becomes a flat world map. The choice is remembered, and the camera keeps its place
-when you switch. The 2D layout is in `src/scene/Poster2D.tsx` and `src/lib/poster.ts`.
+**2D and 3D.** Both views are the same poster, so switching is an animation, not a rebuild: the
+board folds down flat (or swings up) while the camera tilts, as with Google Earth's 2D/3D button.
+2D is inspired by the layout of the odyeda.com poster (the content is our own): a white sheet, a
+thin black year axis and flat colors. The globe's 2D view is a flat world map. The choice is
+remembered. The layout is in `src/scene/Poster.tsx` and `src/lib/poster.ts`.
 
 **On phones** the toolbar shrinks to a search pill with a menu (view, dating, language, list,
 full screen, help) and a layers button. Both open only when tapped. The details open as a

@@ -1,27 +1,27 @@
-import { LANES } from './timeScale';
-
 /**
- * 2D / 3D display. Like DIR, the flag lives in a module variable that the scenes read
- * while building; switching remounts the 3D canvas (see App).
+ * 2D / 3D display.
  *
- * 3D: the tilted landscape and the round globe.
- * 2D: a flat map seen from straight above (heights flattened, cards laid out in depth),
- *     and an equirectangular world map instead of the globe.
+ * Timeline: one poster scene (scene/Poster.tsx) for both. In 2D it lies flat and is seen from
+ * straight above; in 3D its upper half (population chart and events) swings up like the page of a
+ * pop-up book, the period rows rise from the floor as tiles, and the camera tilts. The change is
+ * animated through `lift` (0 = flat, 1 = standing), which the scene reads every frame.
+ *
+ * Globe: 3D is the round globe, 2D an equirectangular world map (the globe canvas is rebuilt).
  */
 export type Dim = '2d' | '3d';
 
 export let FLAT = false;
 
-const LANES_3D = { ...LANES };
-/**
- * 2D is drawn as a poster (scene/Poster2D.tsx), with its own rows; these values aim the camera
- * at them when an item is focused (see focus.ts) and bound the panning.
- */
-const LANES_2D = { ...LANES, axis: 12, tradStrip: 5, sovereignty: 0.2, sovereigntyRow1: 2.9, river: -10, history: -22, rabbinic: 3.2, people: 19, eraLabels: -70 };
+/** Animated 0 (2D) … 1 (3D); `value` eases towards `target` (see useLiftDriver in Poster.tsx). */
+export const lift = { value: 1, target: 1 };
 
-export function setFlat(flat: boolean) {
+/** Camera distance from its target, published every frame (used for level of detail). */
+export const view = { dist: 100 };
+
+export function setFlat(flat: boolean, animate = true) {
   FLAT = flat;
-  Object.assign(LANES, flat ? LANES_2D : LANES_3D);
+  lift.target = flat ? 0 : 1;
+  if (!animate) lift.value = lift.target;
 }
 
 export function initialDim(): Dim {

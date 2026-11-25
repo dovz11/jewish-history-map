@@ -131,8 +131,8 @@ function App() {
     <div className={`app view-${view} dim-${dim}${chrome ? '' : ' chrome-off'}`}>
       <div className="canvas-wrap">
         <Suspense fallback={<div className="loading">{t('loading')}</div>}>
-          {/* a 2D/3D switch rebuilds the scene (positions depend on it); the cameras resume where they were */}
-          {view === 'globe' ? <GlobeScene key={dim} /> : <Scene key={dim} />}
+          {/* timeline: one scene animates between 2D and 3D; the globe is rebuilt as a flat map (its camera resumes) */}
+          {view === 'globe' ? <GlobeScene key={dim} /> : <Scene />}
         </Suspense>
       </div>
       <Toolbar />
@@ -148,17 +148,16 @@ function App() {
   );
 }
 
-/** Colors of the 2D poster (kept here, not imported, so the legend doesn't pull the 3D bundle in). */
+/** The poster's colors (kept here, not imported, so the legend doesn't pull the 3D bundle in). */
 const POSTER_LEGEND = { world: '#f3a43b', israel: '#2f6fd6', rule: '#9dbcf2' };
 
 function Legend() {
   const mode = useStore((s) => s.mode);
-  const flat = useStore((s) => s.dim) === '2d';
   return (
     <div className="legend" aria-hidden>
-      <span><i style={{ background: flat ? POSTER_LEGEND.world : '#3d78b8' }} /> {t('legendWorld')}</span>
-      <span><i style={{ background: flat ? POSTER_LEGEND.israel : '#e0b13a' }} /> {t('legendIsrael')}</span>
-      <span><i style={{ background: flat ? POSTER_LEGEND.rule : '#2f62b5', boxShadow: flat ? 'inset 0 -3px #e3b12f' : 'inset 0 3px #f2d27a' }} /> {t('legendJewishRule')}</span>
+      <span><i style={{ background: POSTER_LEGEND.world }} /> {t('legendWorld')}</span>
+      <span><i style={{ background: POSTER_LEGEND.israel }} /> {t('legendIsrael')}</span>
+      <span><i style={{ background: POSTER_LEGEND.rule, boxShadow: 'inset 0 -3px #e3b12f' }} /> {t('legendJewishRule')}</span>
       {mode === 'both' && <span><i className="dashed" /> {t('legendTrad')}</span>}
     </div>
   );
