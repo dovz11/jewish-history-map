@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { startTour } from '../lib/tour';
 import { t } from '../i18n';
 import { canFullscreen, isIOS, isStandalone, toggleFullscreen, useIsFullscreen, usePhoneLandscape } from '../lib/fullscreen';
 import { useStore } from '../store';
@@ -44,6 +45,7 @@ export function MapButtons() {
       <div className="fab dim-toggle" role="radiogroup" aria-label={t('dimLabel')}>
         <button role="radio" aria-checked={dim === '3d'} className={dim === '3d' ? 'on' : ''} onClick={() => st.setDim('3d')} title={t('dim3dTip')}>{t('dim3d')}</button>
         <button role="radio" aria-checked={dim === '2d'} className={dim === '2d' ? 'on' : ''} onClick={() => st.setDim('2d')} title={t('dim2dTip')}>{t('dim2d')}</button>
+        <button role="radio" aria-checked={false} className="tour-btn" onClick={() => startTour()} title={t('tourTip')} aria-label={t('tourTip')}><span aria-hidden>▶</span><small>{t('tourWord')}</small></button>
       </div>
     </div>
   );

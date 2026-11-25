@@ -2,6 +2,7 @@ import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
 import { DIR } from '../lib/timeScale';
 import { onCanvasMiss } from '../lib/focus';
+import { TourDriver } from './TourDriver';
 import { CameraRig } from './CameraRig';
 import { POSTER } from './constants';
 import { Poster } from './Poster';
@@ -29,6 +30,7 @@ export function Scene() {
         <Poster />
       </Suspense>
       <CameraRig />
+      <TourDriver />
     </Canvas>
   );
 }

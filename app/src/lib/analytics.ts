@@ -1,4 +1,5 @@
 import { useStore } from '../store';
+import { useTour } from './tour';
 
 /**
  * Visitor statistics through Umami Cloud (https://umami.is): no cookies and no personal data,
@@ -55,6 +56,15 @@ export function startAnalytics() {
     if (st.view !== prev.view) event('switch-view', { view: st.view });
     if (st.lang !== prev.lang) event('switch-lang', { lang: st.lang });
     if (st.helpOpen && !prev.helpOpen) event('open-help');
+  });
+  // the guided tour: how many start it, and how far they watch
+  useTour.subscribe((s, prev) => {
+    if (s.active && !prev.active) event('tour-start', { length: s.length });
+    const finished = s.phase === 'end' && prev.phase !== 'end';
+    const left = prev.active && !s.active && prev.phase !== 'end';
+    if (finished || left) {
+      event('tour-end', { length: prev.length, reached: Math.max(0, s.reached + 1), of: prev.stops.length, completed: finished ? 'yes' : 'no' });
+    }
   });
 
   // Time on site: Umami measures a visit from its first to its last event, so a visitor who just

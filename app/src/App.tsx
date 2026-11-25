@@ -1,4 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { startTour, useTour } from './lib/tour';
+import { TourOverlay } from './ui/Tour';
 import type { DateMode, ItemRef } from './data/types';
 import { eraById, eventById, personById, rabbinicById, rulerById } from './lib/data';
 import { focusItem, stepEvent } from './lib/focus';
@@ -24,6 +26,9 @@ function hasWebGL() {
     return false;
   }
 }
+
+/** "#tour" (or "#tour=full") starts the guided tour: a link to share. Read once, before the hash is rewritten. */
+let tourLink = new URLSearchParams(location.hash.slice(1)).get('tour');
 
 /** Parse "#event=expulsion-spain&mode=acad" */
 function parseHash(): { ref: ItemRef | null; mode: DateMode | null; globe: boolean } {
@@ -65,6 +70,7 @@ function App() {
   const view = useStore((s) => s.view);
   const dim = useStore((s) => s.dim);
   const chrome = useStore((s) => s.chrome);
+  const touring = useTour((s) => s.active);
 
   // deep link in, then keep the hash in sync
   useEffect(() => {
@@ -72,8 +78,13 @@ function App() {
     writeHash(ref, mode ?? useStore.getState().mode, globe || useStore.getState().view === 'globe');
     if (mode) useStore.getState().setMode(mode);
     if (globe) useStore.getState().setViewKind('globe');
-    if (ref) setTimeout(() => focusItem(ref), 300);
-    else if (!localStorage.getItem('jhm-help-seen')) useStore.getState().setHelpOpen(true);
+    if (tourLink !== null) {
+      const length = tourLink === 'full' ? 'full' : 'short';
+      tourLink = null;
+      setTimeout(() => startTour(length), 1500);
+    }
+    else if (ref) setTimeout(() => focusItem(ref), 300);
+    else if (!useTour.getState().active && !localStorage.getItem('jhm-help-seen')) useStore.getState().setHelpOpen(true);
     const unsub = useStore.subscribe((s, prev) => {
       if (s.selected !== prev.selected || s.mode !== prev.mode || s.view !== prev.view || s.dim !== prev.dim) writeHash(s.selected, s.mode, s.view === 'globe');
       // the selected item moves when the dating system changes: follow it
@@ -128,7 +139,7 @@ function App() {
   }
 
   return (
-    <div className={`app view-${view} dim-${dim}${chrome ? '' : ' chrome-off'}`}>
+    <div className={`app view-${view} dim-${dim}${chrome ? '' : ' chrome-off'}${touring ? ' touring' : ''}`}>
       <div className="canvas-wrap">
         <Suspense fallback={<div className="loading">{t('loading')}</div>}>
           {/* timeline: one scene animates between 2D and 3D; the globe is rebuilt as a flat map (its camera resumes) */}
@@ -144,6 +155,7 @@ function App() {
       <Tooltip />
       <ListView />
       <Help />
+      <TourOverlay />
     </div>
   );
 }

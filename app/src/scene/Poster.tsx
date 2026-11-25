@@ -12,6 +12,7 @@
  * animated by `lift` (lib/dim.ts).
  */
 import { Edges, Line, Text } from '@react-three/drei';
+import { useTour } from '../lib/tour';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import { memo, useMemo, useRef, type ReactNode } from 'react';
 import * as THREE from 'three';
@@ -514,7 +515,10 @@ function EventRows() {
 
 const EventMark = memo(function EventMark({ event, z }: { event: HistoryEvent; z: number }) {
   const mode = useStore((s) => s.mode);
-  const selected = useStore((s) => sameRef(s.selected, { type: 'event', id: event.id }));
+  const picked = useStore((s) => sameRef(s.selected, { type: 'event', id: event.id }));
+  // the guided tour lights up the event it is showing
+  const toured = useTour((s) => s.card !== null && s.stops[s.card]?.id === event.id);
+  const selected = picked || toured;
   const year = mainSpan(event.dating, mode).start;
   const x = yearToX(year);
   const fs = EVENT_FS * (event.importance >= 4 ? 1.15 : 1);
